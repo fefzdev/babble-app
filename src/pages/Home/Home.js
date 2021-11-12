@@ -26,11 +26,7 @@ function Home({navigation}) {
           }}>
           <Text>This is Home {currentUser}</Text>
           <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-            }}
+            style={globalStyle.input}
             value={inputValue}
             onChangeText={text => {
               setInputValue(text);

@@ -3,13 +3,16 @@ import React from 'react';
 import store from './store';
 import {Provider} from 'react-redux';
 import RouteBinding from './routes/RouteBinding';
+import Auth from './components/Auth';
 
 function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <RouteBinding />
-      </NavigationContainer>
+      <Auth>
+        <NavigationContainer>
+          <RouteBinding />
+        </NavigationContainer>
+      </Auth>
     </Provider>
   );
 }

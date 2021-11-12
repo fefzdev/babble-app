@@ -11,12 +11,12 @@ export const userStore = createSlice({
       state.current = user.payload;
     },
 
-    setType: (state, type) => {
+    setUserType: (state, type) => {
       state.type = type.payload;
     },
   },
 });
 
-export const {setUser, setType} = userStore.actions;
+export const {setUser, setUserType} = userStore.actions;
 
 export default userStore.reducer;
