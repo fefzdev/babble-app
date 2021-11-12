@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Text, TextInput, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {globalStyle} from '../../assets/style/style';
+import React, { useEffect, useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { globalStyle } from '../../assets/style/style';
 import Background from '../../components/Background';
 import Counter from '../../components/Counter';
 import Wrapper from '../../components/Wrapper';
-import {setUser} from '../../store/User';
+import { setUser } from '../../store/User';
 
-function Home({navigation}) {
+function Home({ navigation }) {
   const [inputValue, setInputValue] = useState('Tapez un truc');
   const currentUser = useSelector(state => state.user.current);
   const dispatch = useDispatch();

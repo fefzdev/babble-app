@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Text, TextInput, View} from 'react-native';
-import {globalStyle, globalVariable} from '../../assets/style/style';
-import Background from '../Background';
-import {firebase} from '../../database/config';
+import React, { useEffect, useState } from 'react';
+import { Button, Text, TextInput, View } from 'react-native';
+import { globalStyle, globalVariable } from '../../assets/style/style';
+import Background from '../../components/Background';
+import { firebase } from '../../database/config';
 
-function Auth({children}) {
+function Auth({ children }) {
   const [authPassword, setAuthPassword] = useState(null);
   const [authMail, setAuthMail] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -43,7 +43,7 @@ function Auth({children}) {
 
   const handleErrors = () => {
     if (errorMsg) {
-      return <Text style={{color: 'red'}}>{errorMsg}</Text>;
+      return <Text style={{ color: 'red' }}>{errorMsg}</Text>;
     }
   };
 

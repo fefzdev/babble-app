@@ -1,9 +1,9 @@
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import store from './store';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import RouteBinding from './routes/RouteBinding';
-import Auth from './components/Auth';
+import Auth from './modules/Auth';
 
 function App() {
   return (
