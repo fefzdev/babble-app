@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import { globalStyle, globalVariable } from '../../assets/style/style';
+import BabbleInput from '../../components/BabbleInput';
 import Background from '../../components/Background';
 import { firebase } from '../../database/config';
 
@@ -47,6 +48,10 @@ function Auth({ children }) {
     }
   };
 
+  const inputStyle = {
+    marginTop: 16,
+  };
+
   const showUserInterface = () => {
     if (isConnected) {
       return children;
@@ -58,16 +63,18 @@ function Auth({ children }) {
               paddingVertical: 50,
               paddingHorizontal: 20,
             }}>
-            <Text>Rentrez votre mail</Text>
-            <TextInput
-              style={globalStyle.input}
+            <BabbleInput
+              style={inputStyle}
+              label="Email"
               value={authMail}
+              placeholder="your.email@mail.com"
               onChangeText={text => setAuthMail(text)}
             />
-            <Text>Rentrez votre MDP</Text>
-            <TextInput
-              style={globalStyle.input}
+            <BabbleInput
+              style={inputStyle}
+              label="Password"
               value={authPassword}
+              placeholder="**********"
               onChangeText={text => setAuthPassword(text)}
             />
             <Button
