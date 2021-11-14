@@ -1,21 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import {globalStyle} from '../../assets/style/style';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { globalStyle } from '../../assets/style/style';
 import Background from '../../components/Background';
 import Wrapper from '../../components/Wrapper';
-import {firebase} from '../../database/config';
+import TestDB from '../../database/Model/TestDB';
 
 function Test() {
+  const TestModel = new TestDB();
   const [chat, setChat] = useState(null);
   const handleChat = () => {
     if (chat) {
-      let chatArray = [];
-      for (const name in chat.val()) {
-        let value = chat.val()[name];
-        chatArray.push({name: name, value: value});
-      }
-      return chatArray.map((chatItem, index) => (
-        <Text key={index} style={globalStyle.button}>
+      return chat.map(chatItem => (
+        <Text
+          onPress={() => TestModel.delete(chatItem.uid)}
+          key={chatItem.uid}
+          style={globalStyle.button}>
           {chatItem.name} : {chatItem.value}
         </Text>
       ));
@@ -23,19 +22,16 @@ function Test() {
     return <Text>Chargement</Text>;
   };
   useEffect(() => {
-    firebase
-      .database()
-      .ref('Test')
-      .on('value', snap => {
-        setChat(snap);
-      });
+    TestModel.listen(data => setChat(data));
   }, []);
 
   return (
     <Background>
       <Wrapper>
         <View>
-          <Text>Ici BDD</Text>
+          <Text onPress={() => TestModel.add({ name: 'Bibi', value: 'Prut' })}>
+            Ici BDD
+          </Text>
           <View>{handleChat()}</View>
         </View>
       </Wrapper>

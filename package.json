@@ -18,7 +18,9 @@
     "react-native": "0.66.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
-    "react-redux": "^7.2.6"
+    "react-native-uuid": "^2.0.1",
+    "react-redux": "^7.2.6",
+    "uid-generator": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

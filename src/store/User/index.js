@@ -1,10 +1,11 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export const userStore = createSlice({
   name: 'user',
   initialState: {
     current: null,
-    type: 'talker',
+    type: null,
+    mail: null,
   },
   reducers: {
     setUser: (state, user) => {
@@ -14,9 +15,13 @@ export const userStore = createSlice({
     setUserType: (state, type) => {
       state.type = type.payload;
     },
+
+    setUserMail: (state, mail) => {
+      state.mail = mail.payload;
+    },
   },
 });
 
-export const {setUser, setUserType} = userStore.actions;
+export const { setUser, setUserType, setUserMail } = userStore.actions;
 
 export default userStore.reducer;

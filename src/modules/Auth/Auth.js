@@ -4,43 +4,31 @@ import { globalStyle, globalVariable } from '../../assets/style/style';
 import BabbleInput from '../../components/BabbleInput';
 import Background from '../../components/Background';
 import { firebase } from '../../database/config';
+import db from '../../database/helper';
+import User from '../../database/Model/Users';
 
 function Auth({ children }) {
   const [authPassword, setAuthPassword] = useState(null);
   const [authMail, setAuthMail] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isOnSignIn, setIsOnSignIn] = useState(true);
+  const UserModel = new User();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setIsConnected(true);
-
-        firebase
-          .database()
-          .ref('users')
-          .child(user.uid)
-          .get()
-          .then(snap => {
+        db.readChild('users', user.uid).then(snap => {
+          if (snap) {
             console.log(snap.val());
-          });
+          }
+        });
       } else {
         setIsConnected(false);
       }
     });
   }, []);
-
-  const tryConnection = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(authMail, authPassword)
-      .then(userCredential => {
-        console.log(userCredential);
-      })
-      .catch(error => {
-        setErrorMsg(`${error.code}, ${error.message}`);
-      });
-  };
 
   const handleErrors = () => {
     if (errorMsg) {
@@ -81,7 +69,23 @@ function Auth({ children }) {
               style={globalStyle.button}
               title="Send"
               color={globalVariable.secondColor}
-              onPress={() => tryConnection()}
+              onPress={() => {
+                isOnSignIn
+                  ? UserModel.connect(authMail, authPassword, error =>
+                      setErrorMsg(`${error.code}: ${error.message}`),
+                    )
+                  : UserModel.create(authMail, authPassword, error =>
+                      setErrorMsg(`${error.code}: ${error.message}`),
+                    );
+              }}
+            />
+            <Button
+              style={globalStyle.button}
+              title={isOnSignIn ? 'Sign Up' : 'Sign In'}
+              color={globalVariable.secondColor}
+              onPress={() => {
+                setIsOnSignIn(!isOnSignIn);
+              }}
             />
             {handleErrors()}
           </View>
