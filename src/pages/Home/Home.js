@@ -1,19 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Text, TextInput, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {globalStyle} from '../../assets/style/style';
+import React, { useEffect, useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { globalStyle } from '../../assets/style/style';
 import Background from '../../components/Background';
 import Counter from '../../components/Counter';
 import Wrapper from '../../components/Wrapper';
-import {setUser} from '../../store/User';
 
-function Home({navigation}) {
+function Home({ navigation }) {
   const [inputValue, setInputValue] = useState('Tapez un truc');
   const currentUser = useSelector(state => state.user.current);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setUser(inputValue));
-  }, [inputValue]);
+  const currentUserMail = useSelector(state => state.user.mail);
 
   return (
     <Background>
@@ -24,13 +20,11 @@ function Home({navigation}) {
             padding: 50,
             borderRadius: 50,
           }}>
-          <Text>This is Home {currentUser}</Text>
+          <Text>
+            This is Home {currentUser} ({currentUserMail})
+          </Text>
           <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-            }}
+            style={globalStyle.input}
             value={inputValue}
             onChangeText={text => {
               setInputValue(text);

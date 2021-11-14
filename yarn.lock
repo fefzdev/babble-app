@@ -5937,6 +5937,11 @@ react-native-screens@^3.9.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-uuid@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-uuid/-/react-native-uuid-2.0.1.tgz#ed4e2dfb1683eddb66967eb5dca140dfe1abddb9"
+  integrity sha512-cptnoIbL53GTCrWlb/+jrDC6tvb7ypIyzbXNJcpR3Vab0mkeaaVd5qnB3f0whXYzS+SMoSQLcUUB0gEWqkPC0g==
+
 react-native@0.66.2:
   version "0.66.2"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.66.2.tgz#11035172a73f0815c28699b1fce3a6651dd6355b"
@@ -7001,6 +7006,11 @@ uglify-es@^3.1.9:
   dependencies:
     commander "~2.13.0"
     source-map "~0.6.1"
+
+uid-generator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/uid-generator/-/uid-generator-2.0.0.tgz#70e7b882300a4ccd12841e5a857dacada7fd7452"
+  integrity sha512-XLRw2UyViQueSbd3dOHkswrg4gA4YuhibKzkFiPkilo6cdKEQqOX3K/Yu6Z2WXVMK+npfMNlSSufVSUifbXoOQ==
 
 ultron@1.0.x:
   version "1.0.2"

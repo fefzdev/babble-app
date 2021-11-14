@@ -1,7 +1,9 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const globalVariable = {
   pageBgColor: 'aliceblue',
+  mainColor: '#fff',
+  secondColor: 'black',
   boxShadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -37,6 +39,12 @@ const globalStyle = StyleSheet.create({
   wrapper: {
     padding: 20,
   },
+
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+  },
 });
 
-export {globalStyle, globalVariable};
+export { globalStyle, globalVariable };
