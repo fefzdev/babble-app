@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
-import { globalStyle, globalVariable } from '../../assets/style/style';
+import { Text, View } from 'react-native';
+import BabbleButton from '../../components/BabbleButton/BabbleButton';
 import BabbleInput from '../../components/BabbleInput';
 import Background from '../../components/Background';
 import { firebase } from '../../database/config';
 import db from '../../database/helper';
 import User from '../../database/Model/Users';
+
+import { Heading } from './components';
 
 function Auth({ children }) {
   const [authPassword, setAuthPassword] = useState(null);
@@ -36,8 +38,15 @@ function Auth({ children }) {
     }
   };
 
+  const containerStyle = {
+    paddingHorizontal: 20,
+    marginTop: 42,
+  };
   const inputStyle = {
     marginTop: 16,
+  };
+  const buttonStyle = {
+    marginTop: 32,
   };
 
   const showUserInterface = () => {
@@ -46,11 +55,9 @@ function Auth({ children }) {
     } else {
       return (
         <Background>
-          <View
-            style={{
-              paddingVertical: 50,
-              paddingHorizontal: 20,
-            }}>
+          <Heading />
+
+          <View style={containerStyle}>
             <BabbleInput
               style={inputStyle}
               label="Email"
@@ -65,28 +72,31 @@ function Auth({ children }) {
               placeholder="**********"
               onChangeText={text => setAuthPassword(text)}
             />
-            <Button
-              style={globalStyle.button}
-              title="Send"
-              color={globalVariable.secondColor}
-              onPress={() => {
-                isOnSignIn
-                  ? UserModel.connect(authMail, authPassword, error =>
-                      setErrorMsg(`${error.code}: ${error.message}`),
-                    )
-                  : UserModel.create(authMail, authPassword, error =>
-                      setErrorMsg(`${error.code}: ${error.message}`),
-                    );
-              }}
-            />
-            <Button
-              style={globalStyle.button}
-              title={isOnSignIn ? 'Sign Up' : 'Sign In'}
-              color={globalVariable.secondColor}
+            <BabbleButton
+              style={buttonStyle}
+              onPress={() =>
+                UserModel.connect(authMail, authPassword, error =>
+                  setErrorMsg(`${error.code}: ${error.message}`),
+                )
+              }>
+              Login
+            </BabbleButton>
+            <BabbleButton
+              style={buttonStyle}
+              onPress={() =>
+                UserModel.create(authMail, authPassword, error =>
+                  setErrorMsg(`${error.code}: ${error.message}`),
+                )
+              }>
+              Sign up
+            </BabbleButton>
+            <BabbleButton
+              style={buttonStyle}
               onPress={() => {
                 setIsOnSignIn(!isOnSignIn);
-              }}
-            />
+              }}>
+              {isOnSignIn ? 'Sign Up' : 'Sign In'}
+            </BabbleButton>
             {handleErrors()}
           </View>
         </Background>

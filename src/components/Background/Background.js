@@ -1,14 +1,16 @@
 import React from 'react';
-import {ScrollView, View} from 'react-native';
-import {globalVariable} from '../../assets/style/style';
+import { ScrollView, View } from 'react-native';
+import colors from '../../assets/style/colors';
 
-function Background({children}) {
+function Background({ children }) {
+  const containerStyle = {
+    backgroundColor: colors.orange[50],
+    flex: 1,
+    paddingTop: 44,
+  };
+
   return (
-    <View
-      style={{
-        backgroundColor: globalVariable.pageBgColor,
-        flex: 1,
-      }}>
+    <View style={containerStyle}>
       <ScrollView>{children}</ScrollView>
     </View>
   );
