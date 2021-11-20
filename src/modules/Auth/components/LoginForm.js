@@ -3,15 +3,18 @@ import { View } from 'react-native';
 import BabbleButton from '../../../components/BabbleButton/BabbleButton';
 import BabbleInput from '../../../components/BabbleInput';
 import User from '../../../database/Model/Users';
+import { useDispatch } from 'react-redux';
+import { setErrorMessage } from '../../../store/App';
 
 function LoginForm({ onError }) {
   const [password, setPassword] = useState(null);
   const [mail, setMail] = useState(null);
   const UserModel = new User();
+  const dispatch = useDispatch();
 
   const onLogin = async () => {
     await UserModel.connect(mail, password, error =>
-      onError(`${error.code}: ${error.message}`),
+      dispatch(setErrorMessage(`${error.code}: ${error.message}`)),
     );
   };
 

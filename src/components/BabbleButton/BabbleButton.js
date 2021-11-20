@@ -33,8 +33,7 @@ export default function BabbleButton({ children, onPress, style }) {
       style={{ ...handlePress(), ...style }}
       activeOpacity={1}
       onPressIn={() => setIsPressed(true)}
-      onPressOut={() => handlePressOut()}
-    >
+      onPressOut={() => handlePressOut()}>
       <Text style={textStyle}>{children}</Text>
     </TouchableOpacity>
   );

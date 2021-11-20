@@ -3,6 +3,8 @@ import { View } from 'react-native';
 import BabbleButton from '../../../components/BabbleButton/BabbleButton';
 import BabbleInput from '../../../components/BabbleInput';
 import User from '../../../database/Model/Users';
+import { useDispatch } from 'react-redux';
+import { setErrorMessage } from '../../../store/App';
 
 function RegisterForm({ onError }) {
   const [username, setUsername] = useState(null);
@@ -10,10 +12,11 @@ function RegisterForm({ onError }) {
   const [passwordConfirm, setPasswordConfirm] = useState(null);
   const [mail, setMail] = useState(null);
   const UserModel = new User();
+  const dispatch = useDispatch();
 
   const onRegister = async () => {
     await UserModel.create(mail, password, username, error =>
-      onError(`${error.code}: ${error.message}`),
+      dispatch(setErrorMessage(`${error.code}: ${error.message}`)),
     );
   };
 
