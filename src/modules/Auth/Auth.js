@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import BabbleButton from '../../components/BabbleButton/BabbleButton';
-import BabbleInput from '../../components/BabbleInput';
+import { Text } from 'react-native';
 import Background from '../../components/Background';
 import { firebase } from '../../database/config';
 import db from '../../database/helper';
-import User from '../../database/Model/Users';
 
-import { Heading } from './components';
+import { Heading, LoginForm, RegisterForm } from './components';
 
 function Auth({ children }) {
-  const [authPassword, setAuthPassword] = useState(null);
-  const [authMail, setAuthMail] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isOnSignIn, setIsOnSignIn] = useState(true);
-  const UserModel = new User();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
@@ -38,15 +32,11 @@ function Auth({ children }) {
     }
   };
 
-  const containerStyle = {
-    paddingHorizontal: 20,
-    marginTop: 42,
-  };
-  const inputStyle = {
-    marginTop: 16,
-  };
-  const buttonStyle = {
-    marginTop: 32,
+  const FormComponent = () => {
+    if (isOnSignIn) {
+      return <LoginForm onError={setErrorMsg} />;
+    }
+    return <RegisterForm onError={setErrorMsg} />;
   };
 
   const showUserInterface = () => {
@@ -55,50 +45,12 @@ function Auth({ children }) {
     } else {
       return (
         <Background>
-          <Heading />
-
-          <View style={containerStyle}>
-            <BabbleInput
-              style={inputStyle}
-              label="Email"
-              value={authMail}
-              placeholder="your.email@mail.com"
-              onChangeText={text => setAuthMail(text)}
-            />
-            <BabbleInput
-              style={inputStyle}
-              label="Password"
-              value={authPassword}
-              placeholder="**********"
-              onChangeText={text => setAuthPassword(text)}
-            />
-            <BabbleButton
-              style={buttonStyle}
-              onPress={() =>
-                UserModel.connect(authMail, authPassword, error =>
-                  setErrorMsg(`${error.code}: ${error.message}`),
-                )
-              }>
-              Login
-            </BabbleButton>
-            <BabbleButton
-              style={buttonStyle}
-              onPress={() =>
-                UserModel.create(authMail, authPassword, error =>
-                  setErrorMsg(`${error.code}: ${error.message}`),
-                )
-              }>
-              Sign up
-            </BabbleButton>
-            <BabbleButton
-              style={buttonStyle}
-              onPress={() => {
-                setIsOnSignIn(!isOnSignIn);
-              }}>
-              {isOnSignIn ? 'Sign Up' : 'Sign In'}
-            </BabbleButton>
-            {handleErrors()}
-          </View>
+          <Heading
+            isLogin={isOnSignIn}
+            onSwitch={() => setIsOnSignIn(!isOnSignIn)}
+          />
+          {FormComponent()}
+          {handleErrors()}
         </Background>
       );
     }

@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import colors from '../../../assets/style/colors';
 import fonts from '../../../assets/style/fonts';
 
-function Heading({}) {
+function Heading({ onSwitch, isLogin }) {
   const containerStyle = {
     paddingHorizontal: 20,
     alignItems: 'center',
@@ -25,15 +25,22 @@ function Heading({}) {
     marginLeft: 4,
   };
 
+  const switchText = () => {
+    if (isLogin) {
+      return { firstPart: "Don't have an account?", secondPart: 'Sign up' };
+    }
+    return { firstPart: 'Already have an account?', secondPart: 'Log in' };
+  };
+
   return (
     <View style={containerStyle}>
       <Text style={fonts.bigTitle}>
         Welcome to <Text style={highlightStyle}>Babbles</Text>
       </Text>
       <Text style={textStyle}>
-        Don’t have an account?
-        <TouchableOpacity>
-          <Text style={highlightStyle}>Sign up</Text>
+        {switchText().firstPart}
+        <TouchableOpacity onPress={onSwitch}>
+          <Text style={highlightStyle}>{switchText().secondPart}</Text>
         </TouchableOpacity>
       </Text>
     </View>

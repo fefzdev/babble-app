@@ -8,6 +8,7 @@ export default function BabbleInput({
   onChangeText,
   placeholder,
   style,
+  ...attr
 }) {
   const [isFocused, setIsFocused] = React.useState(false);
 
@@ -46,6 +47,7 @@ export default function BabbleInput({
         value={value}
         onChangeText={text => onChangeText(text)}
         placeholder={placeholder}
+        {...attr}
       />
     </View>
   );

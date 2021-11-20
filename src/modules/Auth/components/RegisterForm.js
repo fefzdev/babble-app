@@ -4,13 +4,15 @@ import BabbleButton from '../../../components/BabbleButton/BabbleButton';
 import BabbleInput from '../../../components/BabbleInput';
 import User from '../../../database/Model/Users';
 
-function LoginForm({ onError }) {
+function RegisterForm({ onError }) {
+  const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [passwordConfirm, setPasswordConfirm] = useState(null);
   const [mail, setMail] = useState(null);
   const UserModel = new User();
 
-  const onLogin = async () => {
-    await UserModel.connect(mail, password, error =>
+  const onRegister = async () => {
+    await UserModel.create(mail, password, username, error =>
       onError(`${error.code}: ${error.message}`),
     );
   };
@@ -40,6 +42,13 @@ function LoginForm({ onError }) {
       />
       <BabbleInput
         style={inputStyle}
+        label="Username"
+        value={username}
+        placeholder="beubeuOfThe33"
+        onChangeText={text => setUsername(text)}
+      />
+      <BabbleInput
+        style={inputStyle}
         label="Password"
         value={password}
         placeholder="**********"
@@ -47,11 +56,20 @@ function LoginForm({ onError }) {
         autoComplete="password"
         secureTextEntry
       />
-      <BabbleButton style={buttonStyle} onPress={() => onLogin()}>
-        Login
+      <BabbleInput
+        style={inputStyle}
+        label="Confirm password"
+        value={passwordConfirm}
+        placeholder="**********"
+        onChangeText={text => setPasswordConfirm(text)}
+        autoComplete="password-new"
+        secureTextEntry
+      />
+      <BabbleButton style={buttonStyle} onPress={() => onRegister()}>
+        Sign up
       </BabbleButton>
     </View>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;
