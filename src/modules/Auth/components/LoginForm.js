@@ -59,6 +59,7 @@ function LoginForm({ onError }) {
     container: {
       paddingHorizontal: 20,
       marginTop: 42,
+      marginBottom: 24,
     },
     input: {
       marginTop: 16,
