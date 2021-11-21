@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, View, Text } from 'react-native';
+import colors from '../../assets/style/colors';
 
 export default function BabbleInput({
   label,
@@ -7,19 +8,20 @@ export default function BabbleInput({
   onChangeText,
   placeholder,
   style,
+  ...attr
 }) {
   const [isFocused, setIsFocused] = React.useState(false);
 
   const inputStyle = {
     borderWidth: 2,
-    borderColor: '#F8C89C',
+    borderColor: colors.orange[500],
     padding: 16,
     borderRadius: 8,
   };
 
   const inputStyleFocused = {
     borderWidth: 2,
-    borderColor: '#F09139',
+    borderColor: colors.orange[1000],
     padding: 16,
     borderRadius: 8,
   };
@@ -45,6 +47,7 @@ export default function BabbleInput({
         value={value}
         onChangeText={text => onChangeText(text)}
         placeholder={placeholder}
+        {...attr}
       />
     </View>
   );

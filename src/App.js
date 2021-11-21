@@ -4,6 +4,7 @@ import store from './store';
 import { Provider } from 'react-redux';
 import RouteBinding from './routes/RouteBinding';
 import Auth from './modules/Auth';
+import BabbleErrorPopin from './components/BabbleErrorPopin/BabbleErrorPopin';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <RouteBinding />
         </NavigationContainer>
       </Auth>
+      <BabbleErrorPopin />
     </Provider>
   );
 }
