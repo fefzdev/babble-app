@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
+
 import colors from '../../assets/style/colors';
 
 function Background({ children }) {

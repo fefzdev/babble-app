@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {globalStyle} from '../../assets/style/style';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { globalStyle } from '../../assets/style/style';
 
 function Counter() {
   const [nbClick, setNbClick] = useState(0);

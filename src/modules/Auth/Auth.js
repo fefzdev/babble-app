@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
 import Background from '../../components/Background';
 import { firebase } from '../../database/config';
 import db from '../../database/helper';
-
 import { Heading, LoginForm, RegisterForm } from './components';
 
 function Auth({ children }) {

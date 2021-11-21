@@ -1,5 +1,6 @@
 import React from 'react';
-import { TextInput, View, Text } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
+
 import colors from '../../assets/style/colors';
 
 export default function BabbleInput({

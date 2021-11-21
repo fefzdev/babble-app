@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+
 import { setUser, setUserMail, setUserType } from '../../store/User';
 import db from '../helper';
 import Model from './Model';
@@ -7,6 +8,7 @@ export default class User extends Model {
   constructor() {
     super();
     this.table = 'users';
+    /* eslint-disable-next-line react-hooks/rules-of-hooks */
     this.updateStore = useDispatch();
   }
 

@@ -1,5 +1,6 @@
-import db from '../helper';
 import uuid from 'react-native-uuid';
+
+import db from '../helper';
 
 export default class Model {
   constructor() {
