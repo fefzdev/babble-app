@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+
 import { globalStyle } from '../../assets/style/style';
 import Background from '../../components/Background';
 import Wrapper from '../../components/Wrapper';
@@ -21,9 +22,12 @@ function Test() {
     }
     return <Text>Chargement</Text>;
   };
+
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     TestModel.listen(data => setChat(data));
   }, []);
+  /* eslint-enabled react-hooks/exhaustive-deps */
 
   return (
     <Background>

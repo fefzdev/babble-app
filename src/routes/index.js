@@ -1,1 +1,1 @@
-export {default} from './RouteBinding';
+export { default } from './RouteBinding';

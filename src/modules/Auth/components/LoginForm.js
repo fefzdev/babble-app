@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import { useDispatch } from 'react-redux';
+
 import BabbleButton from '../../../components/BabbleButton/BabbleButton';
 import BabbleInput from '../../../components/BabbleInput';
 import User from '../../../database/Model/Users';
-import { useDispatch } from 'react-redux';
 import { setErrorMessage } from '../../../store/App';
 
 function LoginForm({ onError }) {
