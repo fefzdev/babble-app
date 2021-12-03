@@ -131,7 +131,6 @@ function RegisterForm() {
         value={passwordConfirm}
         placeholder="**********"
         onChangeText={text => onInput('passwordConfirm', text)}
-        autoComplete="password-new"
         secureTextEntry
         error={checkError('passwordConfirm')}
       />
