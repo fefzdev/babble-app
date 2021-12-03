@@ -8,7 +8,7 @@ function Heading({ onSwitch, isLogin }) {
   const containerStyle = {
     paddingHorizontal: 20,
     alignItems: 'center',
-    marginTop: 32,
+    marginTop: 24,
   };
 
   const textStyle = {
