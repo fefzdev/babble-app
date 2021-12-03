@@ -1,7 +1,6 @@
+import colors from 'app/assets/style/colors';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-
-import colors from '../../assets/style/colors';
 
 function Background({ children }) {
   const containerStyle = {

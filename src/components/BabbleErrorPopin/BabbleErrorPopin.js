@@ -1,14 +1,19 @@
-import React from 'react';
+import colors from 'app/assets/style/colors';
+import { removeErrorMessage } from 'app/store/App';
+import React, { useEffect } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { useDispatch, useSelector } from 'react-redux';
 
-import colors from '../../assets/style/colors';
-import { removeErrorMessage } from '../../store/App';
-
-export default () => {
+export default function BabbleErrorPopin() {
   const { errorMessage } = useSelector(state => state.app);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => dispatch(removeErrorMessage()), 3000);
+    }
+  }, [errorMessage]);
 
   const styles = {
     popinContainer: {
@@ -52,4 +57,4 @@ export default () => {
       </TouchableOpacity>
     </View>
   );
-};
+}

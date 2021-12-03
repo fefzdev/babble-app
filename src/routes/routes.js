@@ -1,5 +1,5 @@
-import Home from '../pages/Home';
-import Test from '../pages/Test';
+import Home from 'app/pages/Home';
+import Test from 'app/pages/Test';
 
 export default [
   {

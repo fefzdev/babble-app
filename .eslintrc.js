@@ -5,5 +5,15 @@ module.exports = {
   rules: {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+    'react-hooks/exhaustive-deps': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      'babel-module': {
+        alias: {
+          app: './src/',
+        },
+      },
+    },
   },
 };
