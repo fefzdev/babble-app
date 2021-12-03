@@ -8,6 +8,7 @@ export default function BabbleInput({
   onChangeText,
   placeholder,
   style,
+  error,
   ...attr
 }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -20,28 +21,42 @@ export default function BabbleInput({
   };
 
   const inputStyleFocused = {
-    borderWidth: 2,
     borderColor: colors.orange[1000],
-    padding: 16,
-    borderRadius: 8,
+  };
+
+  const inputStyleError = {
+    borderColor: colors.red[1000],
+    colors: colors.red[500],
   };
 
   const labelStyle = {
     marginBottom: 8,
   };
+  const labelStyleError = {
+    color: colors.red[500],
+  };
 
-  const handleFocus = () => {
+  const handleStyle = () => {
     if (isFocused) {
-      return inputStyleFocused;
+      return [inputStyle, inputStyleFocused];
+    }
+    if (error) {
+      return [inputStyle, inputStyleError];
     }
     return inputStyle;
+  };
+  const handleLabelStyle = () => {
+    if (error) {
+      return [labelStyle, labelStyleError];
+    }
+    return labelStyle;
   };
 
   return (
     <View style={style}>
-      <Text style={labelStyle}>{label}</Text>
+      <Text style={handleLabelStyle()}>{label}</Text>
       <TextInput
-        style={handleFocus()}
+        style={handleStyle()}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         value={value}

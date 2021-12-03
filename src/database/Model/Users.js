@@ -19,12 +19,12 @@ export default class User extends Model {
       this.updateStore(setUserMail(data.mail));
     });
 
-  create = (mail, password, handleError) => {
+  create = (mail, password, username, handleError) => {
     db.createUser(mail, password)
       .then(userCredential => {
         this.add(
           {
-            name: 'Benoit',
+            name: username,
             mail: userCredential.user.email,
             role: null,
           },
