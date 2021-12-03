@@ -1,21 +1,25 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
+import { useDispatch } from 'react-redux';
 
 import colors from '../../../assets/style/colors';
+import { setErrorMessage } from '../../../store/App';
 
 function OtherLogs() {
+  const dispatch = useDispatch();
+
   const items = [
     {
-      action: () => console.log('apple pressed'),
+      action: () => dispatch(setErrorMessage('Coming soon :)')),
       icon: require('../../../assets/images/apple.svg'),
     },
     {
-      action: () => console.log('facebook pressed'),
+      action: () => dispatch(setErrorMessage('Coming soon :)')),
       icon: require('../../../assets/images/facebook.svg'),
     },
     {
-      action: () => console.log('google pressed'),
+      action: () => dispatch(setErrorMessage('Coming soon :)')),
       icon: require('../../../assets/images/google.svg'),
     },
   ];
