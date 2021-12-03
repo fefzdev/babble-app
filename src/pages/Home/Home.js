@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { globalStyle } from 'app/assets/style/style';
+import Background from 'app/components/Background';
+import Counter from 'app/components/Counter';
+import Wrapper from 'app/components/Wrapper';
+import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
-
-import { globalStyle } from '../../assets/style/style';
-import Background from '../../components/Background';
-import Counter from '../../components/Counter';
-import Wrapper from '../../components/Wrapper';
 
 function Home({ navigation }) {
   const [inputValue, setInputValue] = useState('Tapez un truc');

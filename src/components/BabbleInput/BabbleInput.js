@@ -1,7 +1,6 @@
-import React from 'react';
+import colors from 'app/assets/style/colors';
+import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-
-import colors from '../../assets/style/colors';
 
 export default function BabbleInput({
   label,
@@ -11,7 +10,7 @@ export default function BabbleInput({
   style,
   ...attr
 }) {
-  const [isFocused, setIsFocused] = React.useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const inputStyle = {
     borderWidth: 2,

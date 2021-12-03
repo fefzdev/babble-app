@@ -1,7 +1,6 @@
+import colors from 'app/assets/style/colors';
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-
-import colors from '../../assets/style/colors';
 
 export default function BabbleButton({ children, onPress, style }) {
   const [isPressed, setIsPressed] = React.useState(false);

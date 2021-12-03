@@ -1,11 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
+import BabbleErrorPopin from 'app/components/BabbleErrorPopin/BabbleErrorPopin';
+import Auth from 'app/modules/Auth';
+import RouteBinding from 'app/routes/RouteBinding';
+import store from 'app/store';
 import React from 'react';
 import { Provider } from 'react-redux';
-
-import BabbleErrorPopin from './components/BabbleErrorPopin/BabbleErrorPopin';
-import Auth from './modules/Auth';
-import RouteBinding from './routes/RouteBinding';
-import store from './store';
 
 function App() {
   return (

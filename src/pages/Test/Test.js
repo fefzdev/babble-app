@@ -1,10 +1,9 @@
+import { globalStyle } from 'app/assets/style/style';
+import Background from 'app/components/Background';
+import Wrapper from 'app/components/Wrapper';
+import TestDB from 'app/database/Model/TestDB';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-
-import { globalStyle } from '../../assets/style/style';
-import Background from '../../components/Background';
-import Wrapper from '../../components/Wrapper';
-import TestDB from '../../database/Model/TestDB';
 
 function Test() {
   const TestModel = new TestDB();
