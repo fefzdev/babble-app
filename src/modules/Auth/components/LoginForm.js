@@ -13,8 +13,8 @@ function LoginForm({ onError }) {
   const UserModel = new User();
   const dispatch = useDispatch();
 
-  const onLogin = async () => {
-    await UserModel.connect(mail, password, error =>
+  const onLogin = () => {
+    UserModel.connect(mail, password, error =>
       dispatch(setErrorMessage(`${error.code}: ${error.message}`)),
     );
   };

@@ -19,9 +19,14 @@ export const userStore = createSlice({
     setUserMail: (state, mail) => {
       state.mail = mail.payload;
     },
+
+    setUserUID: (state, uid) => {
+      state.uid = uid.payload;
+    },
   },
 });
 
-export const { setUser, setUserType, setUserMail } = userStore.actions;
+export const { setUser, setUserType, setUserMail, setUserUID } =
+  userStore.actions;
 
 export default userStore.reducer;

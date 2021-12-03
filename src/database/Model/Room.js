@@ -5,4 +5,13 @@ export default class Room extends Model {
     super();
     this.table = 'room';
   }
+
+  create = users => {
+    this.add({
+      messages: {},
+      users: {
+        ...users,
+      },
+    });
+  };
 }

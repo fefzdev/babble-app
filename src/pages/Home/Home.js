@@ -44,6 +44,11 @@ function Home({ navigation }) {
             style={globalStyle.button}>
             <Text>Go to page test</Text>
           </View>
+          <View
+            onTouchStart={() => navigation.navigate('Room')}
+            style={globalStyle.button}>
+            <Text>Go to page Room</Text>
+          </View>
         </View>
       </Wrapper>
     </Background>
