@@ -14,13 +14,12 @@ const db = {
   createUser: async (mail, password) =>
     await firebase.auth().createUserWithEmailAndPassword(mail, password),
 
-  write: (ref, data) => {
-    firebase.database().ref(ref).set(data);
-  },
+  write: (ref, data) => firebase.database().ref(ref).set(data),
 
-  delete: ref => {
-    firebase.database().ref(ref).remove();
-  },
+  update: async (ref, updates) =>
+    await firebase.database().ref(ref).set(updates),
+
+  delete: ref => firebase.database().ref(ref).remove(),
 };
 
 export default db;

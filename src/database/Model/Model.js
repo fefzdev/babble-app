@@ -31,6 +31,16 @@ export default class Model {
     db.delete(`${this.table}/${uid}`);
   };
 
+  update = (uid, data, callback) => {
+    this.find(uid, find => {
+      delete find.uid;
+      db.update(`${this.table}/${uid}`, {
+        ...find,
+        ...data,
+      }).then(() => callback());
+    });
+  };
+
   find = (uid, callback) => {
     db.readChild(this.table, uid)
       .then(data => callback({ uid, ...data.val() }))
@@ -50,6 +60,4 @@ export default class Model {
       })
       .catch(e => console.log(e.message));
   };
-
-  where = (query, callback) => {};
 }

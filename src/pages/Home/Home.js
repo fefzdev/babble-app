@@ -1,7 +1,9 @@
 import { globalStyle } from 'app/assets/style/style';
 import Background from 'app/components/Background';
-import Counter from 'app/components/Counter';
 import Wrapper from 'app/components/Wrapper';
+import useRepository from 'app/database/Model';
+import ShowAvailableUsers from 'app/modules/ShowAvailableUsers';
+import { setUserAvailable } from 'app/store/User';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -10,6 +12,17 @@ function Home({ navigation }) {
   const [inputValue, setInputValue] = useState('Tapez un truc');
   const currentUser = useSelector(state => state.user.current);
   const currentUserMail = useSelector(state => state.user.mail);
+  const currentUserUID = useSelector(state => state.user.uid);
+  const currentUserAvailable = useSelector(state => state.user.available);
+  const currentUserType = useSelector(state => state.user.type);
+  const { userRepository } = useRepository();
+
+  const setAvailable = () => {
+    userRepository.updateData(currentUserUID, {
+      available: !currentUserAvailable,
+      type: 'listener',
+    });
+  };
 
   return (
     <Background>
@@ -21,7 +34,9 @@ function Home({ navigation }) {
             borderRadius: 50,
           }}>
           <Text>
-            This is Home {currentUser} ({currentUserMail})
+            This is Home {currentUser} ({currentUserMail}) {currentUserUID}{' '}
+            Available : {currentUserAvailable ? 'true' : 'false'} type :{' '}
+            {currentUserType}
           </Text>
           <TextInput
             style={globalStyle.input}
@@ -30,7 +45,6 @@ function Home({ navigation }) {
               setInputValue(text);
             }}
           />
-          <Counter />
         </View>
         <View
           style={{
@@ -49,6 +63,11 @@ function Home({ navigation }) {
             style={globalStyle.button}>
             <Text>Go to page Room</Text>
           </View>
+
+          <ShowAvailableUsers />
+          <Text style={globalStyle.button} onPress={setAvailable}>
+            Set available
+          </Text>
         </View>
       </Wrapper>
     </Background>

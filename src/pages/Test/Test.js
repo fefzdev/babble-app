@@ -5,14 +5,16 @@ import TestDB from 'app/database/Model/TestDB';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import useRepository from '../../database/Model';
+
 function Test() {
-  const TestModel = new TestDB();
+  const { testDbRepository } = useRepository();
   const [chat, setChat] = useState(null);
   const handleChat = () => {
     if (chat) {
       return chat.map(chatItem => (
         <Text
-          onPress={() => TestModel.delete(chatItem.uid)}
+          onPress={() => testDbRepository.delete(chatItem.uid)}
           key={chatItem.uid}
           style={globalStyle.button}>
           {chatItem.name} : {chatItem.value}
@@ -24,7 +26,7 @@ function Test() {
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    TestModel.listen(data => setChat(data));
+    testDbRepository.listen(data => setChat(data));
   }, []);
   /* eslint-enabled react-hooks/exhaustive-deps */
 
@@ -32,7 +34,10 @@ function Test() {
     <Background>
       <Wrapper>
         <View>
-          <Text onPress={() => TestModel.add({ name: 'Bibi', value: 'Prut' })}>
+          <Text
+            onPress={() =>
+              testDbRepository.add({ name: 'Bibi', value: 'Prut' })
+            }>
             Ici BDD
           </Text>
           <View>{handleChat()}</View>

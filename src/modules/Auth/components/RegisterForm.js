@@ -1,11 +1,10 @@
+import BabbleButton from 'app/components/BabbleButton/BabbleButton';
+import BabbleInput from 'app/components/BabbleInput';
+import useRepository from 'app/database/Model';
+import { setErrorMessage } from 'app/store/App';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-
-import BabbleButton from '../../../components/BabbleButton/BabbleButton';
-import BabbleInput from '../../../components/BabbleInput';
-import User from '../../../database/Model/Users';
-import { setErrorMessage } from '../../../store/App';
 
 function RegisterForm() {
   const [username, setUsername] = useState(null);
@@ -14,7 +13,7 @@ function RegisterForm() {
   const [mail, setMail] = useState(null);
   const [errorArray, setErrorArray] = useState([]);
 
-  const UserModel = new User();
+  const { userRepository } = useRepository();
   const dispatch = useDispatch();
 
   const onRegister = () => {
@@ -33,7 +32,7 @@ function RegisterForm() {
       onInputError();
       return;
     }
-    UserModel.create(mail, password, username, error =>
+    userRepository.create(mail, password, username, error =>
       dispatch(setErrorMessage(`${error.code}: ${error.message}`)),
     );
   };

@@ -1,13 +1,12 @@
+import BabbleButton from 'app/components/BabbleButton/BabbleButton';
+import BabbleInput from 'app/components/BabbleInput';
+import User from 'app/database/Model/Users';
+import { setErrorMessage } from 'app/store/App';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import BabbleButton from '../../../components/BabbleButton/BabbleButton';
-import BabbleInput from '../../../components/BabbleInput';
-import User from '../../../database/Model/Users';
-import { setErrorMessage } from '../../../store/App';
-
-function LoginForm({ onError }) {
+function LoginForm() {
   const [password, setPassword] = useState(null);
   const [mail, setMail] = useState(null);
   const UserModel = new User();
