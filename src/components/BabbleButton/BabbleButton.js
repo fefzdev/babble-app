@@ -14,6 +14,7 @@ export default function BabbleButton({ children, onPress, style }) {
   };
   const textStyle = {
     color: colors.white,
+    fontSize: 16,
   };
 
   const handlePress = () => {
