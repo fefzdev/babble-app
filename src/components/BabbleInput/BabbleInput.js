@@ -26,7 +26,7 @@ export default function BabbleInput({
 
   const inputStyleError = {
     borderColor: colors.red[1000],
-    colors: colors.red[500],
+    color: colors.red[500],
   };
 
   const labelStyle = {

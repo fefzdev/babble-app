@@ -1,4 +1,5 @@
 import Home from 'app/pages/Home';
+import Room from 'app/pages/Room';
 import Test from 'app/pages/Test';
 
 export default [
@@ -11,5 +12,10 @@ export default [
     name: 'Test',
     header: true,
     component: Test,
+  },
+  {
+    name: 'Room',
+    header: true,
+    component: Room,
   },
 ];

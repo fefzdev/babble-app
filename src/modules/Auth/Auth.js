@@ -1,9 +1,9 @@
+import Background from 'app/components/Background';
+import { firebase } from 'app/database/config';
+import db from 'app/database/helper';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 
-import Background from '../../components/Background';
-import { firebase } from '../../database/config';
-import db from '../../database/helper';
 import { Heading, LoginForm, OtherLogs, RegisterForm } from './components';
 
 function Auth({ children }) {

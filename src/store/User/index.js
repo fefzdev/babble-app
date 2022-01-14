@@ -6,6 +6,8 @@ export const userStore = createSlice({
     current: null,
     type: null,
     mail: null,
+    uid: null,
+    available: false,
   },
   reducers: {
     setUser: (state, user) => {
@@ -19,9 +21,23 @@ export const userStore = createSlice({
     setUserMail: (state, mail) => {
       state.mail = mail.payload;
     },
+
+    setUserUID: (state, uid) => {
+      state.uid = uid.payload;
+    },
+
+    setUserAvailable: (state, isAvailable) => {
+      state.available = isAvailable.payload;
+    },
   },
 });
 
-export const { setUser, setUserType, setUserMail } = userStore.actions;
+export const {
+  setUser,
+  setUserType,
+  setUserMail,
+  setUserUID,
+  setUserAvailable,
+} = userStore.actions;
 
 export default userStore.reducer;
