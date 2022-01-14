@@ -18,9 +18,6 @@ export default function BabbleButton({ children, onPress, style }) {
   };
 
   const handlePress = () => {
-    // if (isPressed) {
-    //   return buttonStylePressed;
-    // }
     return buttonStyle;
   };
 
