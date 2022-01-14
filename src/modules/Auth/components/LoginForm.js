@@ -7,9 +7,9 @@ import BabbleInput from '../../../components/BabbleInput';
 import User from '../../../database/Model/Users';
 import { setErrorMessage } from '../../../store/App';
 
-function LoginForm({ onError }) {
-  const [password, setPassword] = useState(null);
-  const [mail, setMail] = useState(null);
+function LoginForm() {
+  const [password, setPassword] = useState('testtest1234');
+  const [mail, setMail] = useState('test@test.test');
   const UserModel = new User();
   const dispatch = useDispatch();
   const [errorArray, setErrorArray] = useState([]);
