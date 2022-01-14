@@ -14,12 +14,10 @@ export default function BabbleButton({ children, onPress, style }) {
   };
   const textStyle = {
     color: colors.white,
+    fontSize: 16,
   };
 
   const handlePress = () => {
-    // if (isPressed) {
-    //   return buttonStylePressed;
-    // }
     return buttonStyle;
   };
 

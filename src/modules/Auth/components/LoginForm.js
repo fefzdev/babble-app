@@ -7,8 +7,8 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 function LoginForm() {
-  const [password, setPassword] = useState(null);
-  const [mail, setMail] = useState(null);
+  const [password, setPassword] = useState('testtest1234');
+  const [mail, setMail] = useState('test@test.test');
   const UserModel = new User();
   const dispatch = useDispatch();
   const [errorArray, setErrorArray] = useState([]);
