@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import Modal from 'react-native-modal';
 
-function BabbleModal({ children, isVisible, onClose }) {
+function BabbleModal({ children, isVisible, onClose, style }) {
   const styles = {
     modal: {
       margin: 0,
@@ -27,7 +27,7 @@ function BabbleModal({ children, isVisible, onClose }) {
       onSwipeComplete={onClose}
       onRequestClose={onClose}
       onBackdropPress={onClose}>
-      <View style={styles.container}>{children}</View>
+      <View style={[styles.container, style]}>{children}</View>
     </Modal>
   );
 }

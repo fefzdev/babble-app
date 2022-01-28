@@ -1,14 +1,25 @@
+import colors from 'app/assets/style/colors';
+import fonts from 'app/assets/style/fonts';
+import BabbleButton from 'app/components/BabbleButton/BabbleButton';
+import Background from 'app/components/Background';
+import useRepository from 'app/database/Model';
 import React, { useState } from 'react';
 import { Image, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import colors from '../../../assets/style/colors';
-import fonts from '../../../assets/style/fonts';
-import BabbleButton from '../../../components/BabbleButton/BabbleButton';
-import Background from '../../../components/Background';
-import RoleModal from './RoleModal';
+import RoleModal from './components/RoleModal.js';
 
 function FirstLogin() {
   const [modalVisible, setModalVisible] = useState(false);
+  const userUID = useSelector(state => state.user.uid);
+  const { userRepository } = useRepository();
+
+  const onSubmit = type => {
+    setModalVisible(false);
+    userRepository.updateData(userUID, {
+      type,
+    });
+  };
 
   const styles = {
     image: {
@@ -48,7 +59,7 @@ function FirstLogin() {
     <Background style={styles.container} noScroll={true}>
       <Image
         style={styles.image}
-        source={require('../../../assets/images/home-first-connection.png')}
+        source={require('app/assets/images/home-first-connection.png')}
       />
       <View style={styles.content}>
         <Text style={[styles.title, fonts.callout]}>Welcome to Babbles!</Text>
@@ -63,6 +74,7 @@ function FirstLogin() {
       <RoleModal
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
+        onSubmit={onSubmit}
       />
     </Background>
   );

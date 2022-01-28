@@ -10,14 +10,9 @@ function Background({ children, style, noScroll }) {
     paddingHorizontal: 20,
   };
 
-  if (noScroll) {
-    return <View style={[containerStyle, style]}>{children}</View>;
-  }
-  return (
-    <View style={[containerStyle, style]}>
-      <ScrollView>{children}</ScrollView>
-    </View>
-  );
+  if (noScroll) return <View style={[containerStyle, style]}>{children}</View>;
+
+  return <ScrollView style={[containerStyle, style]}>{children}</ScrollView>;
 }
 
 export default Background;

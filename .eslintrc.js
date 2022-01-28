@@ -6,6 +6,7 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     'react-hooks/exhaustive-deps': 'off',
+    curly: ['off'],
   },
   settings: {
     'import/resolver': {
