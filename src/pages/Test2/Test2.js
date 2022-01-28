@@ -8,20 +8,31 @@ import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-function Test2({ navigation }) {
-  const [inputValue, setInputValue] = useState('Tapez un truc');
+export default function Test2({ navigation }) {
   const currentUser = useSelector(state => state.user.current);
   const currentUserMail = useSelector(state => state.user.mail);
   const currentUserUID = useSelector(state => state.user.uid);
   const currentUserAvailable = useSelector(state => state.user.available);
   const currentUserType = useSelector(state => state.user.type);
-  const { userRepository } = useRepository();
+  const { userRepository, roomRepository } = useRepository();
 
   const setAvailable = () => {
     userRepository.updateData(currentUserUID, {
       available: !currentUserAvailable,
       type: 'listener',
     });
+  };
+
+  const handleUserClick = uid => {
+    console.log('HEEEEEEEEY');
+    roomRepository.create({
+      talkerUid: currentUserUID,
+      listenerUid: uid,
+    });
+  };
+
+  const deleteRooms = () => {
+    roomRepository.deleteNonActiveRooms(currentUserUID);
   };
 
   return (
@@ -38,13 +49,6 @@ function Test2({ navigation }) {
             Available : {currentUserAvailable ? 'true' : 'false'} type :{' '}
             {currentUserType}
           </Text>
-          <TextInput
-            style={globalStyle.input}
-            value={inputValue}
-            onChangeText={text => {
-              setInputValue(text);
-            }}
-          />
         </View>
         <View
           style={{
@@ -64,9 +68,13 @@ function Test2({ navigation }) {
             <Text>Go to page Room</Text>
           </View>
 
-          <ShowAvailableUsers />
+          <ShowAvailableUsers onUserClick={handleUserClick} />
           <Text style={globalStyle.button} onPress={setAvailable}>
             Set available
+          </Text>
+
+          <Text style={globalStyle.button} onPress={deleteRooms}>
+            Delete
           </Text>
         </View>
       </Wrapper>

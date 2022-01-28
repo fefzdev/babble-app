@@ -4,50 +4,63 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-function ShowAvailableUsers() {
-  const [allUsers, setAllUsers] = useState([]);
-  const { userRepository } = useRepository();
+function ShowAvailableUsers({ onUserClick }) {
+  const currentUserUid = useSelector(state => state.user.uid);
+  const [allListeners, setAllListeners] = useState([]);
+  const [talkersWantsToTalk, setTalkersWantsToTalk] = useState([]);
+  const { userRepository, roomRepository } = useRepository();
+  const currentUserType = useSelector(state => state.user.type);
   const availableUserStyle = StyleSheet.create({
     view: {
       padding: 10,
       backgroundColor: '#00a9ff',
     },
   });
-  const currentUserType = useSelector(state => state.user.type);
 
   useEffect(() => {
     userRepository.listen(data => {
-      console.log(data);
-      setAllUsers(data);
+      setAllListeners(data);
+    });
+
+    roomRepository.listen(data => {
+      setTalkersWantsToTalk(data);
     });
   }, []);
 
-  useEffect(() => {
-    console.log(buildUsersAvailable());
-  }, [buildUsersAvailable]);
-
-  const buildUsersAvailable = () =>
-    allUsers
+  const buildListenersAvailable = () =>
+    allListeners
       .filter(user => user.available)
       .map(user => (
         <Text
           key={user.uid}
-          onPress={() => console.log(user.uid)}
+          onPress={() => onUserClick(user.uid)}
           style={globalStyle.button}>
           {user.name}
         </Text>
       ));
 
+  const buildTalkerWantsToTalk = () => {
+    return talkersWantsToTalk
+      .filter(t => t.users.includes(currentUserUid))
+      .map(t => (
+        <Text key={t.uid} onPress={() => {}} style={globalStyle.button}>
+          {t.users[0]} wants to talk !
+        </Text>
+      ));
+  };
+
   return (
     <View style={currentUserType === 'talker' ? availableUserStyle.view : ''}>
       {currentUserType === 'talker' ? (
-        buildUsersAvailable().length !== 0 ? (
-          buildUsersAvailable()
+        buildListenersAvailable().length !== 0 ? (
+          buildListenersAvailable()
         ) : (
           <Text>No users available !</Text>
         )
+      ) : buildTalkerWantsToTalk().length !== 0 ? (
+        buildTalkerWantsToTalk()
       ) : (
-        <Text>{currentUserType}</Text>
+        <Text>No talkers wants to talk</Text>
       )}
     </View>
   );
