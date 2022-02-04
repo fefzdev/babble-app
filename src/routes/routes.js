@@ -1,6 +1,7 @@
 import Home from 'app/pages/Home';
 import Room from 'app/pages/Room';
 import Test from 'app/pages/Test';
+import Test2 from 'app/pages/Test2/Test2';
 
 export default [
   {
@@ -17,5 +18,10 @@ export default [
     name: 'Room',
     header: true,
     component: Room,
+  },
+  {
+    name: 'Test2',
+    header: true,
+    component: Test2,
   },
 ];

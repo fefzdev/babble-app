@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-function Test2({ navigation }) {
+export default function Test2({ navigation }) {
   const [inputValue, setInputValue] = useState('Tapez un truc');
   const currentUser = useSelector(state => state.user.current);
   const currentUserMail = useSelector(state => state.user.mail);

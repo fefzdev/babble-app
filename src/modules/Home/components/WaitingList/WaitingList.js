@@ -1,12 +1,16 @@
 import colors from 'app/assets/style/colors';
 import fonts from 'app/assets/style/fonts';
 import useRepository from 'app/database/Model';
+import { removeFromWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 function WaitingList() {
   const { userRepository } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
+  const waitlist = useSelector(state => state.rooms.waitlist);
+  const dispatch = useDispatch();
 
   const style = StyleSheet.create({
     view: {
@@ -42,6 +46,8 @@ function WaitingList() {
     },
   });
 
+  const removeFromWaitingList = userId => dispatch(removeFromWaitlist(userId));
+
   useEffect(() => {
     userRepository.listen(data => {
       console.log(data);
@@ -55,9 +61,12 @@ function WaitingList() {
 
   const buildUsersAvailable = () =>
     allUsers
-      .filter(user => user.available)
+      .filter(({ uid }) => waitlist.includes(uid))
       .map(user => (
-        <View style={style.item}>
+        <View
+          onTouchStart={() => removeFromWaitingList(user.uid)}
+          style={style.item}
+          key={user.uid + '-waiting'}>
           <View style={style.image} />
           <View style={style.infos}>
             <Text
