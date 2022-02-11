@@ -3,7 +3,13 @@ import fonts from 'app/assets/style/fonts';
 import useRepository from 'app/database/Model';
 import { removeFromWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 function WaitingList() {
@@ -54,27 +60,31 @@ function WaitingList() {
     });
   }, []);
 
-  const buildUsersAvailable = () =>
-    allUsers
+  const buildUsersAvailable = () => {
+    if (!allUsers.filter(({ uid }) => waitlist.includes(uid)).length)
+      return <Text style={style.item}>Pas de demandes en attente</Text>;
+
+    return allUsers
       .filter(({ uid }) => waitlist.includes(uid))
       .map(user => (
-        <View
-          onTouchStart={() => removeFromWaitingList(user.uid)}
-          style={style.item}
+        <TouchableOpacity
+          onPress={() => removeFromWaitingList(user.uid)}
           key={user.uid + '-waiting'}>
-          <View style={style.image} />
-          <View style={style.infos}>
-            <Text
-              key={user.uid}
-              onPress={() => console.log(user.uid)}
-              style={style.userName}>
-              {user.name}
-            </Text>
-            <Text>Demande envoyée...</Text>
+          <View style={style.item}>
+            <View style={style.image} />
+            <View style={style.infos}>
+              <Text
+                key={user.uid}
+                onPress={() => console.log(user.uid)}
+                style={style.userName}>
+                {user.name}
+              </Text>
+              <Text>Demande envoyée...</Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ));
-
+  };
   return (
     <View style={style.view}>
       <Text style={[style.title, fonts.title]}>Demandes en attente</Text>

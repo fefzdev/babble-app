@@ -25,7 +25,6 @@ function TalkerHome({ navigation }) {
 
   const onSubmit = userType => {
     setModalVisible(false);
-    console.log(userType);
     userRepository.updateData(uid, {
       type: userType,
     });

@@ -3,7 +3,13 @@ import fonts from 'app/assets/style/fonts';
 import useRepository from 'app/database/Model';
 import { addToWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 function AvailableUsers() {
@@ -50,16 +56,16 @@ function AvailableUsers() {
     allUsers
       .filter(user => user.available)
       .map(user => (
-        <View
-          opacity={waitlist.includes(user.uid) ? 0.5 : 1}
-          style={style.item}
-          key={user.uid}
-          onTouchStart={() => addToWaitingList(user.uid)}>
-          <View style={style.image} />
-          <Text key={user.uid} onPress={() => console.log(user.uid)}>
-            {user.name}
-          </Text>
-        </View>
+        <TouchableOpacity
+          onPress={() => addToWaitingList(user.uid)}
+          key={user.uid}>
+          <View
+            opacity={waitlist.includes(user.uid) ? 0.5 : 1}
+            style={style.item}>
+            <View style={style.image} />
+            <Text>{user.name}</Text>
+          </View>
+        </TouchableOpacity>
       ));
 
   return (
