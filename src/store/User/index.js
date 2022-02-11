@@ -8,6 +8,7 @@ export const userStore = createSlice({
     mail: null,
     uid: null,
     available: false,
+    isConnected: false,
   },
   reducers: {
     setUser: (state, user) => {
@@ -29,6 +30,10 @@ export const userStore = createSlice({
     setUserAvailable: (state, isAvailable) => {
       state.available = isAvailable.payload;
     },
+
+    setIsConnected: (state, isConnected) => {
+      state.isConnected = isConnected.payload;
+    },
   },
 });
 
@@ -38,6 +43,7 @@ export const {
   setUserMail,
   setUserUID,
   setUserAvailable,
+  setIsConnected,
 } = userStore.actions;
 
 export default userStore.reducer;

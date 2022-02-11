@@ -13,17 +13,22 @@ import Role from './components/Role/Role';
 import WaitingList from './components/WaitingList';
 
 function Home({ navigation }) {
-  const userType = useSelector(state => state.user.type);
+  const { type, uid } = useSelector(state => state.user.type);
   const [modalVisible, setModalVisible] = useState(false);
-  const userUID = useSelector(state => state.user.uid);
   const { userRepository } = useRepository();
 
-  const styles = StyleSheet.create({});
+  const styles = StyleSheet.create({
+    loader: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+    },
+  });
 
-  const onSubmit = type => {
+  const onSubmit = userType => {
     setModalVisible(false);
-    userRepository.updateData(userUID, {
-      type,
+    userRepository.updateData(uid, {
+      userType,
     });
   };
 
@@ -35,11 +40,10 @@ function Home({ navigation }) {
   );
 
   const currentUserView = () => {
-    if (userType === UserRoles.TALKER) return talkerView();
-    if (userType === UserRoles.LISTENER) return;
+    if (type === UserRoles.TALKER) return talkerView();
+    if (type === UserRoles.LISTENER) return;
   };
-
-  if (!userType) return <FirstLogin />;
+  if (!type) return <FirstLogin />;
 
   return (
     <Background style={styles.background}>

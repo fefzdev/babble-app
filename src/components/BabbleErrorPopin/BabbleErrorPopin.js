@@ -11,6 +11,7 @@ export default function BabbleErrorPopin() {
 
   useEffect(() => {
     if (errorMessage) {
+      console.warn(errorMessage);
       setTimeout(() => dispatch(removeErrorMessage()), 3000);
     }
   }, [errorMessage]);

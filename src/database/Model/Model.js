@@ -41,11 +41,11 @@ export default class Model {
     });
   };
 
-  find = (uid, callback) => {
-    db.readChild(this.table, uid)
+  find = (uid, callback) =>
+    db
+      .readChild(this.table, uid)
       .then(data => callback({ uid, ...data.val() }))
       .catch(e => console.error(e.message));
-  };
 
   listen = callback => {
     db.connectTo(this.table).on('value', data =>
