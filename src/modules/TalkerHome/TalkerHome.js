@@ -1,7 +1,6 @@
 import Background from 'app/components/Background';
-import { UserRoles } from 'app/constants/Roles';
+import Role from 'app/components/RoleBlock';
 import useRepository from 'app/database/Model';
-import FirstLogin from 'app/modules/FirstLogin';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -9,11 +8,10 @@ import { useSelector } from 'react-redux';
 import BabbleButton from '../../components/BabbleButton/BabbleButton';
 import RoleModal from '../FirstLogin/components/RoleModal';
 import AvailableUsers from './components/AvailableUsers';
-import Role from './components/Role/Role';
 import WaitingList from './components/WaitingList';
 
-function Home({ navigation }) {
-  const { type, uid } = useSelector(state => state.user.type);
+function TalkerHome({ navigation }) {
+  const { uid } = useSelector(state => state.user);
   const [modalVisible, setModalVisible] = useState(false);
   const { userRepository } = useRepository();
 
@@ -27,23 +25,11 @@ function Home({ navigation }) {
 
   const onSubmit = userType => {
     setModalVisible(false);
+    console.log(userType);
     userRepository.updateData(uid, {
-      userType,
+      type: userType,
     });
   };
-
-  const talkerView = () => (
-    <View>
-      <AvailableUsers />
-      <WaitingList />
-    </View>
-  );
-
-  const currentUserView = () => {
-    if (type === UserRoles.TALKER) return talkerView();
-    if (type === UserRoles.LISTENER) return;
-  };
-  if (!type) return <FirstLogin />;
 
   return (
     <Background style={styles.background}>
@@ -54,7 +40,10 @@ function Home({ navigation }) {
         Changer role
       </BabbleButton>
       <Role />
-      {currentUserView()}
+      <View>
+        <AvailableUsers />
+        <WaitingList />
+      </View>
       <RoleModal
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
@@ -64,4 +53,4 @@ function Home({ navigation }) {
   );
 }
 
-export default Home;
+export default TalkerHome;

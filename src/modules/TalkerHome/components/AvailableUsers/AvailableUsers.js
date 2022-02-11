@@ -40,14 +40,9 @@ function AvailableUsers() {
 
   useEffect(() => {
     userRepository.listen(data => {
-      console.log(data);
       setAllUsers(data);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(buildUsersAvailable());
-  }, [buildUsersAvailable]);
 
   const addToWaitingList = userId => dispatch(addToWaitlist(userId));
 

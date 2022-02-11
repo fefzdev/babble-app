@@ -18,14 +18,9 @@ function ShowAvailableUsers() {
 
   useEffect(() => {
     userRepository.listen(data => {
-      console.log(data);
       setAllUsers(data);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(buildUsersAvailable());
-  }, [buildUsersAvailable]);
 
   const buildUsersAvailable = () =>
     allUsers
