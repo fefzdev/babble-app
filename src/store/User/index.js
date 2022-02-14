@@ -6,6 +6,7 @@ export const userStore = createSlice({
     current: null,
     type: null,
     mail: null,
+    profilePicture: null,
     uid: null,
     available: false,
     isConnected: false,
