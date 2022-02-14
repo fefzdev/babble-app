@@ -67,7 +67,7 @@ function Header({ headerProps }) {
         icon: goBackIcon,
       };
     return {
-      action: () => console.log('Go to settings page'),
+      action: () => navigation.navigate('Settings'),
       icon: settingsIcon,
     };
   };
@@ -97,7 +97,7 @@ function Header({ headerProps }) {
         <Text style={styles.title}>{route.name}</Text>
         <View style={styles.profile} removeClippedSubviews={true}>
           <TouchableOpacity
-            onPress={() => console.log('Go to account page')}
+            onPress={() => navigation.navigate('Account')}
             style={styles.profileTouchable}>
             <Image style={styles.image} source={displayProfilePicture()} />
           </TouchableOpacity>
