@@ -5,8 +5,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 function ShowAvailableUsers() {
-  const [allUsers, setAllUsers] = useState([]);
   const { userRepository } = useRepository();
+  const [allUsers, setAllUsers] = useState([]);
+
   const availableUserStyle = StyleSheet.create({
     view: {
       padding: 10,
@@ -17,14 +18,9 @@ function ShowAvailableUsers() {
 
   useEffect(() => {
     userRepository.listen(data => {
-      console.log(data);
       setAllUsers(data);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(buildUsersAvailable());
-  }, [buildUsersAvailable]);
 
   const buildUsersAvailable = () =>
     allUsers
@@ -39,16 +35,19 @@ function ShowAvailableUsers() {
       ));
 
   return (
-    <View style={currentUserType === 'talker' ? availableUserStyle.view : ''}>
-      {currentUserType === 'talker' ? (
-        buildUsersAvailable().length !== 0 ? (
-          buildUsersAvailable()
+    <View>
+      <Text>{currentUserType}</Text>
+      <View style={currentUserType === 'talker' ? availableUserStyle.view : ''}>
+        {currentUserType === 'talker' ? (
+          buildUsersAvailable().length !== 0 ? (
+            buildUsersAvailable()
+          ) : (
+            <Text>No users available !</Text>
+          )
         ) : (
-          <Text>No users available !</Text>
-        )
-      ) : (
-        <Text>{currentUserType}</Text>
-      )}
+          <Text>{currentUserType}</Text>
+        )}
+      </View>
     </View>
   );
 }
