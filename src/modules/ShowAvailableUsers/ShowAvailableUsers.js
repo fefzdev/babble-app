@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-function ShowAvailableUsers({ onUserClick }) {
+function ShowAvailableUsers({ onUserClick, navigateClick }) {
   const currentUserUid = useSelector(state => state.user.uid);
   const [allListeners, setAllListeners] = useState([]);
   const [talkersWantsToTalk, setTalkersWantsToTalk] = useState([]);
+  const [listenerAvailable, setListenerAvailable] = useState([]);
   const { userRepository, roomRepository } = useRepository();
   const currentUserType = useSelector(state => state.user.type);
   const availableUserStyle = StyleSheet.create({
@@ -23,28 +24,81 @@ function ShowAvailableUsers({ onUserClick }) {
     });
 
     roomRepository.listen(data => {
-      setTalkersWantsToTalk(data);
+      data.forEach(r => {
+        userRepository.find(r.users[0], u => {
+          if (
+            !talkersWantsToTalk.filter(
+              o => JSON.stringify(o) === JSON.stringify({ ...r, talker: u }),
+            ).length
+          ) {
+            setTalkersWantsToTalk([...talkersWantsToTalk, { ...r, talker: u }]);
+          }
+        });
+      });
+    });
+
+    roomRepository.listen(data => {
+      data
+        .filter(r => r.active && r.users[0] === currentUserUid)
+        .forEach(r => {
+          console.log('FININININ', r);
+          userRepository.find(r.users[1], u => {
+            console.log('UNINININ', u);
+            if (!listenerAvailable.includes(u)) {
+              setListenerAvailable([
+                ...listenerAvailable,
+                { ...r, listener: u },
+              ]);
+            }
+          });
+        });
     });
   }, []);
 
-  const buildListenersAvailable = () =>
-    allListeners
+  const buildListenersAvailable = () => {
+    const lAvailable = allListeners
       .filter(user => user.available)
       .map(user => (
-        <Text
-          key={user.uid}
-          onPress={() => onUserClick(user.uid)}
-          style={globalStyle.button}>
-          {user.name}
-        </Text>
+        <View>
+          <Text
+            key={user.uid}
+            onPress={() => onUserClick(user.uid)}
+            style={globalStyle.button}>
+            {user.name}
+          </Text>
+        </View>
       ));
+
+    return (
+      <View>
+        {lAvailable}
+        {acceptedRequest()}
+      </View>
+    );
+  };
+
+  const acceptedRequest = () =>
+    listenerAvailable.map((la, index) => (
+      <Text
+        key={index}
+        style={(globalStyle.button, { backgroundColor: 'aliceblue' })}
+        onPress={() => navigateClick(la.uid)}>
+        {la.listener.name}
+      </Text>
+    ));
 
   const buildTalkerWantsToTalk = () => {
     return talkersWantsToTalk
       .filter(t => t.users.includes(currentUserUid))
       .map(t => (
-        <Text key={t.uid} onPress={() => {}} style={globalStyle.button}>
-          {t.users[0]} wants to talk !
+        <Text
+          key={t.uid}
+          onPress={() => {
+            roomRepository.toggle(t.uid);
+            navigateClick(t.uid);
+          }}
+          style={globalStyle.button}>
+          {t.talker.name} wants to talk !
         </Text>
       ));
   };

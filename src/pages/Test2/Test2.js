@@ -3,9 +3,8 @@ import Background from 'app/components/Background';
 import Wrapper from 'app/components/Wrapper';
 import useRepository from 'app/database/Model';
 import ShowAvailableUsers from 'app/modules/ShowAvailableUsers';
-import { setUserAvailable } from 'app/store/User';
-import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export default function Test2({ navigation }) {
@@ -24,10 +23,15 @@ export default function Test2({ navigation }) {
   };
 
   const handleUserClick = uid => {
-    console.log('HEEEEEEEEY');
     roomRepository.create({
       talkerUid: currentUserUID,
       listenerUid: uid,
+    });
+  };
+
+  const handleRoomRedirection = uid => {
+    navigation.navigate('Room', {
+      roomId: uid,
     });
   };
 
@@ -57,18 +61,10 @@ export default function Test2({ navigation }) {
             alignItems: 'center',
             padding: 20,
           }}>
-          <View
-            onTouchStart={() => navigation.navigate('Test')}
-            style={globalStyle.button}>
-            <Text>Go to page test</Text>
-          </View>
-          <View
-            onTouchStart={() => navigation.navigate('Room')}
-            style={globalStyle.button}>
-            <Text>Go to page Room</Text>
-          </View>
-
-          <ShowAvailableUsers onUserClick={handleUserClick} />
+          <ShowAvailableUsers
+            onUserClick={handleUserClick}
+            navigateClick={handleRoomRedirection}
+          />
           <Text style={globalStyle.button} onPress={setAvailable}>
             Set available
           </Text>

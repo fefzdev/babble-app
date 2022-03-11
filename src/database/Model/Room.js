@@ -10,12 +10,21 @@ export default class Room extends Model {
     this.checkIfRoomAlreadyExist(talkerUid, listenerUid, roomAlreadyExist => {
       if (!roomAlreadyExist) {
         this.add({
-          messages: {},
           users: [talkerUid, listenerUid],
           active: false,
         });
       }
     });
+  };
+
+  post = (roomUid, userUid, message) => {
+    this.push(
+      {
+        [userUid]: message,
+      },
+      roomUid,
+      'messages',
+    );
   };
 
   findRoomsByUser = (userUid, callback) => {
@@ -36,6 +45,14 @@ export default class Room extends Model {
   checkIfRoomAlreadyExist = (talkerUid, listenerUid, callback) => {
     this.findRoomsByUser(talkerUid, rooms => {
       callback(!!rooms.filter(r => r.users.includes(listenerUid)).length);
+    });
+  };
+
+  toggle = roomUid => {
+    this.find(roomUid, room => {
+      this.update(roomUid, {
+        active: !room.active,
+      });
     });
   };
 }
