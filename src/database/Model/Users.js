@@ -31,6 +31,7 @@ export default class User extends Model {
     }).then(() => this.updateStore(setIsLoading(false)));
 
   create = (mail, password, username, handleError) => {
+    this.updateStore(setIsLoading(true));
     db.createUser(mail, password)
       .then(userCredential => {
         this.add(
@@ -44,7 +45,10 @@ export default class User extends Model {
         );
         this.syncStore(userCredential.user.uid);
       })
-      .catch(error => handleError(error));
+      .catch(error => {
+        handleError(error);
+        this.updateStore(setIsLoading(false));
+      });
   };
 
   updateData = (uid, data) => {
@@ -57,6 +61,9 @@ export default class User extends Model {
       .then(userCredential => {
         this.syncStore(userCredential.user.uid);
       })
-      .catch(error => handleError(error));
+      .catch(error => {
+        handleError(error);
+        this.updateStore(setIsLoading(false));
+      });
   };
 }
