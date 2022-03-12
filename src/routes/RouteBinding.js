@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HeaderModule from 'app/modules/Header';
 import React from 'react';
 
 import routes from './routes';
@@ -11,7 +12,10 @@ const RouteBinding = () => {
       <Stack.Screen
         name={route.name}
         component={route.component}
-        options={{ headerShown: route.header }}
+        options={{
+          header: headerProps => <HeaderModule headerProps={headerProps} />,
+          headerShown: route.header,
+        }}
         key={i}
       />
     ));

@@ -1,4 +1,11 @@
-import { setUser, setUserMail, setUserType, setUserUID } from 'app/store/User';
+import { setIsLoading } from 'app/store/App';
+import {
+  setIsConnected,
+  setUser,
+  setUserMail,
+  setUserType,
+  setUserUID,
+} from 'app/store/User';
 import { useDispatch } from 'react-redux';
 
 import { setUserAvailable } from '../../store/User';
@@ -20,7 +27,8 @@ export default class User extends Model {
       this.updateStore(setUserMail(data.mail));
       this.updateStore(setUserUID(uid));
       this.updateStore(setUserAvailable(data.available));
-    });
+      this.updateStore(setIsConnected(true));
+    }).then(() => this.updateStore(setIsLoading(false)));
 
   create = (mail, password, username, handleError) => {
     db.createUser(mail, password)
@@ -44,6 +52,7 @@ export default class User extends Model {
   };
 
   connect = (mail, password, handleError) => {
+    this.updateStore(setIsLoading(true));
     db.logUser(mail, password)
       .then(userCredential => {
         this.syncStore(userCredential.user.uid);

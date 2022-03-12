@@ -5,6 +5,7 @@ export const appStore = createSlice({
 
   initialState: {
     errorMessage: null,
+    isLoading: false,
   },
 
   reducers: {
@@ -14,9 +15,13 @@ export const appStore = createSlice({
     removeErrorMessage: state => {
       state.errorMessage = null;
     },
+    setIsLoading: (state, { payload }) => {
+      state.isLoading = payload;
+    },
   },
 });
 
-export const { setErrorMessage, removeErrorMessage } = appStore.actions;
+export const { setErrorMessage, removeErrorMessage, setIsLoading } =
+  appStore.actions;
 
 export default appStore.reducer;

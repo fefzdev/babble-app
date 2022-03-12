@@ -6,7 +6,7 @@ export default {
   },
   title: {
     fontSize: 24,
-    fontWeight: 'medium',
+    fontWeight: '600',
     lineHeight: 28,
   },
   callout: {

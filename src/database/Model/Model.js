@@ -48,11 +48,11 @@ export default class Model {
     });
   };
 
-  find = (uid, callback) => {
-    db.readChild(this.table, uid)
+  find = (uid, callback) =>
+    db
+      .readChild(this.table, uid)
       .then(data => callback({ uid, ...data.val() }))
-      .catch(e => console.log(e.message));
-  };
+      .catch(e => console.error(e.message));
 
   listen = callback => {
     db.connectTo(this.table).on('value', data =>
@@ -71,6 +71,6 @@ export default class Model {
       .then(data => {
         callback(this.purifyCollectionData(data));
       })
-      .catch(e => console.log(e.message));
+      .catch(e => console.error(e.message));
   };
 }

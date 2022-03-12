@@ -1,34 +1,29 @@
 import Background from 'app/components/Background';
 import { firebase } from 'app/database/config';
-import db from 'app/database/helper';
+import { setIsConnected } from 'app/store/User';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import BabbleLoader from '../../components/BabbleLoader';
 import { Heading, LoginForm, OtherLogs, RegisterForm } from './components';
 
 function Auth({ children }) {
-  const [isConnected, setIsConnected] = useState(false);
   const [isOnSignIn, setIsOnSignIn] = useState(true);
+  const { isConnected } = useSelector(state => state.user);
+  const { isLoading } = useSelector(state => state.app);
+  const dispatch = useDispatch(state => state.user);
+
+  const setConnected = () => dispatch(setIsConnected(false));
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setIsConnected(true);
-        db.readChild('users', user.uid).then(snap => {
-          if (snap) {
-            console.log(snap.val());
-          }
-        });
-      } else {
-        setIsConnected(false);
-      }
+      if (!user) setConnected();
     });
   }, []);
 
   const FormComponent = () => {
-    if (isOnSignIn) {
-      return <LoginForm />;
-    }
+    if (isOnSignIn) return <LoginForm />;
     return <RegisterForm />;
   };
 
@@ -43,9 +38,9 @@ function Auth({ children }) {
   };
 
   const showUserInterface = () => {
-    if (isConnected) {
-      return children;
-    } else {
+    if (isLoading) return <BabbleLoader />;
+    if (isConnected) return children;
+    else
       return (
         <Background>
           <Image
@@ -60,7 +55,6 @@ function Auth({ children }) {
           <OtherLogs />
         </Background>
       );
-    }
   };
 
   return showUserInterface();
