@@ -3,7 +3,7 @@ import BabbleInput from 'app/components/BabbleInput';
 import useRepository from 'app/database/Model';
 import { setErrorMessage } from 'app/store/App';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 function RegisterForm() {

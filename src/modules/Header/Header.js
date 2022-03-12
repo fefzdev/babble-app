@@ -1,6 +1,6 @@
 import colors from 'app/assets/style/colors';
 import fonts from 'app/assets/style/fonts';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { useSelector } from 'react-redux';
