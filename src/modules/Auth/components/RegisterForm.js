@@ -81,7 +81,6 @@ function RegisterForm() {
 
   const styles = {
     container: {
-      paddingHorizontal: 20,
       marginTop: 42,
       marginBottom: 24,
     },
