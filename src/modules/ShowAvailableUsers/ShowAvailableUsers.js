@@ -24,32 +24,32 @@ function ShowAvailableUsers({ onUserClick, navigateClick }) {
     });
 
     roomRepository.listen(data => {
-      data.forEach(r => {
-        userRepository.find(r.users[0], u => {
-          if (
-            !talkersWantsToTalk.filter(
-              o => JSON.stringify(o) === JSON.stringify({ ...r, talker: u }),
-            ).length
-          ) {
-            setTalkersWantsToTalk([...talkersWantsToTalk, { ...r, talker: u }]);
-          }
-        });
-      });
-    });
-
-    roomRepository.listen(data => {
+      console.log('la', listenerAvailable);
       data
-        .filter(r => r.active && r.users[0] === currentUserUid)
-        .forEach(r => {
-          console.log('FININININ', r);
-          userRepository.find(r.users[1], u => {
-            console.log('UNINININ', u);
-            if (!listenerAvailable.includes(u)) {
-              setListenerAvailable([
-                ...listenerAvailable,
-                { ...r, listener: u },
+        .map(r => {
+          userRepository.find(r.users[0], u => {
+            if (
+              !talkersWantsToTalk.filter(
+                o => JSON.stringify(o) === JSON.stringify({ ...r, talker: u }),
+              ).length
+            ) {
+              setTalkersWantsToTalk([
+                ...talkersWantsToTalk,
+                { ...r, talker: u },
               ]);
             }
+          });
+          return r;
+        })
+        .filter(r => {
+          console.log('r in filter', r);
+          return r.active && r.users[0] === currentUserUid;
+        })
+        .forEach(r => {
+          console.log('room', r);
+          userRepository.find(r.users[1], u => {
+            console.log('hello');
+            setListenerAvailable([...listenerAvailable, { ...r, listener: u }]);
           });
         });
     });
@@ -58,10 +58,9 @@ function ShowAvailableUsers({ onUserClick, navigateClick }) {
   const buildListenersAvailable = () => {
     const lAvailable = allListeners
       .filter(user => user.available)
-      .map(user => (
-        <View>
+      .map((user, index) => (
+        <View key={index}>
           <Text
-            key={user.uid}
             onPress={() => onUserClick(user.uid)}
             style={globalStyle.button}>
             {user.name}
@@ -90,9 +89,9 @@ function ShowAvailableUsers({ onUserClick, navigateClick }) {
   const buildTalkerWantsToTalk = () => {
     return talkersWantsToTalk
       .filter(t => t.users.includes(currentUserUid))
-      .map(t => (
+      .map((t, index) => (
         <Text
-          key={t.uid}
+          key={index}
           onPress={() => {
             roomRepository.toggle(t.uid);
             navigateClick(t.uid);
