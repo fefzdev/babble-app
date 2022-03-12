@@ -1,9 +1,10 @@
-import colors from 'app/assets/style/colors';
 import fonts from 'app/assets/style/fonts';
+import UserImage from 'app/components/UserImage';
 import useRepository from 'app/database/Model';
 import { addToWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
 import {
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -33,14 +34,20 @@ function AvailableUsers() {
     item: {
       marginLeft: 16,
       flex: 1,
+      width: 64,
       alignItems: 'center',
     },
     image: {
       width: 48,
       height: 48,
-      borderRadius: 24,
       marginTop: 4,
-      backgroundColor: colors.orange['200'],
+    },
+    imageRadius: {
+      borderRadius: 24,
+    },
+    name: {
+      marginTop: 8,
+      textAlign: 'center',
     },
   });
 
@@ -62,8 +69,14 @@ function AvailableUsers() {
           <View
             opacity={waitlist.includes(user.uid) ? 0.5 : 1}
             style={style.item}>
-            <View style={style.image} />
-            <Text>{user.name}</Text>
+            <UserImage
+              style={style.image}
+              imageStyle={style.imageRadius}
+              image={user.image}
+            />
+            <Text numberOfLines={2} ellipsizeMode="tail" style={style.name}>
+              {user.name}
+            </Text>
           </View>
         </TouchableOpacity>
       ));

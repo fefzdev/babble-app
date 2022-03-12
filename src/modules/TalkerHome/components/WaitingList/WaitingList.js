@@ -1,5 +1,6 @@
 import colors from 'app/assets/style/colors';
 import fonts from 'app/assets/style/fonts';
+import UserImage from 'app/components/UserImage';
 import useRepository from 'app/database/Model';
 import { removeFromWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +13,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-function WaitingList() {
+function WaitingList({ navigation }) {
   const { userRepository } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
   const waitlist = useSelector(state => state.rooms.waitlist);
@@ -39,9 +40,10 @@ function WaitingList() {
     image: {
       width: 48,
       height: 48,
-      borderRadius: 24,
       marginTop: 4,
-      backgroundColor: colors.orange['200'],
+    },
+    imageRadius: {
+      borderRadius: 24,
     },
     infos: {
       marginLeft: 8,
@@ -53,6 +55,7 @@ function WaitingList() {
   });
 
   const removeFromWaitingList = userId => dispatch(removeFromWaitlist(userId));
+  const openRoom = userId => navigation.navigate('Room', { userId });
 
   useEffect(() => {
     userRepository.listen(data => {
@@ -68,10 +71,14 @@ function WaitingList() {
       .filter(({ uid }) => waitlist.includes(uid))
       .map(user => (
         <TouchableOpacity
-          onPress={() => removeFromWaitingList(user.uid)}
+          onPress={() => openRoom(user.uid)}
           key={user.uid + '-waiting'}>
           <View style={style.item}>
-            <View style={style.image} />
+            <UserImage
+              style={style.image}
+              imageStyle={style.imageRadius}
+              image={user.image}
+            />
             <View style={style.infos}>
               <Text
                 key={user.uid}

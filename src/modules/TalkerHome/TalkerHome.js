@@ -20,7 +20,7 @@ function TalkerHome({ navigation }) {
       <Role />
       <View>
         <AvailableUsers />
-        <WaitingList />
+        <WaitingList navigation={navigation} />
       </View>
     </Background>
   );
