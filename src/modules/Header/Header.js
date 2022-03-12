@@ -37,12 +37,14 @@ function Header({ headerProps }) {
     title: {
       ...fonts.title,
     },
+    rightBlock: {
+      height: 44,
+      width: 44,
+    },
     profile: {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: colors.orange[200],
-      height: 44,
-      width: 44,
       borderRadius: 32,
       borderWidth: 2,
       borderColor: colors.orange[1000],
@@ -77,9 +79,18 @@ function Header({ headerProps }) {
     return require('app/assets/images/profile-placeholder.png');
   };
 
-  useEffect(() => {
-    console.log(navigation);
-  }, []);
+  const rightButton = () => {
+    if (route.name !== 'Home') return null;
+    return (
+      <View style={styles.profile} removeClippedSubviews={true}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Account')}
+          style={styles.profileTouchable}>
+          <Image style={styles.image} source={displayProfilePicture()} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -95,13 +106,7 @@ function Header({ headerProps }) {
           />
         </TouchableOpacity>
         <Text style={styles.title}>{route.name}</Text>
-        <View style={styles.profile} removeClippedSubviews={true}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Account')}
-            style={styles.profileTouchable}>
-            <Image style={styles.image} source={displayProfilePicture()} />
-          </TouchableOpacity>
-        </View>
+        <View style={styles.rightBlock}>{rightButton()}</View>
       </View>
     </View>
   );
