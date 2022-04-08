@@ -1,7 +1,8 @@
 import colors from 'app/assets/style/colors';
 import fonts from 'app/assets/style/fonts';
+import UserImage from 'app/components/UserImage';
 import React, { useEffect } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { useSelector } from 'react-redux';
 
@@ -30,35 +31,38 @@ function Header({ headerProps }) {
       alignItems: 'center',
       backgroundColor: colors.orange[200],
       padding: 8,
-      height: 48,
-      width: 48,
+      height: 54,
+      width: 54,
       borderRadius: 32,
     },
     title: {
       ...fonts.title,
     },
+    rightBlock: {
+      height: 54,
+      width: 54,
+    },
     profile: {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: colors.orange[200],
-      height: 44,
-      width: 44,
       borderRadius: 32,
       borderWidth: 2,
       borderColor: colors.orange[1000],
-    },
-    profileTouchable: {
-      overflow: 'hidden',
-      width: '100%',
-      height: '100%',
     },
     image: {
       width: '100%',
       height: '100%',
     },
+    imageRadius: {
+      borderRadius: 32,
+    },
   });
 
-  const { route, navigation } = headerProps;
+  const { route, navigation, options } = headerProps;
+  useEffect(() => {
+    navigation.setOptions({ headerTitle: route.name });
+  }, []);
 
   const leftButtonContent = () => {
     if (navigation.canGoBack())
@@ -72,14 +76,20 @@ function Header({ headerProps }) {
     };
   };
 
-  const displayProfilePicture = () => {
-    if (profilePicture) return profilePicture;
-    return require('app/assets/images/profile-placeholder.png');
+  const rightButton = () => {
+    if (route.name !== 'Home') return null;
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Account')}
+        style={styles.profile}>
+        <UserImage
+          style={styles.image}
+          imageStyle={styles.imageRadius}
+          image={profilePicture}
+        />
+      </TouchableOpacity>
+    );
   };
-
-  useEffect(() => {
-    console.log(navigation);
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -94,14 +104,8 @@ function Header({ headerProps }) {
             source={leftButtonContent().icon}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>{route.name}</Text>
-        <View style={styles.profile} removeClippedSubviews={true}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Account')}
-            style={styles.profileTouchable}>
-            <Image style={styles.image} source={displayProfilePicture()} />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.title}>{options.headerTitle}</Text>
+        <View style={styles.rightBlock}>{rightButton()}</View>
       </View>
     </View>
   );

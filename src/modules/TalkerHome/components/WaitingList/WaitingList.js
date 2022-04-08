@@ -1,18 +1,13 @@
-import colors from 'app/assets/style/colors';
 import fonts from 'app/assets/style/fonts';
 import useRepository from 'app/database/Model';
 import { removeFromWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-function WaitingList() {
+import WaitingListItem from '../WaitingListItem';
+
+function WaitingList({ navigation }) {
   const { userRepository } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
   const waitlist = useSelector(state => state.rooms.waitlist);
@@ -27,8 +22,8 @@ function WaitingList() {
       marginTop: 8,
     },
     itemContainer: {
-      marginLeft: -16,
-      marginTop: 16,
+      height: '100%',
+      marginTop: 8,
     },
     item: {
       marginTop: 16,
@@ -39,9 +34,10 @@ function WaitingList() {
     image: {
       width: 48,
       height: 48,
-      borderRadius: 24,
       marginTop: 4,
-      backgroundColor: colors.orange['200'],
+    },
+    imageRadius: {
+      borderRadius: 24,
     },
     infos: {
       marginLeft: 8,
@@ -53,6 +49,7 @@ function WaitingList() {
   });
 
   const removeFromWaitingList = userId => dispatch(removeFromWaitlist(userId));
+  const openRoom = userId => navigation.navigate('Room', { userId });
 
   useEffect(() => {
     userRepository.listen(data => {
@@ -61,29 +58,25 @@ function WaitingList() {
   }, []);
 
   const buildUsersAvailable = () => {
-    if (!allUsers.filter(({ uid }) => waitlist.includes(uid)).length)
-      return <Text style={style.item}>Pas de demandes en attente</Text>;
+    const userWaitlist = allUsers.filter(({ uid }) => waitlist.includes(uid));
 
-    return allUsers
-      .filter(({ uid }) => waitlist.includes(uid))
-      .map(user => (
-        <TouchableOpacity
-          onPress={() => removeFromWaitingList(user.uid)}
-          key={user.uid + '-waiting'}>
-          <View style={style.item}>
-            <View style={style.image} />
-            <View style={style.infos}>
-              <Text
-                key={user.uid}
-                onPress={() => console.log(user.uid)}
-                style={style.userName}>
-                {user.name}
-              </Text>
-              <Text>Demande envoyée...</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      ));
+    if (!userWaitlist.length)
+      return (
+        <Text style={style.itemContainer}>Pas de demandes en attente</Text>
+      );
+
+    return (
+      <ScrollView style={[style.itemContainer]}>
+        {userWaitlist.map(user => (
+          <WaitingListItem
+            key={user.uid}
+            user={user}
+            onPress={() => openRoom(user.uid)}
+            onRemove={() => removeFromWaitingList(user.uid)}
+          />
+        ))}
+      </ScrollView>
+    );
   };
   return (
     <View style={style.view}>

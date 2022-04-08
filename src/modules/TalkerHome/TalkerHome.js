@@ -16,11 +16,11 @@ function TalkerHome({ navigation }) {
   });
 
   return (
-    <Background style={styles.background}>
+    <Background style={styles.background} noScroll={true}>
       <Role />
       <View>
         <AvailableUsers />
-        <WaitingList />
+        <WaitingList navigation={navigation} />
       </View>
     </Background>
   );
