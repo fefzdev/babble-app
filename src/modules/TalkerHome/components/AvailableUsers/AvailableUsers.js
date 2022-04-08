@@ -4,7 +4,6 @@ import useRepository from 'app/database/Model';
 import { addToWaitlist } from 'app/store/Rooms';
 import React, { useEffect, useState } from 'react';
 import {
-  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -28,6 +27,7 @@ function AvailableUsers() {
       marginTop: 8,
     },
     itemContainer: {
+      height: 80,
       marginLeft: -16,
       marginTop: 16,
     },
@@ -59,10 +59,10 @@ function AvailableUsers() {
 
   const addToWaitingList = userId => dispatch(addToWaitlist(userId));
 
-  const buildUsersAvailable = () =>
-    allUsers
-      .filter(user => user.available)
-      .map(user => (
+  const buildUsersAvailable = () => {
+    const availableUsers = allUsers.filter(user => user.available);
+    if (availableUsers.length)
+      return availableUsers.map(user => (
         <TouchableOpacity
           onPress={() => addToWaitingList(user.uid)}
           key={user.uid}>
@@ -80,7 +80,8 @@ function AvailableUsers() {
           </View>
         </TouchableOpacity>
       ));
-
+    return <Text style={style.item}>Pas d'utilisateurs disponibles</Text>;
+  };
   return (
     <View style={style.view}>
       <Text style={[style.title, fonts.title]}>Utilisateurs disponibles</Text>

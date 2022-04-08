@@ -31,16 +31,16 @@ function Header({ headerProps }) {
       alignItems: 'center',
       backgroundColor: colors.orange[200],
       padding: 8,
-      height: 64,
-      width: 64,
+      height: 54,
+      width: 54,
       borderRadius: 32,
     },
     title: {
       ...fonts.title,
     },
     rightBlock: {
-      height: 64,
-      width: 64,
+      height: 54,
+      width: 54,
     },
     profile: {
       justifyContent: 'center',
