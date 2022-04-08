@@ -27,11 +27,18 @@ export default class Model {
     db.write(`${this.table}/${uid}`, data);
   };
 
+  push = (data, uid, key) => {
+    this.find(uid, find => {
+      const objRetrived = find[key] ?? [];
+      this.update(uid, { [key]: [...objRetrived, data] });
+    });
+  };
+
   delete = uid => {
     db.delete(`${this.table}/${uid}`);
   };
 
-  update = (uid, data, callback) => {
+  update = (uid, data, callback = () => {}) => {
     this.find(uid, find => {
       delete find.uid;
       db.update(`${this.table}/${uid}`, {
@@ -51,6 +58,12 @@ export default class Model {
     db.connectTo(this.table).on('value', data =>
       callback(this.purifyCollectionData(data)),
     );
+  };
+
+  listenForKey = (key, uid, callback) => {
+    this.listen(d => {
+      callback(d.find(o => o.uid === uid)[key]);
+    });
   };
 
   all = callback => {

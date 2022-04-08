@@ -12,6 +12,16 @@ import {
 } from '@env';
 import firebase from 'firebase/compat/app';
 
+console.log({
+  API_KEY,
+  APP_ID,
+  AUTH_DOMAIN,
+  DATA_BASE_URL,
+  MESSAGING_SENDER_ID,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+});
+
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,

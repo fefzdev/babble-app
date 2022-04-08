@@ -17,14 +17,14 @@ export default [
     component: Test,
   },
   {
-    name: 'Room',
-    header: true,
-    component: Room,
-  },
-  {
     name: 'Test2',
     header: true,
     component: Test2,
+  },
+  {
+    name: 'Room',
+    header: true,
+    component: Room,
   },
   {
     name: 'Settings',

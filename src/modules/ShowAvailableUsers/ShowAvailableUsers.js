@@ -4,50 +4,113 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-function ShowAvailableUsers() {
-  const { userRepository } = useRepository();
-  const [allUsers, setAllUsers] = useState([]);
-
+function ShowAvailableUsers({ onUserClick, navigateClick }) {
+  const currentUserUid = useSelector(state => state.user.uid);
+  const [allListeners, setAllListeners] = useState([]);
+  const [talkersWantsToTalk, setTalkersWantsToTalk] = useState([]);
+  const [listenerAvailable, setListenerAvailable] = useState([]);
+  const { userRepository, roomRepository } = useRepository();
+  const currentUserType = useSelector(state => state.user.type);
   const availableUserStyle = StyleSheet.create({
     view: {
       padding: 10,
       backgroundColor: '#00a9ff',
     },
   });
-  const currentUserType = useSelector(state => state.user.type);
 
   useEffect(() => {
     userRepository.listen(data => {
-      setAllUsers(data);
+      setAllListeners(data);
+    });
+
+    roomRepository.listen(data => {
+      data
+        .map(r => {
+          userRepository.find(r.users[0], u => {
+            if (
+              !talkersWantsToTalk.filter(
+                o => JSON.stringify(o) === JSON.stringify({ ...r, talker: u }),
+              ).length
+            ) {
+              setTalkersWantsToTalk([
+                ...talkersWantsToTalk,
+                { ...r, talker: u },
+              ]);
+            }
+          });
+          return r;
+        })
+        .filter(r => {
+          return r.active && r.users[0] === currentUserUid;
+        })
+        .forEach(r => {
+          userRepository.find(r.users[1], u => {
+            setListenerAvailable([...listenerAvailable, { ...r, listener: u }]);
+          });
+        });
     });
   }, []);
 
-  const buildUsersAvailable = () =>
-    allUsers
+  const buildListenersAvailable = () => {
+    const lAvailable = allListeners
       .filter(user => user.available)
-      .map(user => (
-        <Text
-          key={user.uid}
-          onPress={() => console.log(user.uid)}
-          style={globalStyle.button}>
-          {user.name}
-        </Text>
+      .map((user, index) => (
+        <View key={index}>
+          <Text
+            onPress={() => onUserClick(user.uid)}
+            style={globalStyle.button}>
+            {user.name}
+          </Text>
+        </View>
       ));
 
-  return (
-    <View>
-      <Text>{currentUserType}</Text>
-      <View style={currentUserType === 'talker' ? availableUserStyle.view : ''}>
-        {currentUserType === 'talker' ? (
-          buildUsersAvailable().length !== 0 ? (
-            buildUsersAvailable()
-          ) : (
-            <Text>No users available !</Text>
-          )
-        ) : (
-          <Text>{currentUserType}</Text>
-        )}
+    return (
+      <View>
+        {lAvailable}
+        {acceptedRequest()}
       </View>
+    );
+  };
+
+  const acceptedRequest = () =>
+    listenerAvailable.map((la, index) => (
+      <Text
+        key={index}
+        style={(globalStyle.button, { backgroundColor: 'aliceblue' })}
+        onPress={() => navigateClick(la.uid)}>
+        {la.listener.name}
+      </Text>
+    ));
+
+  const buildTalkerWantsToTalk = () => {
+    return talkersWantsToTalk
+      .filter(t => t.users.includes(currentUserUid))
+      .map((t, index) => (
+        <Text
+          key={index}
+          onPress={() => {
+            roomRepository.toggle(t.uid);
+            navigateClick(t.uid);
+          }}
+          style={globalStyle.button}>
+          {t.talker.name} wants to talk !
+        </Text>
+      ));
+  };
+
+  return (
+    <View style={currentUserType === 'talker' ? availableUserStyle.view : ''}>
+      {currentUserType === 'talker' ? (
+        buildListenersAvailable().length !== 0 ? (
+          buildListenersAvailable()
+        ) : (
+          <Text>No users available !</Text>
+        )
+      ) : buildTalkerWantsToTalk().length !== 0 ? (
+        buildTalkerWantsToTalk()
+      ) : (
+        <Text>No talkers wants to talk</Text>
+      )}
     </View>
   );
 }

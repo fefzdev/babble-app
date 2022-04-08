@@ -21,7 +21,7 @@ const RouteBinding = () => {
     ));
 
   return (
-    <Stack.Navigator initialRouteName="Home">{buildRoutes()}</Stack.Navigator>
+    <Stack.Navigator initialRouteName="Test2">{buildRoutes()}</Stack.Navigator>
   );
 };
 
