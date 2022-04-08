@@ -13,8 +13,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 function AvailableUsers() {
-  const { userRepository } = useRepository();
+  const { userRepository, roomRepository } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
+  const currentUserUID = useSelector(state => state.user.uid);
   const waitlist = useSelector(state => state.rooms.waitlist);
   const dispatch = useDispatch();
 
@@ -57,7 +58,13 @@ function AvailableUsers() {
     });
   }, []);
 
-  const addToWaitingList = userId => dispatch(addToWaitlist(userId));
+  const addToWaitingList = userId => {
+    dispatch(addToWaitlist(userId));
+    roomRepository.create({
+      talkerUid: currentUserUID,
+      listenerUid: userId,
+    });
+  };
 
   const buildUsersAvailable = () => {
     const availableUsers = allUsers.filter(user => user.available);

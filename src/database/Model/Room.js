@@ -1,10 +1,9 @@
 import Model from './Model';
-import User from './Users';
 
 export default class Room extends Model {
   constructor() {
     super();
-    this.table = 'room';
+    this.table = 'rooms';
   }
 
   create = ({ talkerUid, listenerUid }) => {
@@ -21,7 +20,7 @@ export default class Room extends Model {
   post = (roomUid, userUid, message) => {
     this.table = 'users';
     this.find(userUid, u => {
-      this.table = 'room';
+      this.table = 'rooms';
       this.push(
         {
           [u.name]: message,
@@ -35,6 +34,22 @@ export default class Room extends Model {
   findRoomsByUser = (userUid, callback) => {
     this.all(data => {
       callback(data.filter(room => room.users.includes(userUid)));
+    });
+  };
+
+  findUserInRooms = (userUid, callback) => {
+    this.findRoomsByUser(userUid, rooms => {
+      this.table = 'users';
+      this.all(userArray => {
+        callback(
+          rooms.map(({ uid, users }) => ({
+            uid,
+            talker: userArray.find(({ uid: user }) => user === users[0]),
+            listener: userArray.find(({ uid: user }) => user === users[1]),
+          })),
+        );
+      });
+      this.table = 'rooms';
     });
   };
 
