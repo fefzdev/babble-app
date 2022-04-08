@@ -27,11 +27,6 @@ export default [
     component: Room,
   },
   {
-    name: 'Test2',
-    header: true,
-    component: Test2,
-  },
-  {
     name: 'Settings',
     header: true,
     component: Settings,

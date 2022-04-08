@@ -1,21 +1,9 @@
-import { globalStyle } from 'app/assets/style/style';
 import useRepository from 'app/database/Model';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, TextInput } from 'react-native';
 import { useSelector } from 'react-redux';
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  postButton: { ...globalStyle.button, backgroundColor: 'aliceblue' },
-  view: { padding: 10 },
-});
 
 export default function Room({ route, navigation }) {
   const { userRepository, roomRepository } = useRepository();
@@ -29,8 +17,10 @@ export default function Room({ route, navigation }) {
   const [inputText, setInputText] = useState('Enter text here');
 
   useEffect(() => {
-    roomRepository.listenForKey('messages', roomUid, m => {
-      setRoomMessages(m ?? []);
+    roomRepository.listenForKey('messages', roomUid, messages => {
+      if (messages) {
+        setRoomMessages(messages);
+      }
     });
 
     roomRepository.find(roomUid, r => {
@@ -45,28 +35,25 @@ export default function Room({ route, navigation }) {
   };
 
   const buildMessages = () => {
-    return roomMessages.map((mess, key) => (
-      <Text key={key} style={globalStyle.button}>
-        {currentUser.type} : {mess[currentUser.uid]}
-      </Text>
-    ));
+    return roomMessages.map((content, index) => {
+      const name = Object.entries(content)[0][0];
+      return (
+        <Text key={index}>
+          {name} : {content[name]}
+        </Text>
+      );
+    });
   };
 
   if (room && talker && listener) {
     return (
-      <ScrollView style={styles.view}>
+      <ScrollView>
         <Text>
           Welcome {talker.name} and {listener.name}
         </Text>
-        {buildMessages()}
-        <TextInput
-          style={styles.input}
-          onChangeText={setInputText}
-          value={inputText}
-        />
-        <Text onPress={handlePost} style={styles.postButton}>
-          Post
-        </Text>
+        <ScrollView>{buildMessages()}</ScrollView>
+        <TextInput onChangeText={setInputText} value={inputText} />
+        <Text onPress={handlePost}>Post</Text>
       </ScrollView>
     );
   }

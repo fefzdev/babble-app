@@ -24,7 +24,6 @@ function ShowAvailableUsers({ onUserClick, navigateClick }) {
     });
 
     roomRepository.listen(data => {
-      console.log('la', listenerAvailable);
       data
         .map(r => {
           userRepository.find(r.users[0], u => {
@@ -42,13 +41,10 @@ function ShowAvailableUsers({ onUserClick, navigateClick }) {
           return r;
         })
         .filter(r => {
-          console.log('r in filter', r);
           return r.active && r.users[0] === currentUserUid;
         })
         .forEach(r => {
-          console.log('room', r);
           userRepository.find(r.users[1], u => {
-            console.log('hello');
             setListenerAvailable([...listenerAvailable, { ...r, listener: u }]);
           });
         });

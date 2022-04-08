@@ -1,4 +1,5 @@
 import Model from './Model';
+import User from './Users';
 
 export default class Room extends Model {
   constructor() {
@@ -18,13 +19,17 @@ export default class Room extends Model {
   };
 
   post = (roomUid, userUid, message) => {
-    this.push(
-      {
-        [userUid]: message,
-      },
-      roomUid,
-      'messages',
-    );
+    this.table = 'users';
+    this.find(userUid, u => {
+      this.table = 'room';
+      this.push(
+        {
+          [u.name]: message,
+        },
+        roomUid,
+        'messages',
+      );
+    });
   };
 
   findRoomsByUser = (userUid, callback) => {
