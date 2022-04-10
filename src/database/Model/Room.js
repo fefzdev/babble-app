@@ -42,8 +42,9 @@ export default class Room extends Model {
       this.table = 'users';
       this.all(userArray => {
         callback(
-          rooms.map(({ uid, users }) => ({
+          rooms.map(({ uid, users, active }) => ({
             uid,
+            active,
             talker: userArray.find(({ uid: user }) => user === users[0]),
             listener: userArray.find(({ uid: user }) => user === users[1]),
           })),
@@ -72,6 +73,14 @@ export default class Room extends Model {
     this.find(roomUid, room => {
       this.update(roomUid, {
         active: !room.active,
+      });
+    });
+  };
+
+  setActive = roomUid => {
+    this.find(roomUid, room => {
+      this.update(roomUid, {
+        active: true,
       });
     });
   };

@@ -29,10 +29,11 @@ export default function Test2({ navigation }) {
     });
   };
 
-  const handleRoomRedirection = uid => {
+  const handleRoomRedirection = roomId => {
     navigation.navigate('Room', {
-      roomId: uid,
+      roomId,
     });
+    roomRepository.setActive(roomId);
   };
 
   const deleteRooms = () => {

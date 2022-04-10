@@ -68,10 +68,11 @@ function WaitingList({ navigation }) {
 
     return (
       <ScrollView style={[style.itemContainer]}>
-        {allRooms.map(({ listener, uid }) => (
+        {allRooms.map(({ listener, uid, active }) => (
           <WaitingListItem
             key={listener.uid}
             user={listener}
+            isRoomActive={active}
             onPress={() => openRoom(uid)}
             onRemove={() => roomRepository.delete(uid)}
           />
