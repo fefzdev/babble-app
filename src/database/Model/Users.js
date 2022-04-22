@@ -3,6 +3,7 @@ import {
   setIsConnected,
   setUser,
   setUserMail,
+  setUserName,
   setUserType,
   setUserUID,
 } from 'app/store/User';
@@ -25,6 +26,7 @@ export default class User extends Model {
       this.updateStore(setUser(data.name));
       this.updateStore(setUserType(data.type));
       this.updateStore(setUserMail(data.mail));
+      this.updateStore(setUserName(data.name));
       this.updateStore(setUserUID(uid));
       this.updateStore(setUserAvailable(data.available));
       this.updateStore(setIsConnected(true));

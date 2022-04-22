@@ -7,6 +7,7 @@ export const userStore = createSlice({
     type: null,
     mail: null,
     profilePicture: null,
+    name: null,
     uid: null,
     available: false,
     isConnected: false,
@@ -22,6 +23,10 @@ export const userStore = createSlice({
 
     setUserMail: (state, mail) => {
       state.mail = mail.payload;
+    },
+
+    setUserName: (state, name) => {
+      state.name = name.payload;
     },
 
     setUserUID: (state, uid) => {
@@ -42,6 +47,7 @@ export const {
   setUser,
   setUserType,
   setUserMail,
+  setUserName,
   setUserUID,
   setUserAvailable,
   setIsConnected,

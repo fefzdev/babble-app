@@ -17,13 +17,15 @@ export default class Room extends Model {
     });
   };
 
-  post = (roomUid, userUid, message) => {
+  post = (roomUid, userUid, content) => {
     this.table = 'users';
-    this.find(userUid, u => {
+    this.find(userUid, user => {
       this.table = 'rooms';
       this.push(
         {
-          [u.name]: message,
+          user,
+          content,
+          time: new Date().toISOString(),
         },
         roomUid,
         'messages',
