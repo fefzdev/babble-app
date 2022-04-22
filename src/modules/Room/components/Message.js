@@ -1,5 +1,4 @@
 import colors from 'app/assets/style/colors';
-import { UserRoles } from 'app/constants/Roles';
 import { format } from 'date-fns';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -24,7 +23,7 @@ export default function Message({ message: { user, content, time } }) {
       maxWidth: '80%',
     },
     ownMessage: {
-      backgroundColor: colors.orange[200],
+      backgroundColor: colors.orange[300],
     },
     name: {
       color: colors.orange[1000],
@@ -49,7 +48,7 @@ export default function Message({ message: { user, content, time } }) {
       <View style={[styles.message, isOwn() ? styles.ownMessage : null]}>
         <Text>{content}</Text>
         <Text style={styles.time}>
-          {time ? format(new Date(time), 'hh:mm') : null}
+          {time ? format(new Date(time), 'HH:MM') : null}
         </Text>
       </View>
     </View>
