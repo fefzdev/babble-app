@@ -1,6 +1,6 @@
 import colors from 'app/assets/style/colors';
 import useRepository from 'app/database/Model';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -49,6 +49,7 @@ export default function RoomInput({ roomUid }) {
     },
   });
   const handlePost = () => {
+    if (!inputText) return;
     roomRepository.post(roomUid, currentUser.uid, inputText);
     setInputText('');
   };
@@ -65,7 +66,9 @@ export default function RoomInput({ roomUid }) {
             onChangeText={setInputText}
             value={inputText}
           />
-          <TouchableOpacity style={styles.submit} onPress={handlePost}>
+          <TouchableOpacity
+            style={[styles.submit, !inputText ? styles.submitDisabled : null]}
+            onPress={handlePost}>
             <SvgUri
               width="24"
               height="24"
