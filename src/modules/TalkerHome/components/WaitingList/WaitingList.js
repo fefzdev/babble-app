@@ -8,8 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import WaitingListItem from '../WaitingListItem';
 
 function WaitingList({ navigation }) {
-  const { userRepository } = useRepository();
-  const [allUsers, setAllUsers] = useState([]);
+  const { roomRepository } = useRepository();
+  const [allRooms, setAllRooms] = useState([]);
+  const currentUserUID = useSelector(state => state.user.uid);
+
   const waitlist = useSelector(state => state.rooms.waitlist);
   const dispatch = useDispatch();
 
@@ -48,31 +50,31 @@ function WaitingList({ navigation }) {
     },
   });
 
-  const removeFromWaitingList = userId => dispatch(removeFromWaitlist(userId));
-  const openRoom = userId => navigation.navigate('Room', { userId });
+  const openRoom = roomId => navigation.navigate('Room', { roomId });
 
   useEffect(() => {
-    userRepository.listen(data => {
-      setAllUsers(data);
+    roomRepository.listen(data => {
+      roomRepository.findUserInRooms(currentUserUID, rooms => {
+        setAllRooms(rooms);
+      });
     });
   }, []);
 
   const buildUsersAvailable = () => {
-    const userWaitlist = allUsers.filter(({ uid }) => waitlist.includes(uid));
-
-    if (!userWaitlist.length)
+    if (!allRooms.length)
       return (
         <Text style={style.itemContainer}>Pas de demandes en attente</Text>
       );
 
     return (
       <ScrollView style={[style.itemContainer]}>
-        {userWaitlist.map(user => (
+        {allRooms.map(({ listener, uid, active }) => (
           <WaitingListItem
-            key={user.uid}
-            user={user}
-            onPress={() => openRoom(user.uid)}
-            onRemove={() => removeFromWaitingList(user.uid)}
+            key={listener.uid}
+            user={listener}
+            isRoomActive={active}
+            onPress={() => openRoom(uid)}
+            onRemove={() => roomRepository.delete(uid)}
           />
         ))}
       </ScrollView>

@@ -3,7 +3,7 @@ import UserImage from 'app/components/UserImage';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-function WaitingListItem({ user, onPress, onRemove }) {
+function WaitingListItem({ user, onPress, onRemove, isRoomActive }) {
   const style = StyleSheet.create({
     item: {
       marginTop: 16,
@@ -37,8 +37,31 @@ function WaitingListItem({ user, onPress, onRemove }) {
     },
   });
 
+  const info = () => {
+    if (isRoomActive) return <Text>Demande acceptée !</Text>;
+    return <Text>Demande envoyée...</Text>;
+  };
+
+  const rightAction = () => {
+    if (isRoomActive)
+      return (
+        <TouchableOpacity onPress={() => onPress()}>
+          <View style={style.remove}>
+            <Text style={style.removeText}>Discuter</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    return (
+      <TouchableOpacity onPress={() => onRemove()}>
+        <View style={style.remove}>
+          <Text style={style.removeText}>Annuler</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <TouchableOpacity onPress={() => onPress()} key={user.uid + '-waiting'}>
+    <TouchableOpacity key={user.uid + '-waiting'}>
       <View style={style.item}>
         <UserImage
           style={style.image}
@@ -46,19 +69,12 @@ function WaitingListItem({ user, onPress, onRemove }) {
           image={user.image}
         />
         <View style={style.infos}>
-          <Text
-            key={user.uid}
-            onPress={() => console.log(user.uid)}
-            style={style.userName}>
+          <Text key={user.uid} style={style.userName}>
             {user.name}
           </Text>
-          <Text>Demande envoyée...</Text>
+          {info()}
         </View>
-        <TouchableOpacity onPress={() => onRemove()}>
-          <View style={style.remove}>
-            <Text style={style.removeText}>Annuler</Text>
-          </View>
-        </TouchableOpacity>
+        {rightAction()}
       </View>
     </TouchableOpacity>
   );

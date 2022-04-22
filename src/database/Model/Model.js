@@ -38,7 +38,7 @@ export default class Model {
     db.delete(`${this.table}/${uid}`);
   };
 
-  update = (uid, data, callback = () => {}) => {
+  update = (uid, data, callback = () => ({})) => {
     this.find(uid, find => {
       delete find.uid;
       db.update(`${this.table}/${uid}`, {
