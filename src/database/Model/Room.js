@@ -24,7 +24,8 @@ export default class Room extends Model {
       this.table = 'room';
       this.push(
         {
-          [u.name]: message,
+          user: u,
+          message,
         },
         roomUid,
         'messages',
