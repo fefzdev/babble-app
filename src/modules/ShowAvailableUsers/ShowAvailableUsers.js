@@ -26,7 +26,6 @@ function ShowAvailableUsers({ onUserClick, navigateClick }) {
     roomRepository.listen(data => {
       data
         .map(r => {
-          console.log(r);
           userRepository.find(r.users[0], u => {
             if (
               !talkersWantsToTalk.filter(
