@@ -28,6 +28,7 @@
     "react-native-screens": "^3.9.0",
     "react-native-svg": "^12.1.1",
     "react-native-uuid": "^2.0.1",
+    "react-native-vector-icons": "^9.1.0",
     "react-redux": "^7.2.6",
     "uid-generator": "^2.0.0",
     "yarn": "^1.22.17"

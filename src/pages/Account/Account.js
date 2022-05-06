@@ -1,8 +1,8 @@
+import UserAccount from 'app/modules/UserAccount';
 import React from 'react';
-import { Text } from 'react-native-svg';
 
 function Account({ navigation }) {
-  return <Text>Parametres</Text>;
+  return <UserAccount />;
 }
 
 export default Account;

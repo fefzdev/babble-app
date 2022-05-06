@@ -56,7 +56,7 @@ function FirstLogin() {
   };
 
   return (
-    <Background style={styles.container} noScroll={true}>
+    <Background style={styles.container} noScroll>
       <Image
         style={styles.image}
         source={require('app/assets/images/home-first-connection.png')}
