@@ -3,7 +3,7 @@ import font from 'app/assets/style/fonts';
 import Background from 'app/components/Background';
 import Role from 'app/components/RoleBlock';
 import useRepository from 'app/database/Model';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -56,43 +56,45 @@ function ListenerHome({ navigation }) {
     },
   });
 
-  const fakeData = [
-    {
-      name: 'Benoit',
-      message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    },
-    {
-      name: 'Felix',
-      message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    },
-    {
-      name: 'Bastien',
-      message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    },
-    {
-      name: 'Guillaume',
-      message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    },
-  ];
   const { uid, available } = useSelector(state => state.user);
-  const { userRepository } = useRepository();
+  const { userRepository, roomRepository } = useRepository();
   const [isEnabled, setIsEnabled] = useState(available);
   const [inputValue, setInputValue] = useState('');
-  const [listernerMessagesArray, setListenerMessagesArray] = useState(fakeData);
+  const [allRooms, setAllRooms] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [talkersWantsToTalk, setTalkersWantsToTalk] = useState([]);
+  const listernerMessagesArray = useMemo(() => {
+    if (inputValue !== '') {
+      return talkersWantsToTalk.filter(({ talker: { name } }) =>
+        inputValue.includes(name),
+      );
+    }
 
-  useEffect(() => {
-    console.log(inputValue);
-
-    setListenerMessagesArray(
-      fakeData.filter(({ name }) => inputValue.includes(name)),
-    );
+    return talkersWantsToTalk;
   }, [inputValue]);
 
   useEffect(() => {
-    if (!listernerMessagesArray.length) {
-      setListenerMessagesArray(fakeData);
+    if (allUsers.length) {
+      const rtrTwantsToTalk = [];
+      allRooms
+        .filter(r => r.users[1] === uid)
+        .forEach(r => {
+          const talker = allUsers.find(u => u.uid === r.users[0]);
+          rtrTwantsToTalk.push({ ...r, talker });
+        });
+
+      setTalkersWantsToTalk(rtrTwantsToTalk);
     }
-  }, [listernerMessagesArray]);
+  }, [allRooms]);
+
+  useEffect(() => {
+    userRepository.all(data => {
+      setAllUsers(data);
+    });
+    roomRepository.listen(data => {
+      setAllRooms(data);
+    });
+  }, []);
 
   useEffect(() => {
     userRepository.updateData(uid, { available: isEnabled });
@@ -102,10 +104,34 @@ function ListenerHome({ navigation }) {
     setIsEnabled(!isEnabled);
   };
 
-  const renderListenerMessages = () => {
-    return listernerMessagesArray.map(({ name, message }) => (
-      <ListenerMessages user={name} message={message} />
-    ));
+  const buildTalkersWantsToTalk = () => {
+    let rtrArray = talkersWantsToTalk;
+
+    if (listernerMessagesArray.length) {
+      rtrArray = listernerMessagesArray;
+    }
+
+    return rtrArray.map(
+      ({ talker: { name, uid: talkerUid }, messages, uid: roomUid }) => {
+        const lastTalkerMessage = messages
+          ?.filter(({ user: { uid: messageUid } }) => messageUid === talkerUid)
+          .pop()?.content;
+
+        return (
+          <ListenerMessages
+            key={roomUid}
+            user={name}
+            message={lastTalkerMessage ?? 'Veux discuter !'}
+            onPress={() => {
+              roomRepository.setActive(roomUid);
+              navigation.navigate('Room', {
+                roomId: roomUid,
+              });
+            }}
+          />
+        );
+      },
+    );
   };
 
   return (
@@ -116,6 +142,7 @@ function ListenerHome({ navigation }) {
         <Switch
           trackColor={{ false: colors.orange[50], true: colors.orange[400] }}
           thumbColor={colors.orange[1000]}
+          ios_backgroundColor={colors.orange[50]}
           onValueChange={toggleSwitch}
           value={isEnabled}
         />
@@ -129,7 +156,7 @@ function ListenerHome({ navigation }) {
         placeholderTextColor={colors.orange[600]}
       />
       <ScrollView style={styles.messageBloc}>
-        {renderListenerMessages()}
+        {buildTalkersWantsToTalk()}
       </ScrollView>
     </Background>
   );
