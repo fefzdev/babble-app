@@ -2,13 +2,22 @@ import colors from 'app/assets/style/colors';
 import BabbleModal from 'app/components/BabbleModal';
 import UserImage from 'app/components/UserImage';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
+import { Camera } from 'react-native-vision-camera';
 import { useSelector } from 'react-redux';
 
 function ProfilePictureEditModal({ isDisplayed, updateIsDisplayed }) {
   const { profilePicture } = useSelector(state => state.user);
   const [updated, setUpdated] = useState(false);
+  const [isCameraDisplayed, setIsCameraDisplayed] = useState(false);
+  const [device, setDevice] = useState(false);
 
   const styles = StyleSheet.create({
     container: {
@@ -55,7 +64,12 @@ function ProfilePictureEditModal({ isDisplayed, updateIsDisplayed }) {
 
   const removeProfilePic = () => {};
   const openCameraRoll = () => {};
-  const openCamera = () => {};
+  const openCamera = async () => {
+    const cameraPermission = await Camera.getCameraPermissionStatus();
+    if (cameraPermission === 'denied') await Linking.openSettings();
+    if (cameraPermission !== 'authorized')
+      await Camera.requestCameraPermission();
+  };
 
   return (
     <BabbleModal
@@ -99,6 +113,7 @@ function ProfilePictureEditModal({ isDisplayed, updateIsDisplayed }) {
           <Text style={styles.actionLabel}>Appareil photo</Text>
         </TouchableOpacity>
       </View>
+      {isCameraDisplayed ? null : null}
     </BabbleModal>
   );
 }
