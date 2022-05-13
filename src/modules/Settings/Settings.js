@@ -1,14 +1,21 @@
 import BabbleButton from 'app/components/BabbleButton/BabbleButton';
 import Background from 'app/components/Background';
 import useRepository from 'app/database/Model';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Switch, View } from 'react-native';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import colors from '../../assets/style/colors';
+import fonts from '../../assets/style/fonts';
+import { UserRoles } from '../../constants/Roles';
 import RoleModal from '../FirstLogin/components/RoleModal';
+import SettingsBlock from './components/SettingsBlock';
+import useSettings from './data';
 
 function Settings() {
-  const { uid, type } = useSelector(state => state.user);
+  const [settings] = useSettings();
+  const { uid } = useSelector(state => state.user);
   const [modalVisible, setModalVisible] = useState(false);
   const { userRepository } = useRepository();
 
@@ -19,12 +26,27 @@ function Settings() {
     });
   };
 
+  const handlerFunction = {
+    setModalVisible,
+  };
+
   return (
     <Background>
-      <Text>{type}</Text>
-      <BabbleButton onPress={() => setModalVisible(true)}>
-        Changer role
-      </BabbleButton>
+      {settings.map(({ title, subSettings }) => (
+        <View style={styles.settingContainer} key={title}>
+          <Text style={styles.settingTitle}>{title} :</Text>
+          <View style={styles.subSettingContainer}>
+            {subSettings.map(({ text, subtitle, handle: { fn, prm } }) => (
+              <SettingsBlock
+                text={text}
+                title={subtitle}
+                key={subtitle}
+                onPress={() => handlerFunction[fn](...prm)}
+              />
+            ))}
+          </View>
+        </View>
+      ))}
       <RoleModal
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
@@ -33,5 +55,20 @@ function Settings() {
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  settingTitle: {
+    ...fonts.xsTitle,
+    marginBottom: 8,
+  },
+  subSettingContainer: {
+    backgroundColor: colors.orange[200],
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  settingContainer: {
+    marginBottom: 20,
+  },
+});
 
 export default Settings;

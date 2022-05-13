@@ -1,7 +1,7 @@
 import SettingsModule from 'app/modules/Settings';
 import React from 'react';
 
-function Settings({ navigation }) {
+function Settings() {
   return <SettingsModule />;
 }
 
