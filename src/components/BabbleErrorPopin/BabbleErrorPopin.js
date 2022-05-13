@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '@/constants/Colors';
@@ -49,13 +48,13 @@ export default function BabbleErrorPopin() {
         onPress={() => dispatch(removeErrorMessage())}
         style={styles.container}>
         <Text style={styles.text}> {errorMessage}</Text>
-        <SvgUri
+        {/* <SvgUri
           width="24"
           height="24"
           style={styles.icon}
           fill={Colors.red[1000]}
           source={require('../../assets/icons/Cross.svg')}
-        />
+        /> */}
       </TouchableOpacity>
     </View>
   );

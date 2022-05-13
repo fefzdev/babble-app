@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import { useDispatch } from 'react-redux';
 
 import Colors from '@/constants/Colors';
@@ -58,13 +57,13 @@ function OtherLogs() {
   };
 
   const itemsComponents = () => {
-    return items.map(({ icon, action }, index) => {
+    return items.map(({ action }, index) => {
       return (
         <TouchableOpacity
           style={[styles.item, index === 1 ? styles.middle : null]}
           key={index}
           onPress={action}>
-          <SvgUri width="32" height="32" source={icon} />
+          {/* <SvgUri width="32" height="32" source={icon} /> */}
         </TouchableOpacity>
       );
     });

@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import { useSelector } from 'react-redux';
 
 import Colors from '@/constants/Colors';
@@ -20,7 +19,7 @@ export default function RoomInput({ roomUid }) {
   const currentUser = useSelector(state => state.user);
   const [inputText, setInputText] = useState();
 
-  const submitIcon = require('@/assets/icons/ArrowRight.svg');
+  // const submitIcon = require('@/assets/icons/ArrowRight.svg');
 
   const styles = StyleSheet.create({
     container: {
@@ -70,12 +69,12 @@ export default function RoomInput({ roomUid }) {
           <TouchableOpacity
             style={[styles.submit, !inputText ? styles.submitDisabled : null]}
             onPress={handlePost}>
-            <SvgUri
+            {/* <SvgUri
               width="24"
               height="24"
               fill={Colors.orange[1000]}
               source={submitIcon}
-            />
+            /> */}
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>

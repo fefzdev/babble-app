@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import { useSelector } from 'react-redux';
 
 import UserImage from '@/components/UserImage';
@@ -98,12 +97,12 @@ function Header({ headerProps }) {
         <TouchableOpacity
           style={styles.leftButton}
           onPress={leftButtonContent().action}>
-          <SvgUri
+          {/* <SvgUri
             width="24"
             height="24"
             fill={Colors.orange[1000]}
             source={leftButtonContent().icon}
-          />
+          /> */}
         </TouchableOpacity>
         <Text style={styles.title}>{options.headerTitle}</Text>
         <View style={styles.rightBlock}>{rightButton()}</View>
