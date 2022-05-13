@@ -14,7 +14,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
-import Colors from '@/constants/Colors';
+import Themes from '@/constants/Themes';
 import useColorScheme from '@/hooks/useColorScheme';
 import ModalScreen from '@/screens/ModalScreen';
 import NotFoundScreen from '@/screens/NotFoundScreen';
@@ -81,7 +81,7 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="TabOne"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Themes[colorScheme].tint,
       }}>
       <BottomTab.Screen
         name="TabOne"
@@ -98,7 +98,7 @@ function BottomTabNavigator() {
               <FontAwesome
                 name="info-circle"
                 size={25}
-                color={Colors[colorScheme].text}
+                color={Themes[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>

@@ -1,19 +1,45 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
-
 export default {
-  light: {
-    text: '#000',
-    background: '#fff',
-    tint: tintColorLight,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
+  white: '#FAF8F3',
+
+  orange: {
+    1000: '#F09139',
+    900: '#F29C4D',
+    800: '#F3A761',
+    700: '#F5B274',
+    600: '#F6BD88',
+    500: '#F8C89C',
+    400: '#F9D3B0',
+    300: '#FBDEC4',
+    200: '#FCE9D7',
+    100: '#FEF4EB',
+    50: '#FEF9F5',
   },
-  dark: {
-    text: '#fff',
-    background: '#000',
-    tint: tintColorDark,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
+
+  red: {
+    1000: '#F03838',
+    900: '#F24C4C',
+    800: '#F36060',
+    700: '#F57474',
+    600: '#F68787',
+    500: '#F79B9B',
+    400: '#F9AFAF',
+    300: '#FBC3C3',
+    200: '#FCD7D7',
+    100: '#FDEBEB',
+    50: '#FEF5F5',
+  },
+
+  black: {
+    1000: '#11111B',
+    900: '#292932',
+    800: '#414149',
+    700: '#58585F',
+    600: '#707076',
+    500: '#88888D',
+    400: '#A0A0A4',
+    300: '#B8B8BB',
+    200: '#CFCFD1',
+    100: '#E7E7E8',
+    50: '#F3F3F4',
   },
 };
