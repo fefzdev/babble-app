@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import Fonts from '@/assets/style/Fonts';
 import Colors from '@/constants/Colors';
+import Fonts from '@/constants/Fonts';
 
 function Role() {
   const currentUserType = useSelector(state => state.user.type);

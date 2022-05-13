@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 
 import BabbleButton from '@/components/BabbleButton/BabbleButton';
 import Background from '@/components/Background';
-import Colors from '@/constants/Colors.js';
-import Fonts from '@/constants/Fonts.js';
+import Colors from '@/constants/Colors';
+import Fonts from '@/constants/Fonts';
 import useRepository from '@/database/Model';
 
-import RoleModal from './components/RoleModal.js';
+import RoleModal from './components/RoleModal';
 
 function FirstLogin() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,7 +60,7 @@ function FirstLogin() {
     <Background style={styles.container} noScroll={true}>
       <Image
         style={styles.image}
-        source={require('app/assets/images/home-first-connection.png')}
+        source={require('@/assets/images/home-first-connection.png')}
       />
       <View style={styles.content}>
         <Text style={[styles.title, Fonts.callout]}>Welcome to Babbles!</Text>

@@ -1,6 +1,6 @@
 import BabbleButton from '@/components/BabbleButton';
 import BabbleModal from '@/components/BabbleModal';
-import { UserRoles } from '@/constants/Roles';
+import { UserRoles } from '@/types/UserRoles.enums';
 
 function RoleModal({ isVisible, onClose, onSubmit }) {
   const styles = {

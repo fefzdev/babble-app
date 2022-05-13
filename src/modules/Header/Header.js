@@ -7,9 +7,6 @@ import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 
 function Header({ headerProps }) {
-  const settingsIcon = require('@/assets/icons/Settings.svg');
-  const goBackIcon = require('@/assets/icons/ArrowLeft.svg');
-
   const { profilePicture } = useSelector(state => state.user);
 
   const styles = StyleSheet.create({
@@ -68,11 +65,11 @@ function Header({ headerProps }) {
     if (navigation.canGoBack())
       return {
         action: () => navigation.goBack(),
-        icon: goBackIcon,
+        icon: '',
       };
     return {
       action: () => navigation.navigate('Settings'),
-      icon: settingsIcon,
+      icon: '',
     };
   };
 
