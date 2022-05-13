@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "lint:fix": "eslint --fix src"
   },
   "jest": {
     "preset": "jest-expo"
@@ -36,9 +37,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.67.6",
     "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "7.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-autofix": "^1.1.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "jest": "^26.6.3",
     "jest-expo": "^45.0.0",
     "react-test-renderer": "17.0.2",
