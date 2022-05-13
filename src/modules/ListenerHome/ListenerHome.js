@@ -24,7 +24,7 @@ function ListenerHome({ navigation }) {
       height: '100%',
     },
 
-    availableBloc: {
+    availableBlock: {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
@@ -49,7 +49,7 @@ function ListenerHome({ navigation }) {
       color: colors.orange[900],
     },
 
-    messageBloc: {
+    messageBlock: {
       height: '40%',
       marginTop: 16,
       marginBottom: 32,
@@ -137,7 +137,7 @@ function ListenerHome({ navigation }) {
   return (
     <Background noScroll>
       <Role />
-      <View style={styles.availableBloc}>
+      <View style={styles.availableBlock}>
         <Text style={font.callout}>Êtes-vous disponible ?</Text>
         <Switch
           trackColor={{ false: colors.orange[50], true: colors.orange[400] }}
@@ -155,7 +155,7 @@ function ListenerHome({ navigation }) {
         placeholder="Rechercher une conversation"
         placeholderTextColor={colors.orange[600]}
       />
-      <ScrollView style={styles.messageBloc}>
+      <ScrollView style={styles.messageBlock}>
         {buildTalkersWantsToTalk()}
       </ScrollView>
     </Background>

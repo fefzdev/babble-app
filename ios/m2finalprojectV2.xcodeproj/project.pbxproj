@@ -145,7 +145,6 @@
 				87F4D78F172ACCF6AEDB8A76 /* Pods-m2finalprojectV2-m2finalprojectV2Tests.debug.xcconfig */,
 				35A5E85501ED6532232A283E /* Pods-m2finalprojectV2-m2finalprojectV2Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -485,6 +484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AP2SANS4HS;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = m2finalprojectV2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,6 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AP2SANS4HS;
 				INFOPLIST_FILE = m2finalprojectV2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
