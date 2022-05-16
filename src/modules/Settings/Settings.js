@@ -5,15 +5,20 @@ import { useSelector } from 'react-redux';
 
 import BabbleButton from '@/components/BabbleButton/BabbleButton';
 import Background from '@/components/Background';
+import useRepository from '@/database/Model';
 
 import RoleModal from '../FirstLogin/components/RoleModal';
 const auth = getAuth();
 function Settings() {
-  const { type } = useSelector(state => state.user);
+  const { uid, type } = useSelector(state => state.user);
   const [modalVisible, setModalVisible] = useState(false);
+  const { userRepository } = useRepository();
 
-  const onSubmit = () => {
+  const onSubmit = userType => {
     setModalVisible(false);
+    userRepository.updateData(uid, {
+      type: userType,
+    });
   };
 
   return (

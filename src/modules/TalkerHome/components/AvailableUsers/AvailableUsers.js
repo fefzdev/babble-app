@@ -13,45 +13,12 @@ import Fonts from '@/constants/Fonts';
 import useRepository from '@/database/Model';
 import { addToWaitlist } from '@/store/Rooms';
 
-function AvailableUsers() {
+export default function AvailableUsers() {
   const { userRepository, roomRepository } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
   const currentUserUID = useSelector(state => state.user.uid);
   const waitlist = useSelector(state => state.rooms.waitlist);
   const dispatch = useDispatch();
-
-  const style = StyleSheet.create({
-    view: {
-      marginTop: 32,
-    },
-    title: {},
-    subtitle: {
-      marginTop: 8,
-    },
-    itemContainer: {
-      height: 80,
-      marginLeft: -16,
-      marginTop: 16,
-    },
-    item: {
-      marginLeft: 16,
-      flex: 1,
-      width: 64,
-      alignItems: 'center',
-    },
-    image: {
-      width: 48,
-      height: 48,
-      marginTop: 4,
-    },
-    imageRadius: {
-      borderRadius: 24,
-    },
-    name: {
-      marginTop: 8,
-      textAlign: 'center',
-    },
-  });
 
   useEffect(() => {
     userRepository.listen(data => {
@@ -103,4 +70,35 @@ function AvailableUsers() {
   );
 }
 
-export default AvailableUsers;
+const style = StyleSheet.create({
+  view: {
+    marginTop: 32,
+  },
+  title: {},
+  subtitle: {
+    marginTop: 8,
+  },
+  itemContainer: {
+    height: 80,
+    marginLeft: -16,
+    marginTop: 16,
+  },
+  item: {
+    marginLeft: 16,
+    flex: 1,
+    width: 64,
+    alignItems: 'center',
+  },
+  image: {
+    width: 48,
+    height: 48,
+    marginTop: 4,
+  },
+  imageRadius: {
+    borderRadius: 24,
+  },
+  name: {
+    marginTop: 8,
+    textAlign: 'center',
+  },
+});
