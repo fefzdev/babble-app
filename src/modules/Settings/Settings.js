@@ -1,22 +1,19 @@
-import BabbleButton from 'app/components/BabbleButton/BabbleButton';
-import Background from 'app/components/Background';
-import useRepository from 'app/database/Model';
+import { getAuth, signOut } from 'firebase/auth';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import BabbleButton from '@/components/BabbleButton/BabbleButton';
+import Background from '@/components/Background';
+
 import RoleModal from '../FirstLogin/components/RoleModal';
-
+const auth = getAuth();
 function Settings() {
-  const { uid, type } = useSelector(state => state.user);
+  const { type } = useSelector(state => state.user);
   const [modalVisible, setModalVisible] = useState(false);
-  const { userRepository } = useRepository();
 
-  const onSubmit = userType => {
+  const onSubmit = () => {
     setModalVisible(false);
-    userRepository.updateData(uid, {
-      type: userType,
-    });
   };
 
   return (
@@ -25,6 +22,7 @@ function Settings() {
       <BabbleButton onPress={() => setModalVisible(true)}>
         Changer role
       </BabbleButton>
+      <BabbleButton onPress={() => signOut(auth)}>Disconnect</BabbleButton>
       <RoleModal
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}

@@ -1,4 +1,6 @@
+import Account from '@/screens/Account';
 import Home from '@/screens/Home';
+import Settings from '@/screens/Settings';
 
 export default [
   {
@@ -11,14 +13,14 @@ export default [
   //   header: true,
   //   component: Room,
   // },
-  // {
-  //   name: 'Settings',
-  //   header: true,
-  //   component: Settings,
-  // },
-  // {
-  //   name: 'Account',
-  //   header: true,
-  //   component: Account,
-  // },
+  {
+    name: 'Settings',
+    header: true,
+    component: Settings,
+  },
+  {
+    name: 'Account',
+    header: true,
+    component: Account,
+  },
 ];
