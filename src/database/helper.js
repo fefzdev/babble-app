@@ -1,25 +1,19 @@
-import { firebase } from './config';
-
 const db = {
-  connectTo: ref => firebase.database().ref(ref),
+  connectTo: () => null,
 
-  read: async ref => await firebase.database().ref(ref).get(),
+  read: async () => null,
 
-  readChild: async (ref, child) =>
-    await firebase.database().ref(ref).child(child).get(),
+  readChild: async () => null,
 
-  logUser: async (mail, password) =>
-    await firebase.auth().signInWithEmailAndPassword(mail, password),
+  logUser: async () => null,
 
-  createUser: async (mail, password) =>
-    await firebase.auth().createUserWithEmailAndPassword(mail, password),
+  createUser: async () => null,
 
-  write: (ref, data) => firebase.database().ref(ref).set(data),
+  write: () => null,
 
-  update: async (ref, updates) =>
-    await firebase.database().ref(ref).set(updates),
+  update: async () => null,
 
-  delete: ref => firebase.database().ref(ref).remove(),
+  delete: () => null,
 };
 
 export default db;
