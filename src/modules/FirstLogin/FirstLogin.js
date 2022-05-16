@@ -7,6 +7,7 @@ import Background from '@/components/Background';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 import useRepository from '@/database/Model';
+import { useAuthentication } from '@/hooks/useAuthentication';
 
 import RoleModal from './components/RoleModal';
 
@@ -14,7 +15,7 @@ function FirstLogin() {
   const [modalVisible, setModalVisible] = useState(false);
   const userUID = useSelector(state => state.user.uid);
   const { userRepository } = useRepository();
-
+  const {} = useAuthentication();
   const onSubmit = type => {
     setModalVisible(false);
     userRepository.updateData(userUID, {

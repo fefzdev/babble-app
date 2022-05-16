@@ -1,11 +1,16 @@
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from 'firebase/auth';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import BabbleButton from '@/components/BabbleButton';
 import BabbleInput from '@/components/BabbleInput';
-import useRepository from '@/database/Model';
 import { setErrorMessage } from '@/store/App';
+const auth = getAuth();
 
 function RegisterForm() {
   const [username, setUsername] = useState(null);
@@ -14,10 +19,9 @@ function RegisterForm() {
   const [mail, setMail] = useState(null);
   const [errorArray, setErrorArray] = useState([]);
 
-  const { userRepository } = useRepository();
   const dispatch = useDispatch();
 
-  const onRegister = () => {
+  const onRegister = async () => {
     if (
       username === null ||
       password === null ||
@@ -33,9 +37,12 @@ function RegisterForm() {
       onInputError();
       return;
     }
-    userRepository.create(mail, password, username, error =>
-      dispatch(setErrorMessage(`${error.code}: ${error.message}`)),
-    );
+    try {
+      await createUserWithEmailAndPassword(auth, mail, password);
+      await updateProfile(auth.currentUser, { displayName: username });
+    } catch (error) {
+      dispatch(setErrorMessage(`${error.code}: ${error.message}`));
+    }
   };
 
   const onInputError = () => {

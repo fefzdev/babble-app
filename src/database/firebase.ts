@@ -1,8 +1,9 @@
-import 'firebase/compat/auth';
-import 'firebase/compat/database';
+import 'firebase/auth';
+import 'firebase/database';
 
-import firebase from 'firebase/compat/app';
+import { initializeApp } from 'firebase/app';
 
+// Initialize Firebase
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -13,6 +14,6 @@ const firebaseConfig = {
   databaseURL: process.env.DATA_BASE_URL,
 };
 
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-export { firebase };
+export default app;

@@ -1,28 +1,31 @@
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import BabbleButton from '@/components/BabbleButton';
 import BabbleInput from '@/components/BabbleInput';
-import User from '@/database/Model/Users';
 import { setErrorMessage } from '@/store/App';
+
+const auth = getAuth();
 
 function LoginForm() {
   const [password, setPassword] = useState('199100');
   const [mail, setMail] = useState('test2@test.fr');
-  const UserModel = new User();
   const dispatch = useDispatch();
   const [errorArray, setErrorArray] = useState([]);
 
-  const onLogin = () => {
+  const onLogin = async () => {
     if (mail === null || password === null) {
       dispatch(setErrorMessage(['Please fill in all fields']));
       onInputError();
       return;
     }
-    UserModel.connect(mail, password, error =>
-      dispatch(setErrorMessage(`${error.code}: ${error.message}`)),
-    );
+    try {
+      await signInWithEmailAndPassword(auth, mail, password);
+    } catch (error) {
+      dispatch(setErrorMessage(`${error.code}: ${error.message}`));
+    }
   };
 
   const onInputError = () => {

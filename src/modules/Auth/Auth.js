@@ -1,27 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Image } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import BabbleLoader from '@/components/BabbleLoader';
 import Background from '@/components/Background';
-import { firebase } from '@/database/config';
-import { setIsConnected } from '@/store/User';
 
 import { Heading, LoginForm, OtherLogs, RegisterForm } from './components';
 
-function Auth({ children }) {
+function Auth({}) {
   const [isOnSignIn, setIsOnSignIn] = useState(true);
-  const { isConnected } = useSelector(state => state.user);
   const { isLoading } = useSelector(state => state.app);
-  const dispatch = useDispatch(state => state.user);
-
-  const setConnected = () => dispatch(setIsConnected(false));
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (!user) setConnected();
-    });
-  }, []);
 
   const FormComponent = () => {
     if (isOnSignIn) return <LoginForm />;
@@ -40,7 +28,6 @@ function Auth({ children }) {
 
   const showUserInterface = () => {
     if (isLoading) return <BabbleLoader />;
-    if (isConnected) return children;
     else
       return (
         <Background>
