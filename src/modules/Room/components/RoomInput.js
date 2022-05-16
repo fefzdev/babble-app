@@ -21,33 +21,6 @@ export default function RoomInput({ roomUid }) {
 
   // const submitIcon = require('@/assets/icons/ArrowRight.svg');
 
-  const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      width: '100%',
-      padding: 10,
-      paddingBottom: 48,
-      backgroundColor: Colors.orange[100],
-    },
-    input: {
-      flex: 1,
-      borderColor: Colors.orange[1000],
-      borderWidth: 2,
-      padding: 16,
-      borderRadius: 32,
-      backgroundColor: 'white',
-    },
-    submit: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: Colors.orange[200],
-      padding: 8,
-      height: 54,
-      width: 54,
-      borderRadius: 32,
-      marginLeft: 10,
-    },
-  });
   const handlePost = () => {
     if (!inputText) return;
     roomRepository.post(roomUid, currentUser.uid, inputText);
@@ -81,3 +54,31 @@ export default function RoomInput({ roomUid }) {
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    width: '100%',
+    padding: 10,
+    paddingBottom: 48,
+    backgroundColor: Colors.orange[100],
+  },
+  input: {
+    flex: 1,
+    borderColor: Colors.orange[1000],
+    borderWidth: 2,
+    padding: 16,
+    borderRadius: 32,
+    backgroundColor: 'white',
+  },
+  submit: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.orange[200],
+    padding: 8,
+    height: 54,
+    width: 54,
+    borderRadius: 32,
+    marginLeft: 10,
+  },
+});

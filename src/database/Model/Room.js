@@ -80,7 +80,7 @@ export default class Room extends Model {
   };
 
   setActive = roomUid => {
-    this.find(roomUid, room => {
+    this.find(roomUid, () => {
       this.update(roomUid, {
         active: true,
       });
