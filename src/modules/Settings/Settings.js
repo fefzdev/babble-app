@@ -18,7 +18,7 @@ function Settings() {
 
   const onSubmit = userType => {
     setModalVisible(false);
-    userRepository.updateData(user, {
+    userRepository.updateData(user.uid, {
       type: userType,
     });
   };

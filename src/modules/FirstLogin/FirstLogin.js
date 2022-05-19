@@ -17,7 +17,7 @@ export default function FirstLogin() {
 
   const onSubmit = type => {
     setModalVisible(false);
-    userRepository.updateData(user, { type });
+    userRepository.updateData(user.uid, { type });
   };
 
   return (
