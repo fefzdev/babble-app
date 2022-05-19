@@ -1,6 +1,0 @@
-module Pods_m2finalprojectV2 {
-  umbrella header "Pods-m2finalprojectV2-umbrella.h"
-
-  export *
-  module * { export * }
-}
