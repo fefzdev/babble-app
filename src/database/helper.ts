@@ -29,7 +29,8 @@ const db = {
   write: async (refPath: string, data: unknown) =>
     await set(ref(database, refPath), data),
 
-  update: async (updates: object) => await update(ref(database), updates),
+  update: async (refPath: string, updates: object) =>
+    await update(ref(database, refPath), updates),
 
   delete: async (refPath: string) => await remove(ref(database, refPath)),
 };

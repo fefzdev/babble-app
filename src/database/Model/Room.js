@@ -6,84 +6,85 @@ export default class Room extends Model {
     this.table = 'rooms';
   }
 
-  create = ({ talkerUid, listenerUid }) => {
-    this.checkIfRoomAlreadyExist(talkerUid, listenerUid, roomAlreadyExist => {
-      if (!roomAlreadyExist) {
-        this.add({
-          users: [talkerUid, listenerUid],
-          active: false,
-        });
-      }
+  findRoomsByUser = async userUid => {
+    const allRooms = await this.all();
+    return allRooms.filter(room => room.users.includes(userUid));
+  };
+
+  checkIfRoomAlreadyExist = async (talkerUid, listenerUid) => {
+    const userRooms = await this.findRoomsByUser(talkerUid);
+    return !!userRooms.filter(r => r.users.includes(listenerUid)).length;
+  };
+
+  create = async ({ talkerUid, listenerUid }) => {
+    const doesRoomExist = await this.checkIfRoomAlreadyExist(
+      talkerUid,
+      listenerUid,
+    );
+
+    if (doesRoomExist) throw new Error('Room already exist');
+
+    return await this.add({
+      users: [talkerUid, listenerUid],
+      active: false,
     });
   };
 
-  post = (roomUid, userUid, content) => {
+  post = async (roomUid, userUid, content) => {
     this.table = 'users';
-    this.find(userUid, user => {
-      this.table = 'rooms';
-      this.push(
-        {
-          user,
-          content,
-          time: new Date().toISOString(),
-        },
-        roomUid,
-        'messages',
+    const user = await this.find(userUid);
+
+    this.table = 'rooms';
+    await this.push(
+      {
+        user,
+        content,
+        time: new Date().toISOString(),
+      },
+      roomUid,
+      'messages',
+    );
+  };
+
+  findUserInRooms = async userUid => {
+    const userRooms = await this.findRoomsByUser(userUid);
+
+    this.table = 'users';
+    const allUsers = await this.all();
+    const rooms = userRooms.map(({ uid, users, active }) => ({
+      uid,
+      active,
+      talker: allUsers.find(({ uid: user }) => user === users[0]),
+      listener: allUsers.find(({ uid: user }) => user === users[1]),
+    }));
+    this.table = 'rooms';
+    return rooms;
+  };
+
+  deleteNonActiveRooms = async userUid => {
+    const userRooms = await this.findRoomsByUser(userUid);
+    if (userRooms.length > 0)
+      await Promise.all(
+        userRooms
+          .filter(r => !r.active)
+          .forEach(async r => await this.delete(r.uid)),
       );
+  };
+
+  toggle = async roomUid => {
+    const room = await this.find(roomUid);
+    await this.update(roomUid, {
+      active: !room.active,
     });
   };
 
-  findRoomsByUser = (userUid, callback) => {
-    this.all(data => {
-      callback(data.filter(room => room.users.includes(userUid)));
-    });
-  };
+  setActive = async roomUid => {
+    const room = await this.find(roomUid);
 
-  findUserInRooms = (userUid, callback) => {
-    this.findRoomsByUser(userUid, rooms => {
-      this.table = 'users';
-      this.all(userArray => {
-        callback(
-          rooms.map(({ uid, users, active }) => ({
-            uid,
-            active,
-            talker: userArray.find(({ uid: user }) => user === users[0]),
-            listener: userArray.find(({ uid: user }) => user === users[1]),
-          })),
-        );
-      });
-      this.table = 'rooms';
-    });
-  };
+    if (!room) throw new Error('Room not found');
 
-  deleteNonActiveRooms = (userUid, callback = () => null) => {
-    this.findRoomsByUser(userUid, rooms => {
-      if (rooms.length > 0) {
-        rooms.filter(r => !r.active).forEach(r => this.delete(r.uid));
-      }
-      callback();
-    });
-  };
-
-  checkIfRoomAlreadyExist = (talkerUid, listenerUid, callback) => {
-    this.findRoomsByUser(talkerUid, rooms => {
-      callback(!!rooms.filter(r => r.users.includes(listenerUid)).length);
-    });
-  };
-
-  toggle = roomUid => {
-    this.find(roomUid, room => {
-      this.update(roomUid, {
-        active: !room.active,
-      });
-    });
-  };
-
-  setActive = roomUid => {
-    this.find(roomUid, () => {
-      this.update(roomUid, {
-        active: true,
-      });
+    this.update(roomUid, {
+      active: true,
     });
   };
 }

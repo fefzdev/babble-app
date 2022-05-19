@@ -11,17 +11,6 @@ export default function RoomModule({ listener, roomUid, messages }) {
   const buildMessages = () =>
     messages.map((message, index) => <Message key={index} message={message} />);
 
-  const styles = StyleSheet.create({
-    background: {
-      paddingTop: 0,
-      paddingHorizontal: 0,
-      justifyContent: 'space-between',
-    },
-    list: {
-      padding: 20,
-    },
-  });
-
   const scrollViewRef = useRef();
 
   return (
@@ -41,3 +30,14 @@ export default function RoomModule({ listener, roomUid, messages }) {
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  background: {
+    paddingTop: 0,
+    paddingHorizontal: 0,
+    justifyContent: 'space-between',
+  },
+  list: {
+    padding: 20,
+  },
+});

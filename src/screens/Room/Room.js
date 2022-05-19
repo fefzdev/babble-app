@@ -16,21 +16,24 @@ export default function Room({ route, navigation }) {
   const [listener, setListener] = useState(null);
 
   useEffect(() => {
-    roomRepository.listenForKey('messages', roomUid, messages => {
-      if (messages) setRoomMessages(messages);
-    });
-
-    roomRepository.find(roomUid, currentRoom => {
-      userRepository.find(currentRoom.users[1], roomListener => {
-        setListener(roomListener);
-
-        if (currentUser.type === UserRoles.LISTENER)
-          navigation.setOptions({ headerTitle: 'Votre talker' });
-        else navigation.setOptions({ headerTitle: roomListener.name });
-        setIsLoading(false);
+    const fetchRoom = async () => {
+      roomRepository.listenForKey('messages', roomUid, messages => {
+        if (messages) setRoomMessages(messages);
       });
-    });
+
+      const currentRoom = await roomRepository.find(roomUid);
+      const roomListener = await userRepository.find(currentRoom.users[1]);
+      setListener(roomListener);
+
+      if (currentUser.type === UserRoles.LISTENER)
+        navigation.setOptions({ headerTitle: 'Votre talker' });
+      else navigation.setOptions({ headerTitle: roomListener.name });
+
+      setIsLoading(false);
+    };
+    fetchRoom();
   }, []);
+
   if (isLoading) return <BabbleLoader />;
 
   return (

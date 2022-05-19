@@ -7,53 +7,17 @@ import useRepository from '@/database/Model';
 
 import WaitingListItem from '../WaitingListItem';
 
-function WaitingList({ navigation }) {
+export default function WaitingList({ navigation }) {
   const { roomRepository } = useRepository();
   const [allRooms, setAllRooms] = useState([]);
   const currentUserUID = useSelector(state => state.user.uid);
 
-  const style = StyleSheet.create({
-    view: {
-      marginTop: 32,
-    },
-    title: {},
-    subtitle: {
-      marginTop: 8,
-    },
-    itemContainer: {
-      height: '100%',
-      marginTop: 8,
-    },
-    item: {
-      marginTop: 16,
-      flex: 1,
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-    image: {
-      width: 48,
-      height: 48,
-      marginTop: 4,
-    },
-    imageRadius: {
-      borderRadius: 24,
-    },
-    infos: {
-      marginLeft: 8,
-    },
-    userName: {
-      fontWeight: 'bold',
-      marginBottom: 4,
-    },
-  });
-
   const openRoom = roomId => navigation.navigate('Room', { roomId });
 
   useEffect(() => {
-    roomRepository.listen(() => {
-      roomRepository.findUserInRooms(currentUserUID, rooms => {
-        setAllRooms(rooms);
-      });
+    roomRepository.listen(async () => {
+      const rooms = await roomRepository.findUserInRooms(currentUserUID);
+      setAllRooms(rooms);
     });
   }, []);
 
@@ -88,4 +52,37 @@ function WaitingList({ navigation }) {
   );
 }
 
-export default WaitingList;
+const style = StyleSheet.create({
+  view: {
+    marginTop: 32,
+  },
+  title: {},
+  subtitle: {
+    marginTop: 8,
+  },
+  itemContainer: {
+    height: '100%',
+    marginTop: 8,
+  },
+  item: {
+    marginTop: 16,
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  image: {
+    width: 48,
+    height: 48,
+    marginTop: 4,
+  },
+  imageRadius: {
+    borderRadius: 24,
+  },
+  infos: {
+    marginLeft: 8,
+  },
+  userName: {
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+});

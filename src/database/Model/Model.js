@@ -8,9 +8,7 @@ export default class Model {
     this.table = null;
   }
 
-  generateUid = () => {
-    return uuid.v4();
-  };
+  generateUid = () => uuid.v4();
 
   purifyCollectionData = data => {
     const arrayData = [];
@@ -24,34 +22,38 @@ export default class Model {
     return arrayData;
   };
 
-  add = (data, uid = this.generateUid()) => {
-    db.write(`${this.table}/${uid}`, data);
+  add = async (data, uid = this.generateUid()) =>
+    await db.write(`${this.table}/${uid}`, data);
+
+  find = async uid => {
+    try {
+      const data = await db.readChild(this.table, uid);
+      return { uid, ...data };
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  push = (data, uid, key) => {
-    this.find(uid, find => {
-      const objRetrived = find[key] ?? [];
-      this.update({ [key]: [...objRetrived, data] });
+  push = async (data, uid, key) => {
+    try {
+      const response = await this.find(uid);
+      const objRetrived = response[key] ?? [];
+      await this.update({ [key]: [...objRetrived, data] });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  delete = async uid => await db.delete(`${this.table}/${uid}`);
+
+  update = async (uid, data) => {
+    const response = await this.find(uid);
+    delete response.uid;
+
+    await db.update(`${this.table}/${uid}`, {
+      ...response,
+      ...data,
     });
-  };
-
-  delete = uid => {
-    db.delete(`${this.table}/${uid}`);
-  };
-
-  update = (uid, data, callback = () => ({})) => {
-    this.find(uid, find => {
-      delete find.uid;
-      db.update(`${this.table}/${uid}`, {
-        ...find,
-        ...data,
-      }).then(() => callback());
-    });
-  };
-
-  find = async (uid, callback) => {
-    const data = await db.readChild(this.table, uid);
-    callback({ uid, ...data }).catch(e => console.error(e.message));
   };
 
   listen = callback => {
@@ -68,11 +70,12 @@ export default class Model {
     });
   };
 
-  all = callback => {
-    db.read(this.table)
-      .then(data => {
-        callback(this.purifyCollectionData(data));
-      })
-      .catch(e => console.error(e.message));
+  all = async () => {
+    try {
+      const response = await db.read(this.table);
+      return this.purifyCollectionData(response);
+    } catch (e) {
+      console.error(e.message);
+    }
   };
 }
