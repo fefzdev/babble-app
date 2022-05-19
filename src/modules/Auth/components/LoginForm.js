@@ -1,12 +1,12 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import BabbleButton from '@/components/BabbleButton';
 import BabbleInput from '@/components/BabbleInput';
+import useRepository from '@/database/Model';
 import { setErrorMessage } from '@/store/App';
-
 const auth = getAuth();
 
 function LoginForm() {
@@ -14,6 +14,7 @@ function LoginForm() {
   const [mail, setMail] = useState('test2@test.fr');
   const dispatch = useDispatch();
   const [errorArray, setErrorArray] = useState([]);
+  const { userRepository } = useRepository();
 
   const onLogin = async () => {
     if (mail === null || password === null) {
@@ -22,7 +23,7 @@ function LoginForm() {
       return;
     }
     try {
-      await signInWithEmailAndPassword(auth, mail, password);
+      await userRepository.connect(auth, mail, password);
     } catch (error) {
       dispatch(setErrorMessage(`${error.code}: ${error.message}`));
     }

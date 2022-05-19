@@ -1,23 +1,22 @@
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  updateProfile,
-} from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import BabbleButton from '@/components/BabbleButton';
 import BabbleInput from '@/components/BabbleInput';
+import useRepository from '@/database/Model';
 import { setErrorMessage } from '@/store/App';
+
 const auth = getAuth();
 
-function RegisterForm() {
+export default function RegisterForm() {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [passwordConfirm, setPasswordConfirm] = useState(null);
   const [mail, setMail] = useState(null);
   const [errorArray, setErrorArray] = useState([]);
+  const { userRepository } = useRepository();
 
   const dispatch = useDispatch();
 
@@ -38,8 +37,7 @@ function RegisterForm() {
       return;
     }
     try {
-      await createUserWithEmailAndPassword(auth, mail, password);
-      await updateProfile(auth.currentUser, { displayName: username });
+      await userRepository.create(auth, mail, password);
     } catch (error) {
       dispatch(setErrorMessage(`${error.code}: ${error.message}`));
     }
@@ -83,22 +81,7 @@ function RegisterForm() {
     }
   };
 
-  const checkError = inputName => {
-    return errorArray.includes(inputName);
-  };
-
-  const styles = {
-    container: {
-      marginTop: 42,
-      marginBottom: 24,
-    },
-    input: {
-      marginTop: 16,
-    },
-    button: {
-      marginTop: 32,
-    },
-  };
+  const checkError = inputName => errorArray.includes(inputName);
 
   return (
     <View style={styles.container}>
@@ -147,4 +130,15 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 42,
+    marginBottom: 24,
+  },
+  input: {
+    marginTop: 16,
+  },
+  button: {
+    marginTop: 32,
+  },
+});

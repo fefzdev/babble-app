@@ -1,3 +1,7 @@
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 
 import { setIsLoading } from '@/store/App';
@@ -11,7 +15,6 @@ import {
 } from '@/store/User';
 import { setUserAvailable } from '@/store/User';
 
-import db from '../helper';
 import Model from './Model';
 
 export default class User extends Model {
@@ -22,51 +25,58 @@ export default class User extends Model {
     this.updateStore = useDispatch();
   }
 
-  syncStore = uid =>
-    this.find(uid, data => {
-      this.updateStore(setUser(data.name));
-      this.updateStore(setUserType(data.type));
-      this.updateStore(setUserMail(data.mail));
-      this.updateStore(setUserName(data.name));
-      this.updateStore(setUserUID(uid));
-      this.updateStore(setUserAvailable(data.available));
-      this.updateStore(setIsConnected(true));
-    }).then(() => this.updateStore(setIsLoading(false)));
+  syncStore = async uid => {
+    const userData = await this.find(uid);
 
-  create = (mail, password, username, handleError) => {
-    this.updateStore(setIsLoading(true));
-    db.createUser(mail, password)
-      .then(userCredential => {
-        this.add(
-          {
-            name: username,
-            mail: userCredential.user.email,
-            role: null,
-            available: false,
-          },
-          userCredential.user.uid,
-        );
-        this.syncStore(userCredential.user.uid);
-      })
-      .catch(error => {
-        handleError(error);
-        this.updateStore(setIsLoading(false));
-      });
+    this.updateStore(setUser(userData.name));
+    this.updateStore(setUserMail(userData.mail));
+    this.updateStore(setUserUID(userData.uid));
+    this.updateStore(setUserType(userData.type));
+    this.updateStore(setUserName(userData.name));
+    this.updateStore(setUserAvailable(userData.available));
+
+    this.updateStore(setIsConnected(true));
+    this.updateStore(setIsLoading(false));
   };
 
-  updateData = (uid, data) => {
-    this.update(uid, data, () => this.syncStore(uid));
+  create = async (auth, email, password, username, handleError) => {
+    this.updateStore(setIsLoading(true));
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+
+      await this.add(
+        {
+          role: null,
+          name: username,
+          mail: email,
+          available: false,
+        },
+        user.uid,
+      );
+      await this.syncStore(user.uid);
+    } catch (error) {
+      this.updateStore(setIsLoading(false));
+      handleError(error);
+    }
   };
 
-  connect = (mail, password, handleError) => {
+  updateData = async (user, data) => {
+    await this.update(user.uid, data);
+    await this.syncStore(user.uid);
+  };
+
+  connect = async (auth, email, password) => {
     this.updateStore(setIsLoading(true));
-    db.logUser(mail, password)
-      .then(userCredential => {
-        this.syncStore(userCredential.user.uid);
-      })
-      .catch(error => {
-        handleError(error);
-        this.updateStore(setIsLoading(false));
-      });
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+
+      await this.syncStore(user.uid);
+      this.updateStore(setIsLoading(false));
+    } catch (error) {
+      this.updateStore(setIsLoading(false));
+      throw error;
+    }
   };
 }
