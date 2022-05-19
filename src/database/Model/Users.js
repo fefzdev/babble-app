@@ -27,6 +27,9 @@ export default class User extends Model {
 
   syncStore = async uid => {
     const userData = await this.find(uid);
+    console.log('====================================');
+    console.log(userData);
+    console.log('====================================');
 
     this.updateStore(setUser(userData.name));
     this.updateStore(setUserMail(userData.mail));
@@ -61,9 +64,9 @@ export default class User extends Model {
     }
   };
 
-  updateData = async (user, data) => {
-    await this.update(user.uid, data);
-    await this.syncStore(user.uid);
+  updateData = async (uid, data) => {
+    await this.update(uid, data);
+    await this.syncStore(uid);
   };
 
   connect = async (auth, email, password) => {

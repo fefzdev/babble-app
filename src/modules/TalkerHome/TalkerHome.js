@@ -16,7 +16,7 @@ function TalkerHome({ navigation }) {
   });
 
   return (
-    <Background style={styles.background} noScroll={true}>
+    <Background style={styles.background}>
       <Role />
       <View>
         <AvailableUsers />
