@@ -38,7 +38,7 @@ export default class Model {
     try {
       const response = await this.find(uid);
       const objRetrived = response[key] ?? [];
-      await this.update({ [key]: [...objRetrived, data] });
+      await this.update(uid, { [key]: [...objRetrived, data] });
     } catch (error) {
       console.error(error);
     }
@@ -58,6 +58,7 @@ export default class Model {
 
   listen = callback => {
     const ref = db.connectTo(this.table);
+    console.log(ref);
     onValue(ref, snapshot => {
       const data = snapshot.val();
       callback(this.purifyCollectionData(data));
