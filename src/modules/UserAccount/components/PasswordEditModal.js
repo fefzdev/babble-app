@@ -1,6 +1,9 @@
+import Icon from '@expo/vector-icons/Entypo';
 import {
   EmailAuthProvider,
+  getAuth,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
   updatePassword,
 } from 'firebase/auth';
 import { useState } from 'react';
@@ -10,14 +13,18 @@ import { useDispatch } from 'react-redux';
 
 import BabbleInput from '@/components/BabbleInput';
 import BabbleModal from '@/components/BabbleModal';
+import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 import { useAuthentication } from '@/hooks/useAuthentication';
 import { setInfoMessage } from '@/store/App';
+
+const auth = getAuth();
 
 export default function PasswordEditModal({ isDisplayed, onClose }) {
   const [currentPasswordInput, setcurrentPasswordInput] = useState();
   const [passwordInput, setPasswordInput] = useState();
   const [passwordConfirmInput, setPasswordConfirmInput] = useState();
+
   const dispatch = useDispatch();
   const { user } = useAuthentication();
 
@@ -55,6 +62,37 @@ export default function PasswordEditModal({ isDisplayed, onClose }) {
     onClose();
   };
 
+  const onResetPasswordEmailSend = async () => {
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      dispatch(
+        setInfoMessage('Email de réinitialisation du mot de passe envoyé'),
+      );
+      onClose();
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
+  const forgotPassword = () => {
+    Alert.alert(
+      'Réinitialisation de mot de passe',
+      'Voulez vous recevoir un email de réinitialisation de mot de passe ?',
+      [
+        {
+          text: 'Oui',
+          style: 'default',
+          onPress: async () => await onResetPasswordEmailSend(),
+        },
+        {
+          text: 'Non',
+          style: 'cancel',
+          onPress: () => null,
+        },
+      ],
+    );
+  };
+
   return (
     <BabbleModal
       isVisible={isDisplayed}
@@ -81,6 +119,18 @@ export default function PasswordEditModal({ isDisplayed, onClose }) {
             autoComplete="password"
             secureTextEntry
           />
+          <TouchableOpacity
+            style={styles.forgotPassword}
+            onPress={() => forgotPassword()}>
+            <Icon
+              style={styles.icon}
+              name="help"
+              size={12}
+              color={Colors.orange[1000]}
+            />
+            <Text style={styles.forgotPasswordText}>Mot de passe oublié</Text>
+          </TouchableOpacity>
+
           <BabbleInput
             style={styles.input}
             label="Votre nouveau mot de passe"
@@ -127,5 +177,21 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 16,
+  },
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    backgroundColor: Colors.orange[200],
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  forgotPasswordText: {
+    color: Colors.orange[1000],
+  },
+  icon: {
+    marginRight: 4,
   },
 });
