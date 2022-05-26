@@ -3,6 +3,8 @@ import '@/database/firebase';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
+import BabbleErrorPopin from '@/components/BabbleErrorPopin';
+import BabbleInfoPopin from '@/components/BabbleInfoPopin';
 import useCachedResources from '@/hooks/useCachedResources';
 import useColorScheme from '@/hooks/useColorScheme';
 import Navigation from '@/navigation';
@@ -19,6 +21,8 @@ export default function App() {
       <Provider store={store}>
         <SafeAreaProvider>
           <Navigation colorScheme={colorScheme} />
+          <BabbleErrorPopin />
+          <BabbleInfoPopin />
         </SafeAreaProvider>
       </Provider>
     );

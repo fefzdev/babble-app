@@ -1,19 +1,24 @@
 import Icon from '@expo/vector-icons/Entypo';
-import { getAuth, sendEmailVerification } from 'firebase/auth';
+import { sendEmailVerification } from 'firebase/auth';
+import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '@/constants/Colors';
 import { useAuthentication } from '@/hooks/useAuthentication';
-
-const auth = getAuth();
+import { setInfoMessage } from '@/store/App';
 
 export default function Email() {
   const { mail } = useSelector(state => state.user);
   const { user } = useAuthentication();
-  console.log(auth.currentUser);
+  const dispatch = useDispatch();
+  const [emailSent, setEmailSent] = useState(false);
+
   const sendEmail = async () => {
-    await sendEmailVerification(auth.currentUser);
+    if (emailSent) return dispatch(setInfoMessage('Email déjà envoyé !'));
+    await sendEmailVerification(user);
+    dispatch(setInfoMessage('Email envoyé !'));
+    setEmailSent(true);
   };
 
   const isEmailVerified = () => {
