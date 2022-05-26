@@ -33,6 +33,10 @@ export const userStore = createSlice({
       state.uid = uid.payload;
     },
 
+    setUserProfilePircure: (state, picture) => {
+      state.profilePicture = picture.payload;
+    },
+
     setUserAvailable: (state, isAvailable) => {
       state.available = isAvailable.payload;
     },
@@ -49,6 +53,7 @@ export const {
   setUserMail,
   setUserName,
   setUserUID,
+  setUserProfilePircure,
   setUserAvailable,
   setIsConnected,
 } = userStore.actions;

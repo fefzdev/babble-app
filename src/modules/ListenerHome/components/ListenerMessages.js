@@ -1,11 +1,11 @@
-import colors from '@/constants/Colors';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import UserImage from '@/components/UserImage';
+
 export default function ListenerMessages({ user, message, onPress }) {
-  
   return (
     <TouchableOpacity style={styles.messageBloc} onPress={onPress}>
-      <View style={styles.thumb} />
+      <UserImage style={styles.thumb} image={user.profilePicture} />
       <View style={styles.textBloc}>
         <Text style={styles.user}>{user}</Text>
         <Text style={styles.message}>{message}</Text>
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
   thumb: {
     height: 50,
     width: 50,
-    backgroundColor: colors.black[100],
     borderRadius: 50,
     marginRight: 4,
   },

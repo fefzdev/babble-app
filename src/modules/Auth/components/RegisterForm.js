@@ -37,7 +37,7 @@ export default function RegisterForm() {
       return;
     }
     try {
-      await userRepository.create(auth, mail, password);
+      await userRepository.create(auth, mail, password, username);
     } catch (error) {
       dispatch(setErrorMessage(`${error.code}: ${error.message}`));
     }

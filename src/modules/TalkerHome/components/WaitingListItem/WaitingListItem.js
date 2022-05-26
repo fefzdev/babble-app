@@ -66,7 +66,7 @@ function WaitingListItem({ user, onPress, onRemove, isRoomActive }) {
         <UserImage
           style={style.image}
           imageStyle={style.imageRadius}
-          image={user.image}
+          image={user.profilePicture}
         />
         <View style={style.infos}>
           <Text key={user.uid} style={style.userName}>
