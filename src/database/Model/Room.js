@@ -33,13 +33,14 @@ export default class Room extends Model {
   post = async (roomUid, userUid, content) => {
     this.table = 'users';
     const user = await this.find(userUid);
+    const time = new Date();
 
     this.table = 'rooms';
     await this.push(
       {
         user,
         content,
-        time: new Date().toISOString(),
+        time,
       },
       roomUid,
       'messages',

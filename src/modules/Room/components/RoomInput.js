@@ -41,7 +41,7 @@ export default function RoomInput({ roomUid }) {
           <TouchableOpacity
             style={[styles.submit, !inputText ? styles.submitDisabled : null]}
             onPress={handlePost}>
-            <Icon size="24" color={Colors.orange[1000]} name="paper-plane" />
+            <Icon size={24} color={Colors.orange[1000]} name="paper-plane" />
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
