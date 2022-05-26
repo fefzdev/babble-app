@@ -11,7 +11,7 @@ import useRepository from '@/database/Model';
 
 import ProfilePictureEditModal from './ProfilePictureEditModal';
 
-export default function ProfilePicture({ navigation }) {
+export default function ProfilePicture() {
   const { profilePicture, uid } = useSelector(state => state.user);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { userRepository } = useRepository();
@@ -55,7 +55,7 @@ export default function ProfilePicture({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <UserImage image={profilePicture} imageStyle={styles.image} size={80} />
+      <UserImage image={profilePicture} imageStyle={styles.image} size={124} />
       <TouchableOpacity
         style={styles.edit}
         onPress={() => setIsModalVisible(true)}>
@@ -65,7 +65,6 @@ export default function ProfilePicture({ navigation }) {
       <ProfilePictureEditModal
         isDisplayed={isModalVisible}
         onClose={onPopupClose}
-        navigation={navigation}
       />
     </View>
   );
