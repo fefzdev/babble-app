@@ -58,7 +58,6 @@ export default class Model {
 
   listen = callback => {
     const ref = db.connectTo(this.table);
-    console.log(ref);
     onValue(ref, snapshot => {
       const data = snapshot.val();
       callback(this.purifyCollectionData(data));

@@ -1,5 +1,5 @@
 import { getAuth, signOut } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -31,8 +31,6 @@ function Settings() {
   const handlerFunction = {
     setModalVisible,
   };
-
-  useEffect(() => console.log(settings));
 
   return (
     <Background>

@@ -1,4 +1,5 @@
 import Icon from '@expo/vector-icons/Entypo';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
@@ -6,15 +7,21 @@ import { useSelector } from 'react-redux';
 import Colors from '@/constants/Colors';
 
 import Email from './Email';
+import NameEditModal from './NameEditModal';
+import PasswordEditModal from './PasswordEditModal';
 
 export default function UserInfos({ style }) {
   const { name } = useSelector(state => state.user);
+  const [isNamePopupDisplayed, setNamePopupDisplayed] = useState(false);
+  const [isPasswordPopupDisplayed, setPasswordPopupDisplayed] = useState(false);
 
   return (
     <View style={[styles.container, style]}>
       <Email />
       <View style={[styles.settingsBlock]}>
-        <TouchableOpacity style={styles.settingItem} onPress={() => null}>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => setNamePopupDisplayed(true)}>
           <Icon
             style={styles.icon}
             name="user"
@@ -26,7 +33,9 @@ export default function UserInfos({ style }) {
             <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingItem} onPress={() => null}>
+        <TouchableOpacity
+          style={styles.settingItem}
+          onPress={() => setPasswordPopupDisplayed(true)}>
           <Icon
             style={styles.icon}
             name="key"
@@ -39,6 +48,14 @@ export default function UserInfos({ style }) {
           </View>
         </TouchableOpacity>
       </View>
+      <NameEditModal
+        isDisplayed={isNamePopupDisplayed}
+        onClose={() => setNamePopupDisplayed(false)}
+      />
+      <PasswordEditModal
+        isDisplayed={isPasswordPopupDisplayed}
+        onClose={() => setPasswordPopupDisplayed(false)}
+      />
     </View>
   );
 }
