@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import Icon from '@expo/vector-icons/Entypo';
+import { useState } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -18,8 +19,6 @@ export default function RoomInput({ roomUid }) {
   const { roomRepository } = useRepository();
   const currentUser = useSelector(state => state.user);
   const [inputText, setInputText] = useState();
-
-  // const submitIcon = require('@/assets/icons/ArrowRight.svg');
 
   const handlePost = () => {
     if (!inputText) return;
@@ -42,12 +41,7 @@ export default function RoomInput({ roomUid }) {
           <TouchableOpacity
             style={[styles.submit, !inputText ? styles.submitDisabled : null]}
             onPress={handlePost}>
-            {/* <SvgUri
-              width="24"
-              height="24"
-              fill={Colors.orange[1000]}
-              source={submitIcon}
-            /> */}
+            <Icon size="24" color={Colors.orange[1000]} name="paper-plane" />
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>

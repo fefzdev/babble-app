@@ -21,7 +21,11 @@ export default function AuthStack({
   return (
     <NavigationContainer theme={theme} linking={linking}>
       <Stack.Navigator>
-        <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen
+          name="Auth"
+          component={AuthScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
