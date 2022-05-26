@@ -79,7 +79,11 @@ function ListenerHome({ navigation }) {
     }
 
     return rtrArray.map(
-      ({ talker: { name, uid: talkerUid }, messages, uid: roomUid }) => {
+      ({
+        talker: { name, uid: talkerUid, profilePicture },
+        messages,
+        uid: roomUid,
+      }) => {
         const lastTalkerMessage = messages
           ?.filter(({ user: { uid: messageUid } }) => messageUid === talkerUid)
           .pop()?.content;
@@ -87,7 +91,8 @@ function ListenerHome({ navigation }) {
         return (
           <ListenerMessages
             key={roomUid}
-            user={name}
+            name={name}
+            profilePicture={profilePicture}
             message={lastTalkerMessage ?? 'Veux discuter !'}
             onPress={() => {
               roomRepository.setActive(roomUid);

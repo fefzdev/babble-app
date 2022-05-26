@@ -12,6 +12,7 @@ function Role() {
       padding: 24,
       borderRadius: 8,
       backgroundColor: Colors.orange['200'],
+      width: '100%',
     },
     text: {
       textAlign: 'center',
