@@ -1,31 +1,64 @@
 import Icon from '@expo/vector-icons/Entypo';
+import {
+  getMediaLibraryPermissionsAsync,
+  launchImageLibraryAsync,
+  MediaTypeOptions,
+  requestMediaLibraryPermissionsAsync,
+} from 'expo-image-picker';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import BabbleLoader from '@/components/BabbleLoader';
 import BabbleModal from '@/components/BabbleModal';
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
 import CameraScreen from '@/screens/CameraScreen';
 
 export default function ProfilePictureEditModal({ isDisplayed, onClose }) {
-  const { profilePicture } = useSelector(state => state.user);
-  const [updated, setUpdated] = useState(false);
+  const { profilePicture: defaultUserPicture } = useSelector(
+    state => state.user,
+  );
   const [isCameraDisplayed, setIsCameraDisplayed] = useState(false);
-  const [userPicture, setUserPicture] = useState(profilePicture);
+  const [userPicture, setUserPicture] = useState(defaultUserPicture);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const removeProfilePic = () => {};
-  const openCameraRoll = () => {};
-  const openCamera = async () => {
-    setIsCameraDisplayed(true);
+  const isUpdated = () => defaultUserPicture !== userPicture;
+
+  const updateUserPicture = picture => {
+    setUserPicture(picture);
   };
+
+  const removeProfilePic = () => {
+    setUserPicture(defaultUserPicture);
+  };
+
+  const openCameraRoll = async () => {
+    setIsLoading(true);
+    const permission = await getMediaLibraryPermissionsAsync();
+
+    if (!permission.granted) await requestMediaLibraryPermissionsAsync();
+
+    const result = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) updateUserPicture(result);
+    setIsLoading(false);
+  };
+
+  const openCamera = async () => setIsCameraDisplayed(true);
+
   const takePicture = picture => {
     setIsCameraDisplayed(false);
-    setUserPicture(picture);
-    setUpdated(true);
+    updateUserPicture(picture);
   };
+
   const closeProfilePictureEditModal = () => {
-    setUserPicture(profilePicture);
+    setUserPicture(defaultUserPicture);
     onClose();
   };
 
@@ -45,20 +78,24 @@ export default function ProfilePictureEditModal({ isDisplayed, onClose }) {
     <BabbleModal
       isVisible={isDisplayed}
       onClose={() => closeProfilePictureEditModal()}
+      canBeSwiped={false}
       style={styles.container}>
       <View style={styles.head}>
         <TouchableOpacity onPress={() => closeProfilePictureEditModal()}>
           <Text style={styles.cancel}>Annuler</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => (updated ? closeProfilePictureEditModal() : null)}>
-          {updated ? <Text style={styles.cancel}>Valider</Text> : null}
+          onPress={() => (isUpdated() ? closeProfilePictureEditModal() : null)}>
+          {isUpdated() ? <Text style={styles.cancel}>Valider</Text> : null}
         </TouchableOpacity>
       </View>
-
       <View style={styles.profilePicture}>
-        <UserImage image={userPicture} imageStyle={styles.image} size={240} />
-        {profilePicture ? (
+        {!isLoading ? (
+          <UserImage image={userPicture} imageStyle={styles.image} size={240} />
+        ) : (
+          <BabbleLoader style={styles.image} />
+        )}
+        {isUpdated() ? (
           <TouchableOpacity
             style={styles.remove}
             onPress={() => removeProfilePic()}>
@@ -66,7 +103,6 @@ export default function ProfilePictureEditModal({ isDisplayed, onClose }) {
           </TouchableOpacity>
         ) : null}
       </View>
-
       <View style={styles.actions}>
         <TouchableOpacity
           onPress={() => openCameraRoll()}
@@ -99,7 +135,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   image: {
+    flex: 0,
     borderRadius: 8,
+    backgroundColor: Colors.orange[200],
+    width: 240,
+    height: 240,
   },
   actions: {
     flexDirection: 'row',

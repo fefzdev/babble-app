@@ -1,7 +1,13 @@
 import { View } from 'react-native';
 import Modal from 'react-native-modal';
 
-function BabbleModal({ children, isVisible, onClose, style }) {
+function BabbleModal({
+  children,
+  isVisible,
+  onClose,
+  style,
+  canBeSwiped = true,
+}) {
   const styles = {
     modal: {
       margin: 0,
@@ -20,7 +26,7 @@ function BabbleModal({ children, isVisible, onClose, style }) {
     <Modal
       style={styles.modal}
       isVisible={isVisible}
-      swipeDirection="down"
+      swipeDirection={canBeSwiped ? 'down' : ''}
       propagateSwipe={true}
       swipeThreshold={50}
       onSwipeComplete={onClose}

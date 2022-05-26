@@ -22,6 +22,7 @@ export default function CameraScreen({
   const [type, setType] = useState(CameraType.front);
   const [flashMode] = useState(FlashMode.off);
   const [camera, setCamera] = useState(null);
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
