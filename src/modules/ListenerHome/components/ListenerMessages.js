@@ -2,12 +2,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import UserImage from '@/components/UserImage';
 
-export default function ListenerMessages({ user, message, onPress }) {
+export default function ListenerMessages({
+  name,
+  profilePicture,
+  message,
+  onPress,
+}) {
   return (
     <TouchableOpacity style={styles.messageBloc} onPress={onPress}>
-      <UserImage style={styles.thumb} image={user.profilePicture} />
+      <UserImage style={styles.thumb} image={profilePicture} />
       <View style={styles.textBloc}>
-        <Text style={styles.user}>{user}</Text>
+        <Text style={styles.user}>{name}</Text>
         <Text style={styles.message}>{message}</Text>
       </View>
     </TouchableOpacity>
