@@ -1,3 +1,4 @@
+import Icon from '@expo/vector-icons/Entypo';
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +20,7 @@ export default function BabbleErrorPopin() {
   const styles = StyleSheet.create({
     popinContainer: {
       position: 'absolute',
-      bottom: 48,
+      top: 100,
       width: '100%',
     },
     container: {
@@ -48,13 +49,7 @@ export default function BabbleErrorPopin() {
         onPress={() => dispatch(removeErrorMessage())}
         style={styles.container}>
         <Text style={styles.text}> {errorMessage}</Text>
-        {/* <SvgUri
-          width="24"
-          height="24"
-          style={styles.icon}
-          fill={Colors.red[1000]}
-          source={require('../../assets/icons/Cross.svg')}
-        /> */}
+        <Icon name="cross" size={24} color={Colors.red[1000]} />
       </TouchableOpacity>
     </View>
   );
