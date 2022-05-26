@@ -115,6 +115,17 @@ export default function ProfilePictureEditModal({ isDisplayed, onClose }) {
           <Text style={styles.actionLabel}>Appareil photo</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.infoBox}>
+        <Icon
+          style={styles.icon}
+          name="info"
+          size={16}
+          color={Colors.orange[1000]}
+        />
+        <Text style={styles.infoBoxText}>
+          Votre photo de profil sera visible par les autres utilisateurs
+        </Text>
+      </View>
       {camera()}
     </BabbleModal>
   );
@@ -173,5 +184,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     top: 0,
     padding: 0,
+  },
+  infoBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: Colors.orange[200],
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  icon: {
+    marginRight: 16,
+  },
+  infoBoxText: {
+    flexShrink: 1,
+    color: Colors.orange[1000],
   },
 });
