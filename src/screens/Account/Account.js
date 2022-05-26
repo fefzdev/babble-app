@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text } from 'react-native';
 
-function Account() {
-  return <Text>Parametres</Text>;
+import UserAccountModule from '@/modules/UserAccount';
+
+function Account({ navigation }) {
+  return <UserAccountModule navigation={navigation} />;
 }
 
 export default Account;

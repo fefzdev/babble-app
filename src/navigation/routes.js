@@ -1,4 +1,5 @@
 import Account from '@/screens/Account';
+import CameraScreen from '@/screens/CameraScreen';
 import Home from '@/screens/Home';
 import Room from '@/screens/Room';
 import Settings from '@/screens/Settings';
@@ -23,5 +24,10 @@ export default [
     name: 'Account',
     header: true,
     component: Account,
+  },
+  {
+    name: 'Camera',
+    header: false,
+    component: CameraScreen,
   },
 ];
