@@ -1,18 +1,24 @@
-import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from 'firebase/auth';
 import { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 
 import BabbleInput from '@/components/BabbleInput';
 import BabbleModal from '@/components/BabbleModal';
 import Fonts from '@/constants/Fonts';
 import { useAuthentication } from '@/hooks/useAuthentication';
+import { setInfoMessage } from '@/store/App';
 
 export default function PasswordEditModal({ isDisplayed, onClose }) {
   const [currentPasswordInput, setcurrentPasswordInput] = useState();
   const [passwordInput, setPasswordInput] = useState();
   const [passwordConfirmInput, setPasswordConfirmInput] = useState();
-
+  const dispatch = useDispatch();
   const { user } = useAuthentication();
 
   const newPasswordMatch = () => passwordInput === passwordConfirmInput;
@@ -30,6 +36,11 @@ export default function PasswordEditModal({ isDisplayed, onClose }) {
         passwordInput,
       );
       await reauthenticateWithCredential(user, credential);
+
+      await updatePassword(user, passwordInput);
+
+      dispatch(setInfoMessage('Mot de passe modifié avec succès'));
+      onClose();
     } catch (error) {
       let errorMessage = error.message;
       if (error.code === 'auth/wrong-password')
