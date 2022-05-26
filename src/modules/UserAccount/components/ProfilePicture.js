@@ -23,7 +23,7 @@ export default function ProfilePicture() {
         resolve(xhr.response);
       };
       xhr.onerror = function (e) {
-        console.log(e);
+        console.error(e);
         reject(new TypeError('Network request failed'));
       };
       xhr.responseType = 'blob';
@@ -44,11 +44,10 @@ export default function ProfilePicture() {
     try {
       if (imageUrl) {
         const image = await uploadImageAsync(imageUrl);
-        console.log(image);
-        userRepository.update(uid, { profilePicture: image });
+        userRepository.updateData(uid, { profilePicture: image });
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
     setIsModalVisible(false);
   };

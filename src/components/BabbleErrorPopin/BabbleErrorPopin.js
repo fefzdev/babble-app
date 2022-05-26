@@ -17,29 +17,6 @@ export default function BabbleErrorPopin() {
     }
   }, [errorMessage]);
 
-  const styles = StyleSheet.create({
-    popinContainer: {
-      position: 'absolute',
-      top: 100,
-      width: '100%',
-    },
-    container: {
-      backgroundColor: Colors.red[300],
-      marginHorizontal: 20,
-      borderRadius: 8,
-      padding: 12,
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    },
-    text: {
-      color: Colors.red[1000],
-      flex: 1,
-    },
-    icon: {
-      color: Colors.red[1000],
-    },
-  });
   if (!errorMessage) {
     return null;
   }
@@ -54,3 +31,27 @@ export default function BabbleErrorPopin() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  popinContainer: {
+    position: 'absolute',
+    top: 100,
+    width: '100%',
+  },
+  container: {
+    backgroundColor: Colors.red[300],
+    marginHorizontal: 20,
+    borderRadius: 8,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  text: {
+    color: Colors.red[1000],
+    flex: 1,
+  },
+  icon: {
+    color: Colors.red[1000],
+  },
+});
