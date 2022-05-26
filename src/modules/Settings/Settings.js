@@ -1,8 +1,10 @@
+import { getAuth, signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import BabbleButton from '@/components/BabbleButton';
 import Background from '@/components/Background';
 import colors from '@/constants/Colors';
 import fonts from '@/constants/Fonts';
@@ -11,6 +13,7 @@ import useRepository from '@/database/Model';
 import RoleModal from '../FirstLogin/components/RoleModal';
 import SettingsBlock from './components/SettingsBlock';
 import useSettings from './data';
+const auth = getAuth();
 
 function Settings() {
   const settings = useSettings();
@@ -33,6 +36,7 @@ function Settings() {
 
   return (
     <Background>
+      <BabbleButton onPress={() => signOut(auth)}>Disconnect</BabbleButton>
       {settings.map(({ title, subSettings }) => (
         <View style={styles.settingContainer} key={title}>
           <Text style={styles.settingTitle}>{title} :</Text>

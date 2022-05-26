@@ -1,24 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
 
-import BabbleButton from '@/components/BabbleButton';
 import Background from '@/components/Background';
-import Role from '@/components/RoleBlock';
 
 import ProfilePicture from './components/ProfilePicture';
+import UserInfos from './components/UserInfos';
 
-export default function UserAccount({ navigation }) {
-  const { name } = useSelector(state => state.user);
-
+export default function UserAccount() {
   return (
     <Background>
       <View style={styles.background}>
-        <ProfilePicture navigation={navigation} />
-        <View style={styles.nameContainer}>
-          <Text style={styles.name}>{name}</Text>
-        </View>
-        <Role />
-        <BabbleButton>Modifier mon rôle</BabbleButton>
+        <ProfilePicture />
+        <UserInfos style={styles.userInfos} />
       </View>
     </Background>
   );
@@ -33,7 +25,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
-  name: {
-    fontSize: 24,
+  userInfos: {
+    marginVertical: 16,
   },
 });
