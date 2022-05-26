@@ -26,7 +26,7 @@ function BabbleModal({
     <Modal
       style={styles.modal}
       isVisible={isVisible}
-      swipeDirection={canBeSwiped ? 'down' : ''}
+      swipeDirection={canBeSwiped ? 'down' : null}
       propagateSwipe={true}
       swipeThreshold={50}
       onSwipeComplete={onClose}

@@ -10,6 +10,7 @@ import {
   setUser,
   setUserMail,
   setUserName,
+  setUserProfilePircure,
   setUserType,
   setUserUID,
 } from '@/store/User';
@@ -32,6 +33,7 @@ export default class User extends Model {
     this.updateStore(setUserMail(userData.mail));
     this.updateStore(setUserUID(userData.uid));
     this.updateStore(setUserType(userData.type));
+    this.updateStore(setUserProfilePircure(userData.profilePicture));
     this.updateStore(setUserName(userData.name));
     this.updateStore(setUserAvailable(userData.available));
 
@@ -39,7 +41,7 @@ export default class User extends Model {
     this.updateStore(setIsLoading(false));
   };
 
-  create = async (auth, email, password, username, handleError) => {
+  create = async (auth, email, password, username) => {
     this.updateStore(setIsLoading(true));
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -57,7 +59,6 @@ export default class User extends Model {
       await this.syncStore(user.uid);
     } catch (error) {
       this.updateStore(setIsLoading(false));
-      handleError(error);
     }
   };
 

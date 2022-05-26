@@ -47,7 +47,7 @@ export default function AvailableUsers() {
             <UserImage
               style={style.image}
               imageStyle={style.imageRadius}
-              image={user.image}
+              image={user.profilePicture}
             />
             <Text numberOfLines={2} ellipsizeMode="tail" style={style.name}>
               {user.name}

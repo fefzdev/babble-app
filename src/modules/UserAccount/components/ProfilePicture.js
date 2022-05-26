@@ -1,16 +1,57 @@
 import Icon from '@expo/vector-icons/Entypo';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import uuid from 'react-native-uuid';
 import { useSelector } from 'react-redux';
 
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
+import useRepository from '@/database/Model';
 
 import ProfilePictureEditModal from './ProfilePictureEditModal';
 
 export default function ProfilePicture({ navigation }) {
-  const { profilePicture } = useSelector(state => state.user);
+  const { profilePicture, uid } = useSelector(state => state.user);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { userRepository } = useRepository();
+
+  async function uploadImageAsync(uri) {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
+    const fileRef = ref(getStorage(), uuid.v4());
+    await uploadBytes(fileRef, blob);
+
+    // We're done with the blob, close and release it
+    blob.close();
+
+    return await getDownloadURL(fileRef);
+  }
+
+  const onPopupClose = async imageUrl => {
+    try {
+      if (imageUrl) {
+        const image = await uploadImageAsync(imageUrl);
+        console.log(image);
+        userRepository.update(uid, { profilePicture: image });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setIsModalVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -23,7 +64,7 @@ export default function ProfilePicture({ navigation }) {
 
       <ProfilePictureEditModal
         isDisplayed={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
+        onClose={onPopupClose}
         navigation={navigation}
       />
     </View>

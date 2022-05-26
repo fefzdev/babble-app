@@ -85,7 +85,7 @@ export default function ProfilePictureEditModal({ isDisplayed, onClose }) {
           <Text style={styles.cancel}>Annuler</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => (isUpdated() ? closeProfilePictureEditModal() : null)}>
+          onPress={() => (isUpdated() ? onClose(userPicture.uri) : null)}>
           {isUpdated() ? <Text style={styles.cancel}>Valider</Text> : null}
         </TouchableOpacity>
       </View>
