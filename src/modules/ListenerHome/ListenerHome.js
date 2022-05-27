@@ -53,15 +53,12 @@ function ListenerHome({ navigation }) {
       const users = await userRepository.all();
       setAllUsers(users);
     };
+
     fetchUsers();
 
     roomRepository.listen(data => {
       setAllRooms(data);
     });
-
-    return () => {
-      roomRepository.unlisten();
-    };
   }, []);
 
   useEffect(() => {
