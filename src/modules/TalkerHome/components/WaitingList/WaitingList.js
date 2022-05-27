@@ -18,11 +18,11 @@ export default function WaitingList({ navigation }) {
     roomRepository.listen(async () => {
       const rooms = await roomRepository.findUserInRooms(currentUserUID);
       setAllRooms(rooms);
-
-      return () => {
-        roomRepository.unlisten();
-      };
     });
+
+    return () => {
+      roomRepository.unlisten();
+    };
   }, []);
 
   const buildUsersAvailable = () => {

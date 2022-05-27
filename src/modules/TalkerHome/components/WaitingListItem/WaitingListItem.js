@@ -3,40 +3,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
 
-function WaitingListItem({ user, onPress, onRemove, isRoomActive }) {
-  const style = StyleSheet.create({
-    item: {
-      marginTop: 16,
-      flex: 1,
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-    image: {
-      width: 48,
-      height: 48,
-      marginTop: 4,
-    },
-    imageRadius: {
-      borderRadius: 24,
-    },
-    infos: {
-      marginLeft: 8,
-      flex: 1,
-    },
-    userName: {
-      fontWeight: 'bold',
-      marginBottom: 4,
-    },
-    remove: {
-      padding: 8,
-      backgroundColor: Colors.orange[200],
-      borderRadius: 8,
-    },
-    removeText: {
-      color: Colors.orange[1000],
-    },
-  });
-
+export default function WaitingListItem({
+  user,
+  onPress,
+  onRemove,
+  isRoomActive,
+}) {
   const info = () => {
     if (isRoomActive) return <Text>Demande acceptée !</Text>;
     return <Text>Demande envoyée...</Text>;
@@ -61,23 +33,52 @@ function WaitingListItem({ user, onPress, onRemove, isRoomActive }) {
   };
 
   return (
-    <TouchableOpacity key={user.uid + '-waiting'}>
-      <View style={style.item}>
-        <UserImage
-          style={style.image}
-          imageStyle={style.imageRadius}
-          image={user.profilePicture}
-        />
-        <View style={style.infos}>
-          <Text key={user.uid} style={style.userName}>
-            {user.name}
-          </Text>
-          {info()}
-        </View>
-        {rightAction()}
+    <View key={user.uid + '-waiting'} style={style.item}>
+      <UserImage
+        style={style.image}
+        imageStyle={style.imageRadius}
+        image={user.profilePicture}
+      />
+      <View style={style.infos}>
+        <Text key={user.uid} style={style.userName}>
+          {user.name}
+        </Text>
+        {info()}
       </View>
-    </TouchableOpacity>
+      {rightAction()}
+    </View>
   );
 }
 
-export default WaitingListItem;
+const style = StyleSheet.create({
+  item: {
+    marginTop: 16,
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  image: {
+    width: 48,
+    height: 48,
+    marginTop: 4,
+  },
+  imageRadius: {
+    borderRadius: 24,
+  },
+  infos: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  userName: {
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  remove: {
+    padding: 8,
+    backgroundColor: Colors.orange[200],
+    borderRadius: 8,
+  },
+  removeText: {
+    color: Colors.orange[1000],
+  },
+});
