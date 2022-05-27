@@ -58,6 +58,10 @@ function ListenerHome({ navigation }) {
     roomRepository.listen(data => {
       setAllRooms(data);
     });
+
+    return () => {
+      roomRepository.unlisten();
+    };
   }, []);
 
   useEffect(() => {

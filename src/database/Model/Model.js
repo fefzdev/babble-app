@@ -1,4 +1,4 @@
-import { onValue } from 'firebase/database';
+import { off, onValue } from 'firebase/database';
 import uuid from 'react-native-uuid';
 
 import db from '../helper';
@@ -62,6 +62,11 @@ export default class Model {
       const data = snapshot.val();
       callback(this.purifyCollectionData(data));
     });
+  };
+
+  unlisten = () => {
+    const ref = db.connectTo(this.table);
+    off(ref);
   };
 
   listenForKey = (key, uid, callback) => {

@@ -24,6 +24,9 @@ export default function AvailableUsers() {
     userRepository.listen(data => {
       setAllUsers(data);
     });
+    return () => {
+      roomRepository.unlisten();
+    };
   }, []);
 
   const addToWaitingList = userId => {

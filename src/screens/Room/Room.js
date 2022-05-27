@@ -30,6 +30,10 @@ export default function Room({ route, navigation }) {
       else navigation.setOptions({ headerTitle: roomListener.name });
 
       setIsLoading(false);
+
+      return () => {
+        roomRepository.unlisten();
+      };
     };
     fetchRoom();
   }, []);
