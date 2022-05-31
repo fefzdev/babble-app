@@ -83,6 +83,16 @@ export default class Rooms extends Model {
   updateRoom = async (roomUid: string, data: RoomInterface) =>
     await db.update(`${this.table}/${roomUid}`, data);
 
+  setActive = async (roomUid: string) => {
+    const room = await this.find(roomUid);
+
+    if (!room) throw new Error('Room not found');
+
+    await db.update(`${this.table}/${roomUid}`, {
+      isActive: true,
+    });
+  };
+
   deleteRoom = async (room: RoomStoreInterface, currentUserUid: string) => {
     const { roomUid, otherUserData } = room;
 

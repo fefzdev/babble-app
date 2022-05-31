@@ -1,125 +1,82 @@
 import { useEffect, useMemo, useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import { useSelector } from 'react-redux';
+import { ScrollView, StyleSheet, Text, TextInput } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '@/components/Background';
 import Role from '@/components/RoleBlock';
 import colors from '@/constants/Colors';
 import font from '@/constants/Fonts';
 import useRepository from '@/database/Model';
+import { setRooms } from '@/store/Rooms';
 
+import AvailableBlock from './components/AvailableBlock';
 import ListenerMessages from './components/ListenerMessages';
 
 function ListenerHome({ navigation }) {
-  const { uid, available } = useSelector(state => state.user);
-  const { userRepository, roomRepository } = useRepository();
-  const [isEnabled, setIsEnabled] = useState(available);
+  const { available, uid } = useSelector(state => state.user);
+  const { rooms: roomsStore } = useSelector(state => state.rooms);
+  const { members, userRepository, rooms: roomsRepo } = useRepository();
+  const [,] = useState(available);
   const [inputValue, setInputValue] = useState('');
-  const [allRooms, setAllRooms] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
-  const [talkersWantsToTalk, setTalkersWantsToTalk] = useState([]);
-  const listernerMessagesArray = useMemo(() => {
-    if (inputValue !== '') {
-      return talkersWantsToTalk.filter(({ talker: { name } }) =>
-        inputValue.includes(name),
-      );
-    }
+  const [] = useState([]);
+  const dispatch = useDispatch();
 
-    return talkersWantsToTalk;
+  const listernerMessagesArray = useMemo(() => {
+    if (inputValue !== '')
+      return roomsStore.filter(({ otherUserData: { name } }) =>
+        name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase()),
+      );
+
+    return roomsStore;
   }, [inputValue]);
 
-  useEffect(() => {
-    if (allUsers.length) {
-      const rtrTwantsToTalk = [];
-      allRooms
-        .filter(r => r.users[1] === uid)
-        .forEach(r => {
-          const talker = allUsers.find(u => u.uid === r.users[0]);
-          rtrTwantsToTalk.push({ ...r, talker });
-        });
-      setTalkersWantsToTalk(rtrTwantsToTalk);
-    }
-  }, [allRooms]);
+  const fetchRooms = async userData => {
+    if (!userData?.rooms) return dispatch(setRooms([]));
+
+    const { rooms } = userData;
+    const roomsData = await Promise.all(
+      Object.keys(rooms).map(async roomUid => {
+        const memberList = await members.getRoomMembers(roomUid);
+        const otherUser = memberList.filter(m => m !== uid)[0];
+        const otherUserData = await userRepository.find(otherUser);
+        const roomInfos = await roomsRepo.getRoom(roomUid);
+
+        return { roomUid, otherUserData, ...roomInfos };
+      }),
+    );
+    dispatch(setRooms(roomsData));
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await userRepository.all();
-      setAllUsers(users);
+    userRepository.listen(fetchRooms, uid);
+
+    return () => {
+      userRepository.unlisten();
     };
-
-    fetchUsers();
-
-    roomRepository.listen(data => {
-      setAllRooms(data);
-    });
   }, []);
 
-  useEffect(() => {
-    const updateUserAvailable = async () => {
-      await userRepository.updateData(uid, { available: isEnabled });
-    };
-    updateUserAvailable();
-  }, [isEnabled]);
-
-  const toggleSwitch = () => {
-    setIsEnabled(!isEnabled);
-  };
-
   const buildTalkersWantsToTalk = () => {
-    let rtrArray = talkersWantsToTalk;
-
-    if (listernerMessagesArray.length) {
-      rtrArray = listernerMessagesArray;
-    }
-
-    return rtrArray.map(
-      ({
-        talker: { name, uid: talkerUid, profilePicture },
-        messages,
-        uid: roomUid,
-      }) => {
-        const lastTalkerMessage = messages
-          ?.filter(({ user: { uid: messageUid } }) => messageUid === talkerUid)
-          .pop()?.content;
-
-        return (
-          <ListenerMessages
-            key={roomUid}
-            name={name}
-            profilePicture={profilePicture}
-            message={lastTalkerMessage ?? 'Veux discuter !'}
-            onPress={() => {
-              roomRepository.setActive(roomUid);
-              navigation.navigate('Room', {
-                roomId: roomUid,
-              });
-            }}
-          />
-        );
-      },
-    );
+    return listernerMessagesArray.map(room => {
+      return (
+        <ListenerMessages
+          key={room.roomUid}
+          room={room}
+          onPress={() => {
+            roomsRepo.setActive(room.roomUid);
+            navigation.navigate('Room', {
+              room,
+            });
+          }}
+        />
+      );
+    });
   };
+  buildTalkersWantsToTalk();
 
   return (
     <Background noScroll>
       <Role />
-      <View style={styles.availableBlock}>
-        <Text style={font.callout}>Êtes-vous disponible ?</Text>
-        <Switch
-          trackColor={{ false: colors.orange[50], true: colors.orange[400] }}
-          thumbColor={colors.orange[1000]}
-          ios_backgroundColor={colors.orange[50]}
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-      </View>
+      <AvailableBlock />
       <Text style={styles.convTitle}>Vos conversations</Text>
       <TextInput
         style={styles.input}
@@ -140,14 +97,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-  },
-
-  availableBlock: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 33,
   },
 
   convTitle: {
