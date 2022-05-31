@@ -21,12 +21,13 @@ export default class RoomMembers extends Model {
   updateRoomMembers = async (roomUid: string, members: MembersInterface) =>
     await db.update(`${this.table}/${roomUid}`, members);
 
-  deleteRoomMember = async (roomUid: string, userId: string) => {
-    const members: MembersInterface = await this.find(`${roomUid}/${userId}`);
-    Object.keys(members).forEach(([key, value]) => {
-      if (value === userId) members[key] = false;
-    });
+  deleteRoomMember = async (
+    roomUid: string,
+    userId: string,
+    members: MembersInterface,
+  ) => {
+    const membersWhoLeft = members.filter(member => member !== userId);
 
-    await db.update(`${this.table}/${roomUid}`, members);
+    await db.update(`${this.table}/${roomUid}`, membersWhoLeft);
   };
 }
