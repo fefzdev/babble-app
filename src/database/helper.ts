@@ -11,7 +11,7 @@ import {
 const database = getDatabase();
 
 const db = {
-  connectTo: (refPath: string) => ref(database, refPath),
+  connectTo: (refPath?: string) => ref(database, refPath),
 
   read: async (refPath: string) => {
     const res = await get(child(ref(database), refPath));

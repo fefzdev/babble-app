@@ -1,21 +1,33 @@
+import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
+import useRepository from '@/database/Model';
+import { updateRoom } from '@/store/Rooms';
 
-export default function WaitingListItem({
-  user,
-  onPress,
-  onRemove,
-  isRoomActive,
-}) {
+export default function WaitingListItem({ room, onPress, onRemove }) {
+  const { rooms } = useRepository();
+  const dispatch = useDispatch();
+
+  const fetchRoom = async roomData => {
+    dispatch(updateRoom({ uid: room.uid, ...roomData }));
+  };
+
+  useEffect(() => {
+    rooms.listen(fetchRoom, room.uid);
+
+    return rooms.unlisten();
+  }, []);
+
   const info = () => {
-    if (isRoomActive) return <Text>Demande acceptée !</Text>;
+    if (room.isActive) return <Text>Demande acceptée !</Text>;
     return <Text>Demande envoyée...</Text>;
   };
 
   const rightAction = () => {
-    if (isRoomActive)
+    if (room.isActive)
       return (
         <TouchableOpacity onPress={() => onPress()}>
           <View style={style.remove}>
@@ -32,16 +44,18 @@ export default function WaitingListItem({
     );
   };
 
+  if (!room) return null;
+
   return (
-    <View key={user.uid + '-waiting'} style={style.item}>
+    <View key={room.otherUserData.uid + '-waiting'} style={style.item}>
       <UserImage
         style={style.image}
         imageStyle={style.imageRadius}
-        image={user.profilePicture}
+        image={room.otherUserData.profilePicture}
       />
       <View style={style.infos}>
-        <Text key={user.uid} style={style.userName}>
-          {user.name}
+        <Text key={room.otherUserData.uid} style={style.userName}>
+          {room.otherUserData.name}
         </Text>
         {info()}
       </View>

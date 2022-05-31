@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -8,34 +7,25 @@ import useRepository from '@/database/Model';
 import WaitingListItem from '../WaitingListItem';
 
 export default function WaitingList({ navigation }) {
-  const { roomRepository } = useRepository();
-  const [allRooms, setAllRooms] = useState([]);
-  const currentUserUID = useSelector(state => state.user.uid);
+  const { rooms: roomRepo } = useRepository();
+  const { rooms } = useSelector(state => state.rooms);
+  const { uid } = useSelector(state => state.user);
 
-  const openRoom = roomId => navigation.navigate('Room', { roomId });
-
-  useEffect(() => {
-    roomRepository.listen(async () => {
-      const rooms = await roomRepository.findUserInRooms(currentUserUID);
-      setAllRooms(rooms);
-    });
-  }, []);
+  const openRoom = room => navigation.navigate('Room', { room });
 
   const buildUsersAvailable = () => {
-    if (!allRooms.length)
+    if (!rooms.length)
       return (
         <Text style={style.itemContainer}>Pas de demandes en attente</Text>
       );
-
     return (
       <ScrollView style={[style.itemContainer]}>
-        {allRooms.map(({ listener, uid, active }) => (
+        {rooms.map(room => (
           <WaitingListItem
-            key={listener.uid}
-            user={listener}
-            isRoomActive={active}
-            onPress={() => openRoom(uid)}
-            onRemove={() => roomRepository.delete(uid)}
+            key={room.roomUid}
+            room={room}
+            onPress={() => openRoom(room)}
+            onRemove={() => roomRepo.deleteRoom(room, uid)}
           />
         ))}
       </ScrollView>

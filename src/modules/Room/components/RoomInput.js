@@ -16,13 +16,17 @@ import Colors from '@/constants/Colors';
 import useRepository from '@/database/Model';
 
 export default function RoomInput({ roomUid }) {
-  const { roomRepository } = useRepository();
+  const { messages } = useRepository();
   const currentUser = useSelector(state => state.user);
   const [inputText, setInputText] = useState();
 
   const handlePost = () => {
     if (!inputText) return;
-    roomRepository.post(roomUid, currentUser.uid, inputText);
+    messages.postRoomMessage(roomUid, {
+      content: inputText,
+      userUid: currentUser.uid,
+      createdAt: new Date().getTime(),
+    });
     setInputText('');
   };
 

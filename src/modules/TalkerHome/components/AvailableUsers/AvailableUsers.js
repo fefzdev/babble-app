@@ -14,27 +14,38 @@ import useRepository from '@/database/Model';
 import { addToWaitlist } from '@/store/Rooms';
 
 export default function AvailableUsers() {
-  const { userRepository, roomRepository } = useRepository();
+  const { userRepository, rooms } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
-  const currentUserUID = useSelector(state => state.user.uid);
+  const talkerUID = useSelector(state => state.user.uid);
   const waitlist = useSelector(state => state.rooms.waitlist);
   const dispatch = useDispatch();
 
   useEffect(() => {
     userRepository.listen(data => {
-      setAllUsers(data);
+      setAllUsers(
+        Object.entries(data).map(([uid, user]) => ({ uid, ...user })),
+      );
     });
     return () => {
-      roomRepository.unlisten();
+      userRepository.unlisten();
     };
   }, []);
 
-  const addToWaitingList = userId => {
-    dispatch(addToWaitlist(userId));
-    roomRepository.create({
-      talkerUid: currentUserUID,
-      listenerUid: userId,
-    });
+  const addToWaitingList = listenerUid => {
+    dispatch(addToWaitlist(listenerUid));
+    rooms.createRoom(
+      talkerUID,
+      listenerUid,
+      {
+        isActive: false,
+        lastMessage: '',
+        timestamp: new Date().toTimeString(),
+      },
+      {
+        [talkerUID]: true,
+        [listenerUid]: true,
+      },
+    );
   };
 
   const buildUsersAvailable = () => {

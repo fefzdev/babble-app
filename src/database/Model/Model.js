@@ -11,15 +11,12 @@ export default class Model {
   generateUid = () => uuid.v4();
 
   purifyCollectionData = data => {
-    const arrayData = [];
-    for (const uid in data) {
-      arrayData.push({
-        uid,
-        ...data[uid],
-      });
-    }
-
-    return arrayData;
+    return Object.entries(data).map(([k, v]) => {
+      return {
+        uid: k,
+        ...v,
+      };
+    });
   };
 
   add = async (data, uid = this.generateUid()) =>
@@ -56,11 +53,12 @@ export default class Model {
     });
   };
 
-  listen = callback => {
-    const ref = db.connectTo(this.table);
+  listen = (callback, childPath) => {
+    const pathRef = childPath ? `${this.table}/${childPath}` : this.table;
+    const ref = db.connectTo(pathRef);
     onValue(ref, snapshot => {
       const data = snapshot.val();
-      callback(this.purifyCollectionData(data));
+      if (data) callback(data);
     });
   };
 

@@ -4,17 +4,17 @@ import { useSelector } from 'react-redux';
 
 import Colors from '@/constants/Colors';
 
-export default function Message({ message: { user, content, time } }) {
+export default function Message({ message: { userUid, content, createdAt } }) {
   const currentUser = useSelector(state => state.user);
 
-  const isOwn = () => currentUser.uid === user.uid;
+  const isOwn = () => currentUser.uid === userUid;
 
   return (
     <View style={[styles.container, isOwn() ? styles.isOwn : null]}>
       <View style={[styles.message, isOwn() ? styles.ownMessage : null]}>
         <Text>{content}</Text>
         <Text style={styles.time}>
-          {time ? format(new Date(time), 'HH:mm') : null}
+          {createdAt ? format(new Date(createdAt), 'HH:mm') : null}
         </Text>
       </View>
     </View>

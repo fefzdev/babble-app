@@ -5,11 +5,6 @@ import { useSelector } from 'react-redux';
 import { UserRoles } from '@/types/UserRoles.enums';
 
 export default function InitialMessage({ name }) {
-  const styles = StyleSheet.create({
-    container: {
-      textAlign: 'center',
-    },
-  });
   const currentUser = useSelector(state => state.user);
 
   const welcomeText = () => {
@@ -19,3 +14,9 @@ export default function InitialMessage({ name }) {
   };
   return <Text style={styles.container}>{welcomeText()}</Text>;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    textAlign: 'center',
+  },
+});

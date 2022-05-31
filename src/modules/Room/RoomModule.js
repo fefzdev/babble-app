@@ -7,11 +7,14 @@ import InitialMessage from './components/InitialMessage';
 import Message from './components/Message';
 import RoomInput from './components/RoomInput';
 
-export default function RoomModule({ listener, roomUid, messages }) {
-  const buildMessages = () =>
-    messages.map((message, index) => <Message key={index} message={message} />);
-
+export default function RoomModule({ room, messages }) {
   const scrollViewRef = useRef();
+  const buildMessages = () =>
+    messages
+      ? messages.map((message, index) => (
+          <Message key={index} message={message} />
+        ))
+      : null;
 
   return (
     <Background noScroll={true} style={styles.background}>
@@ -22,11 +25,11 @@ export default function RoomModule({ listener, roomUid, messages }) {
           scrollViewRef.current.scrollToEnd({ animated: true })
         }>
         <View style={styles.test}>
-          <InitialMessage name={listener.name} />
+          <InitialMessage name={room.otherUserData.name} />
           {buildMessages()}
         </View>
       </ScrollView>
-      <RoomInput style={styles.input} roomUid={roomUid} />
+      <RoomInput style={styles.input} roomUid={room.uid} />
     </Background>
   );
 }
