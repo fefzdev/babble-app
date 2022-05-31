@@ -13,12 +13,10 @@ import AvailableBlock from './components/AvailableBlock';
 import ListenerMessages from './components/ListenerMessages';
 
 function ListenerHome({ navigation }) {
-  const { available, uid } = useSelector(state => state.user);
+  const { uid } = useSelector(state => state.user);
   const { rooms: roomsStore } = useSelector(state => state.rooms);
   const { members, userRepository, rooms: roomsRepo } = useRepository();
-  const [,] = useState(available);
   const [inputValue, setInputValue] = useState('');
-  const [] = useState([]);
   const dispatch = useDispatch();
 
   const listernerMessagesArray = useMemo(() => {
