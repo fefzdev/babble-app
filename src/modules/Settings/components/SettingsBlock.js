@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { View } from '@/components/Themed';
 import Colors from '@/constants/Colors';
 
-export default function SettingsBlock({ text, icon, onPress }) {
+export default function SettingsBlock({ style, text, icon, onPress, right }) {
   const styles = StyleSheet.create({
     settingItem: {
       flex: 1,
@@ -24,6 +24,7 @@ export default function SettingsBlock({ text, icon, onPress }) {
       paddingVertical: 12,
       paddingRight: 16,
       flexDirection: 'row',
+      alignItems: 'center',
       flexGrow: 1,
       justifyContent: 'space-between',
       borderBottomWidth: 1,
@@ -34,7 +35,7 @@ export default function SettingsBlock({ text, icon, onPress }) {
 
   return (
     <TouchableOpacity
-      style={styles.settingItem}
+      style={[styles.settingItem, style]}
       onPress={typeof text !== 'object' ? onPress : null}>
       <Icon
         style={styles.icon}
@@ -43,13 +44,11 @@ export default function SettingsBlock({ text, icon, onPress }) {
         color={Colors.orange[1000]}
       />
       <View style={styles.content}>
-        {typeof text === 'object' ? (
-          text
+        <Text style={styles.text}>{text}</Text>
+        {right ? (
+          right
         ) : (
-          <>
-            <Text style={styles.text}>{text}</Text>
-            <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
-          </>
+          <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
         )}
       </View>
     </TouchableOpacity>

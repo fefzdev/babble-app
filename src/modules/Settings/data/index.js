@@ -5,7 +5,7 @@ export default function useSettings() {
         icon: 'modern-mic',
         text: 'Changer de rôle',
         handle: {
-          fn: 'setModalVisible',
+          fn: 'setRoleModalVisible',
           prm: [true],
         },
       },
@@ -15,8 +15,8 @@ export default function useSettings() {
         icon: 'bell',
         text: 'Notifications',
         handle: {
-          fn: 'toggleMessageNotification',
-          prm: [],
+          fn: 'setNotifsModalVisible',
+          prm: [true],
         },
       },
     ],

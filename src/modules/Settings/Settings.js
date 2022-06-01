@@ -8,6 +8,7 @@ import colors from '@/constants/Colors';
 import useRepository from '@/database/Model';
 
 import SettingsBlock from './components/SettingsBlock';
+import UpdateNotifsModal from './components/UpdateNotifsModal';
 import UpdateRoleModal from './components/UpdateRoleModal';
 import useSettings from './data';
 const auth = getAuth();
@@ -15,10 +16,11 @@ const auth = getAuth();
 function Settings() {
   const settings = useSettings();
   const { uid } = useSelector(state => state.user);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [roleModalVisible, setRoleModalVisible] = useState(false);
+  const [notifsModalVisible, setNotifsModalVisible] = useState(false);
   const { userRepository } = useRepository();
 
-  const onSubmit = async userType => {
+  const onRoleSubmit = async userType => {
     Alert.alert(
       'Changement de rôle',
       'Êtes-vous sûr de vouloir changer de rôle ? Vos conversations actuelles seront fermées et perdues.',
@@ -56,14 +58,15 @@ function Settings() {
   };
 
   const onRoleUpdate = async userType => {
-    setModalVisible(false);
+    setRoleModalVisible(false);
     await userRepository.updateData(uid, {
       type: userType,
     });
   };
 
   const handlerFunction = {
-    setModalVisible,
+    setRoleModalVisible,
+    setNotifsModalVisible,
     signOut: () => onSignOut(auth),
   };
 
@@ -83,9 +86,13 @@ function Settings() {
         </View>
       ))}
       <UpdateRoleModal
-        isVisible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onSubmit={onSubmit}
+        isVisible={roleModalVisible}
+        onClose={() => setRoleModalVisible(false)}
+        onSubmit={onRoleSubmit}
+      />
+      <UpdateNotifsModal
+        isVisible={notifsModalVisible}
+        onClose={() => setNotifsModalVisible(false)}
       />
     </Background>
   );
