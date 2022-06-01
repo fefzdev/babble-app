@@ -1,17 +1,14 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import BabbleButton from '@/components/BabbleButton';
 import Background from '@/components/Background';
 import colors from '@/constants/Colors';
-import fonts from '@/constants/Fonts';
 import useRepository from '@/database/Model';
 
-import RoleModal from '../FirstLogin/components/RoleModal';
 import SettingsBlock from './components/SettingsBlock';
+import UpdateRoleModal from './components/UpdateRoleModal';
 import useSettings from './data';
 const auth = getAuth();
 
@@ -22,6 +19,43 @@ function Settings() {
   const { userRepository } = useRepository();
 
   const onSubmit = async userType => {
+    Alert.alert(
+      'Changement de rôle',
+      'Êtes-vous sûr de vouloir changer de rôle ? Vos conversations actuelles seront fermées et perdues.',
+      [
+        {
+          text: 'Oui, je veux changer de rôle',
+          style: 'default',
+          onPress: async () => await onRoleUpdate(userType),
+        },
+        {
+          text: 'Non, annuler',
+          style: 'cancel',
+          onPress: () => null,
+        },
+      ],
+    );
+  };
+  const onSignOut = () => {
+    Alert.alert(
+      'Se déconnecter ?',
+      'Êtes-vous sûr de vouloir vous déconnecter ?',
+      [
+        {
+          text: 'Oui, me déconnecter',
+          style: 'destructive',
+          onPress: async () => signOut(auth),
+        },
+        {
+          text: 'Non, annuler',
+          style: 'default',
+          onPress: () => null,
+        },
+      ],
+    );
+  };
+
+  const onRoleUpdate = async userType => {
     setModalVisible(false);
     await userRepository.updateData(uid, {
       type: userType,
@@ -30,27 +64,25 @@ function Settings() {
 
   const handlerFunction = {
     setModalVisible,
+    signOut: () => onSignOut(auth),
   };
 
   return (
-    <Background>
-      <BabbleButton onPress={() => signOut(auth)}>Disconnect</BabbleButton>
-      {settings.map(({ title, subSettings }) => (
-        <View style={styles.settingContainer} key={title}>
-          <Text style={styles.settingTitle}>{title} :</Text>
-          <View style={styles.subSettingContainer}>
-            {subSettings.map(({ text, subtitle, handle: { fn, prm } }) => (
-              <SettingsBlock
-                text={text}
-                title={subtitle}
-                key={subtitle}
-                onPress={() => handlerFunction[fn](...prm)}
-              />
-            ))}
-          </View>
+    <Background style={styles.container}>
+      {settings.map(group => (
+        <View style={styles.settingsBlock}>
+          {group.map(({ text, icon, subtitle, handle: { fn, prm } }) => (
+            <SettingsBlock
+              text={text}
+              icon={icon}
+              title={subtitle}
+              key={subtitle}
+              onPress={() => handlerFunction[fn](...prm)}
+            />
+          ))}
         </View>
       ))}
-      <RoleModal
+      <UpdateRoleModal
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSubmit={onSubmit}
@@ -60,14 +92,22 @@ function Settings() {
 }
 
 const styles = StyleSheet.create({
-  settingTitle: {
-    ...fonts.xsTitle,
-    marginBottom: 8,
+  container: {
+    paddingTop: 0,
   },
-  subSettingContainer: {
+  settingTitle: {
+    marginBottom: 8,
+    fontSize: 16,
+    padding: 8,
+    paddingBottom: 0,
+    color: colors.orange[1000],
+  },
+  settingsBlock: {
+    marginTop: 16,
+    flex: 1,
+    width: '100%',
     backgroundColor: colors.orange[200],
-    borderRadius: 10,
-    overflow: 'hidden',
+    borderRadius: 8,
   },
   settingContainer: {
     marginBottom: 20,
