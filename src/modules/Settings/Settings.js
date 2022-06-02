@@ -1,73 +1,89 @@
-import { getAuth, signOut } from 'firebase/auth';
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native';
+import Icon from '@expo/vector-icons/Entypo';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import BabbleButton from '@/components/BabbleButton';
 import Background from '@/components/Background';
-import colors from '@/constants/Colors';
-import fonts from '@/constants/Fonts';
-import useRepository from '@/database/Model';
+import UserImage from '@/components/UserImage';
+import Colors from '@/constants/Colors';
+import Fonts from '@/constants/Fonts';
 
-import RoleModal from '../FirstLogin/components/RoleModal';
 import SettingsBlock from './components/SettingsBlock';
 import useSettings from './data';
-const auth = getAuth();
 
-function Settings() {
-  const settings = useSettings();
-  const { uid } = useSelector(state => state.user);
-  const [modalVisible, setModalVisible] = useState(false);
-  const { userRepository } = useRepository();
-
-  const onSubmit = async userType => {
-    setModalVisible(false);
-    await userRepository.updateData(uid, {
-      type: userType,
-    });
-  };
+function Settings({ navigation }) {
+  const { settingsList, onSignOut, onAccountDeleteOut } = useSettings();
+  const { profilePicture, mail, name } = useSelector(state => state.user);
 
   const handlerFunction = {
-    setModalVisible,
+    setRoleModalVisible: () => navigation.navigate('Role'),
+    setNotifsModalVisible: () => navigation.navigate('Notifications'),
+    signOut: () => onSignOut(),
+    accountDelete: () => onAccountDeleteOut(),
   };
 
   return (
-    <Background>
-      <BabbleButton onPress={() => signOut(auth)}>Disconnect</BabbleButton>
-      {settings.map(({ title, subSettings }) => (
-        <View style={styles.settingContainer} key={title}>
-          <Text style={styles.settingTitle}>{title} :</Text>
-          <View style={styles.subSettingContainer}>
-            {subSettings.map(({ text, subtitle, handle: { fn, prm } }) => (
-              <SettingsBlock
-                text={text}
-                title={subtitle}
-                key={subtitle}
-                onPress={() => handlerFunction[fn](...prm)}
-              />
-            ))}
-          </View>
+    <Background style={styles.container} noScroll>
+      <TouchableOpacity
+        style={[styles.settingsBlock, styles.accountBlock]}
+        onPress={() => navigation.navigate('Compte')}>
+        <UserImage image={profilePicture} imageStyle={styles.image} size={64} />
+        <View style={styles.profileContent}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.email}>{mail}</Text>
+        </View>
+        <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
+      </TouchableOpacity>
+      {settingsList.map((group, id) => (
+        <View style={styles.settingsBlock} key={id}>
+          {group.map(({ text, icon, handle: { fn, prm } }) => (
+            <SettingsBlock
+              text={text}
+              icon={icon}
+              key={text}
+              onPress={() => handlerFunction[fn](...prm)}
+            />
+          ))}
         </View>
       ))}
-      <RoleModal
-        isVisible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onSubmit={onSubmit}
-      />
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
-  settingTitle: {
-    ...fonts.xsTitle,
-    marginBottom: 8,
+  container: {
+    paddingTop: 0,
+    justifyContent: 'flex-start',
   },
-  subSettingContainer: {
-    backgroundColor: colors.orange[200],
-    borderRadius: 10,
-    overflow: 'hidden',
+  settingTitle: {
+    marginBottom: 8,
+    fontSize: 16,
+    padding: 8,
+    paddingBottom: 0,
+    color: Colors.orange[1000],
+  },
+  settingsBlock: {
+    marginTop: 16,
+    width: '100%',
+    backgroundColor: Colors.orange[200],
+    borderRadius: 8,
+  },
+  accountBlock: {
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileContent: {
+    marginLeft: 12,
+    flexGrow: 1,
+  },
+  name: {
+    ...Fonts.title,
+    fontWeight: 'normal',
+    marginBottom: 4,
+    color: Colors.orange[1000],
+  },
+  email: {
+    color: Colors.orange[800],
   },
   settingContainer: {
     marginBottom: 20,

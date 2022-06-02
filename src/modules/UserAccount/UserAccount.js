@@ -1,25 +1,21 @@
 import { StyleSheet, View } from 'react-native';
 
-import Background from '@/components/Background';
-
 import ProfilePicture from './components/ProfilePicture';
 import UserInfos from './components/UserInfos';
 
 export default function UserAccount() {
   return (
-    <Background>
-      <View style={styles.background}>
-        <ProfilePicture />
-        <UserInfos style={styles.userInfos} />
-      </View>
-    </Background>
+    <View style={styles.background}>
+      <ProfilePicture />
+      <UserInfos style={styles.userInfos} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   nameContainer: {
     marginTop: 16,

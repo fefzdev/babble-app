@@ -29,13 +29,13 @@ export default class User extends Model {
   syncStore = async uid => {
     const userData = await this.find(uid);
 
+    this.updateStore(setUserAvailable(userData.available));
     this.updateStore(setUser(userData.name));
     this.updateStore(setUserMail(userData.mail));
     this.updateStore(setUserUID(userData.uid));
     this.updateStore(setUserType(userData.type));
     this.updateStore(setUserProfilePircure(userData.profilePicture));
     this.updateStore(setUserName(userData.name));
-    this.updateStore(setUserAvailable(userData.available));
 
     this.updateStore(setIsConnected(true));
     this.updateStore(setIsLoading(false));

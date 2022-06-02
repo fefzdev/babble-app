@@ -1,39 +1,54 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import Icon from '@expo/vector-icons/Entypo';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import colors from '@/constants/Colors';
-import fonts from '@/constants/Fonts';
+import Colors from '@/constants/Colors';
 
-export default function SettingsBlock({ text, title, onPress }) {
-  const styles = StyleSheet.create({
-    settingBlock: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: 10,
-      paddingVertical: 10,
-      borderBottomWidth: 2,
-      borderBottomColor: colors.orange[100],
-    },
-    settingTitle: {
-      ...fonts.smTitle,
-      marginRight: 4,
-    },
-    text: {
-      ...fonts.smText,
-      color: colors.orange[900],
-      fontWeight: 'bold',
-    },
-  });
-
+export default function SettingsBlock({ style, text, icon, onPress, right }) {
   return (
-    <TouchableOpacity style={styles.settingBlock} onPress={onPress}>
-      <Text style={styles.settingTitle}>{title} : </Text>
-      {typeof text === 'object' ? (
-        text
-      ) : (
+    <TouchableOpacity
+      style={[styles.settingItem, style]}
+      onPress={typeof text !== 'object' ? onPress : null}>
+      <Icon
+        style={styles.icon}
+        name={icon}
+        size={24}
+        color={Colors.orange[1000]}
+      />
+      <View style={styles.content}>
         <Text style={styles.text}>{text}</Text>
-      )}
+        {right ? (
+          right
+        ) : (
+          <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
+        )}
+      </View>
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  settingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 16,
+  },
+  icon: {
+    marginRight: 16,
+  },
+  text: {
+    fontSize: 18,
+    color: Colors.orange[900],
+  },
+  content: {
+    paddingVertical: 12,
+    paddingRight: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.orange[100],
+    backgroundColor: 'transparent',
+  },
+});

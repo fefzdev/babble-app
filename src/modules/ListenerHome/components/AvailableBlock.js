@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -12,21 +12,19 @@ export default function AvailableBlock({}) {
 
   const { userRepository } = useRepository();
 
-  const updateUserAvailable = async () => {
-    await userRepository.updateData(uid, { available: isEnabled });
+  const updateUserAvailable = async e => {
+    await userRepository.updateData(uid, { available: e });
   };
 
-  useEffect(() => {
-    updateUserAvailable();
-  }, [isEnabled]);
-
-  const toggleSwitch = () => {
-    setIsEnabled(!isEnabled);
+  const toggleSwitch = e => {
+    setIsEnabled(e);
+    updateUserAvailable(e);
   };
 
   return (
     <View style={styles.availableBlock}>
       <Text style={Fonts.callout}>Êtes-vous disponible ?</Text>
+      <Text style={Fonts.callout}> {available}</Text>
       <Switch
         trackColor={{ false: Colors.orange[50], true: Colors.orange[400] }}
         thumbColor={Colors.orange[1000]}
@@ -44,6 +42,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 33,
+    marginTop: 24,
   },
 });

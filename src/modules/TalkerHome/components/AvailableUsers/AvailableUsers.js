@@ -39,7 +39,7 @@ export default function AvailableUsers() {
       {
         isActive: false,
         lastMessage: '',
-        timestamp: new Date().toTimeString(),
+        timestamp: new Date().getTime(),
       },
       {
         [talkerUID]: true,

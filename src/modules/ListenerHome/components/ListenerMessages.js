@@ -15,6 +15,15 @@ export default function ListenerMessages({ room, onPress }) {
     dispatch(updateRoom({ uid: room.uid, ...roomData }));
   };
 
+  const lastMessage = () => {
+    if (!room.lastMessage)
+      return {
+        content: 'La room à été créée',
+        createdAt: room.timestamp,
+      };
+    return room.lastMessage;
+  };
+
   useEffect(() => {
     rooms.listen(fetchRoom, room.uid);
 
@@ -29,11 +38,11 @@ export default function ListenerMessages({ room, onPress }) {
       />
       <View style={styles.textBloc}>
         <Text style={styles.user}>{room.otherUserData.name}</Text>
-        <Text style={styles.message}>{room.lastMessage.content}</Text>
+        <Text style={styles.message}>{lastMessage().content}</Text>
       </View>
       <View>
         <Text style={styles.time}>
-          {format(new Date(room.lastMessage.createdAt), 'HH:mm')}
+          {format(new Date(lastMessage().createdAt), 'HH:mm')}
         </Text>
       </View>
     </TouchableOpacity>

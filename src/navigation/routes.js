@@ -17,7 +17,7 @@ export default [
   },
   {
     name: 'Settings',
-    header: true,
+    header: false,
     component: Settings,
   },
   {

@@ -1,52 +1,93 @@
-import { StyleSheet, Switch } from 'react-native';
-import { useSelector } from 'react-redux';
+import { getAuth, signOut } from 'firebase/auth';
+import { Alert } from 'react-native';
 
-import { UserRoles } from '@/types/UserRoles.enums';
-const scale = 0.9;
-const styles = StyleSheet.create({
-  switch: {
-    transform: [{ scaleX: scale }, { scaleY: scale }],
-  },
-});
+const auth = getAuth();
+
 export default function useSettings() {
-  const { type } = useSelector(state => state.user);
-  return [
-    {
-      title: 'Utilisateurs',
-      subSettings: [
-        {
-          subtitle: 'Rôle actuel',
-          text:
-            type === 'listener'
-              ? UserRoles.LISTENER_DISPLAY
-              : UserRoles.TALKER_DISPLAY,
-          handle: {
-            fn: 'setModalVisible',
-            prm: [true],
-          },
+  const settingsList = [
+    [
+      {
+        icon: 'modern-mic',
+        text: 'Changer de rôle',
+        handle: {
+          fn: 'setRoleModalVisible',
+          prm: [true],
         },
-      ],
-    },
-    {
-      title: 'Notifications',
-      subSettings: [
-        {
-          subtitle: 'Messages',
-          text: <Switch style={styles.switch} />,
-          handle: {
-            fn: 'toggleMessageNotification',
-            prm: [],
-          },
+      },
+
+      {
+        subtitle: 'Notifications',
+        icon: 'bell',
+        text: 'Notifications',
+        handle: {
+          fn: 'setNotifsModalVisible',
+          prm: [true],
         },
-        {
-          subtitle: 'Connections',
-          text: <Switch style={styles.switch} />,
-          handle: {
-            fn: 'toggleConnectionsNotification',
-            prm: [],
-          },
+      },
+    ],
+    [
+      {
+        icon: 'log-out',
+        text: 'Deconnexion',
+        handle: {
+          fn: 'signOut',
+          prm: [],
         },
-      ],
-    },
+      },
+    ],
+    [
+      {
+        icon: 'warning',
+        text: 'Supprimer mon compte',
+        handle: {
+          fn: 'accountDelete',
+          prm: [],
+        },
+      },
+    ],
   ];
+
+  const onSignOut = () => {
+    Alert.alert(
+      'Se déconnecter ?',
+      'Êtes-vous sûr de vouloir vous déconnecter ?',
+      [
+        {
+          text: 'Oui, me déconnecter',
+          style: 'destructive',
+          onPress: async () => signOut(auth),
+        },
+        {
+          text: 'Non, annuler',
+          style: 'default',
+          onPress: () => null,
+        },
+      ],
+    );
+  };
+
+  const onAccountDeleteOut = () => {
+    Alert.alert(
+      'Supprimer le compte ?',
+      'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et entraine la suppression de toutes vos données.',
+      [
+        {
+          text: 'Oui, supprimer',
+          style: 'destructive',
+          onPress: async () => signOut(auth),
+        },
+        {
+          text: 'Non, annuler',
+          style: 'default',
+          onPress: () => null,
+        },
+      ],
+    );
+  };
+
+  return {
+    onSignOut,
+    onAccountDeleteOut,
+    settingsList,
+  };
 }

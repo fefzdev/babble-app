@@ -6,7 +6,7 @@ import useRepository from '@/database/Model';
 const auth = getAuth();
 
 export function useAuthentication() {
-  const [user, setUser] = React.useState<User>();
+  const [userState, setUser] = React.useState<User>();
   const { userRepository } = useRepository();
 
   React.useEffect(() => {
@@ -26,6 +26,6 @@ export function useAuthentication() {
   }, []);
 
   return {
-    user,
+    user: userState,
   };
 }
