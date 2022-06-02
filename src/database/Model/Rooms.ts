@@ -105,4 +105,13 @@ export default class Rooms extends Model {
 
     await update(db.connectTo(), updates);
   };
+
+  deleteAllRooms = async (
+    rooms: RoomStoreInterface[],
+    currentUserUid: string,
+  ) => {
+    await Promise.all(
+      rooms.map(async room => await this.deleteRoom(room, currentUserUid)),
+    );
+  };
 }

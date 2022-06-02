@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '@/components/Background';
@@ -16,10 +16,10 @@ function ListenerHome({ navigation }) {
   const { uid } = useSelector(state => state.user);
   const { rooms: roomsStore } = useSelector(state => state.rooms);
   const { members, userRepository, rooms: roomsRepo } = useRepository();
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue] = useState('');
   const dispatch = useDispatch();
 
-  const listernerMessagesArray = useMemo(() => {
+  const filteredRooms = useMemo(() => {
     if (inputValue !== '')
       return roomsStore.filter(({ otherUserData: { name } }) =>
         name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase()),
@@ -54,7 +54,7 @@ function ListenerHome({ navigation }) {
   }, []);
 
   const buildTalkersWantsToTalk = () => {
-    return listernerMessagesArray.map(room => {
+    return roomsStore.map(room => {
       return (
         <ListenerMessages
           key={room.roomUid}
@@ -72,17 +72,17 @@ function ListenerHome({ navigation }) {
   buildTalkersWantsToTalk();
 
   return (
-    <Background noScroll>
+    <Background>
       <Role />
       <AvailableBlock />
       <Text style={styles.convTitle}>Vos conversations</Text>
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         value={inputValue}
         onChangeText={setInputValue}
         placeholder="Rechercher une conversation"
         placeholderTextColor={colors.orange[600]}
-      />
+      /> */}
       <ScrollView style={styles.messageBlock}>
         {buildTalkersWantsToTalk()}
       </ScrollView>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 
   convTitle: {
     ...font.title,
-    marginTop: 33,
+    marginTop: 12,
   },
 
   input: {
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
   messageBlock: {
     height: '30%',
     marginTop: 16,
-    marginBottom: 32,
   },
 });
 

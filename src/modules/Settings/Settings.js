@@ -16,9 +16,10 @@ const auth = getAuth();
 function Settings() {
   const settings = useSettings();
   const { uid } = useSelector(state => state.user);
+  const { rooms } = useSelector(state => state.rooms);
   const [roleModalVisible, setRoleModalVisible] = useState(false);
   const [notifsModalVisible, setNotifsModalVisible] = useState(false);
-  const { userRepository } = useRepository();
+  const { rooms: roomsRepo, userRepository } = useRepository();
 
   const onRoleSubmit = async userType => {
     Alert.alert(
@@ -59,8 +60,10 @@ function Settings() {
 
   const onRoleUpdate = async userType => {
     setRoleModalVisible(false);
+    await roomsRepo.deleteAllRooms(rooms, uid);
     await userRepository.updateData(uid, {
       type: userType,
+      available: false,
     });
   };
 
@@ -72,14 +75,13 @@ function Settings() {
 
   return (
     <Background style={styles.container}>
-      {settings.map(group => (
-        <View style={styles.settingsBlock}>
-          {group.map(({ text, icon, subtitle, handle: { fn, prm } }) => (
+      {settings.map((group, id) => (
+        <View style={styles.settingsBlock} key={id}>
+          {group.map(({ text, icon, handle: { fn, prm } }) => (
             <SettingsBlock
               text={text}
               icon={icon}
-              title={subtitle}
-              key={subtitle}
+              key={text}
               onPress={() => handlerFunction[fn](...prm)}
             />
           ))}
