@@ -29,7 +29,7 @@ function Settings({ navigation }) {
         <UserImage image={profilePicture} imageStyle={styles.image} size={64} />
         <View style={styles.profileContent}>
           <Text style={styles.name}>{name}</Text>
-          <Text>{mail}</Text>
+          <Text style={styles.email}>{mail}</Text>
         </View>
         <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
       </TouchableOpacity>
@@ -81,6 +81,9 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     marginBottom: 4,
     color: Colors.orange[1000],
+  },
+  email: {
+    color: Colors.orange[800],
   },
   settingContainer: {
     marginBottom: 20,
