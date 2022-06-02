@@ -1,5 +1,6 @@
 import '@/database/firebase';
 
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
@@ -20,6 +21,7 @@ export default function App() {
     return (
       <Provider store={store}>
         <SafeAreaProvider>
+          <StatusBar style={'dark'} />
           <Navigation colorScheme={colorScheme} />
           <BabbleErrorPopin />
           <BabbleInfoPopin />

@@ -58,6 +58,25 @@ function Settings() {
     );
   };
 
+  const onAccountDeleteOut = () => {
+    Alert.alert(
+      'Supprimer le compte ?',
+      'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et entraine la suppression de toutes vos données.',
+      [
+        {
+          text: 'Oui, supprimer',
+          style: 'destructive',
+          onPress: async () => signOut(auth),
+        },
+        {
+          text: 'Non, annuler',
+          style: 'default',
+          onPress: () => null,
+        },
+      ],
+    );
+  };
+
   const onRoleUpdate = async userType => {
     setRoleModalVisible(false);
     await roomsRepo.deleteAllRooms(rooms, uid);
@@ -70,7 +89,8 @@ function Settings() {
   const handlerFunction = {
     setRoleModalVisible,
     setNotifsModalVisible,
-    signOut: () => onSignOut(auth),
+    signOut: () => onSignOut(),
+    accountDelete: () => onAccountDeleteOut(),
   };
 
   return (

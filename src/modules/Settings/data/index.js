@@ -26,7 +26,7 @@ export default function useSettings() {
         text: 'Deconnexion',
         handle: {
           fn: 'signOut',
-          prm: [true],
+          prm: [],
         },
       },
     ],
@@ -35,8 +35,8 @@ export default function useSettings() {
         icon: 'warning',
         text: 'Supprimer mon compte',
         handle: {
-          fn: 'signOut',
-          prm: [true],
+          fn: 'accountDelete',
+          prm: [],
         },
       },
     ],
