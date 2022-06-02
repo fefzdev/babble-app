@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '@/components/Background';
@@ -16,7 +17,7 @@ function ListenerHome({ navigation }) {
   const { uid } = useSelector(state => state.user);
   const { rooms: roomsStore } = useSelector(state => state.rooms);
   const { members, userRepository, rooms: roomsRepo } = useRepository();
-  const [inputValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const dispatch = useDispatch();
 
   const filteredRooms = useMemo(() => {
@@ -26,7 +27,7 @@ function ListenerHome({ navigation }) {
       );
 
     return roomsStore;
-  }, [inputValue]);
+  }, [inputValue, roomsStore]);
 
   const fetchRooms = async userData => {
     if (!userData?.rooms) return dispatch(setRooms([]));
@@ -54,7 +55,7 @@ function ListenerHome({ navigation }) {
   }, []);
 
   const buildTalkersWantsToTalk = () => {
-    return roomsStore.map(room => {
+    return filteredRooms.map(room => {
       return (
         <ListenerMessages
           key={room.roomUid}
@@ -76,13 +77,13 @@ function ListenerHome({ navigation }) {
       <Role />
       <AvailableBlock />
       <Text style={styles.convTitle}>Vos conversations</Text>
-      {/* <TextInput
+      <TextInput
         style={styles.input}
         value={inputValue}
         onChangeText={setInputValue}
         placeholder="Rechercher une conversation"
         placeholderTextColor={colors.orange[600]}
-      /> */}
+      />
       <ScrollView style={styles.messageBlock}>
         {buildTalkersWantsToTalk()}
       </ScrollView>
