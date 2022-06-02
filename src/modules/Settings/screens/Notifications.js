@@ -1,29 +1,20 @@
 import { useState } from 'react';
-import { StyleSheet, Switch, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Switch } from 'react-native';
 
-import BabbleModal from '@/components/BabbleModal';
+import Background from '@/components/Background';
+import SubScreenHeader from '@/components/SubScreenHeader';
 import { View } from '@/components/Themed';
 import Colors from '@/constants/Colors';
-import Fonts from '@/constants/Fonts';
 
-import SettingsBlock from './SettingsBlock';
+import SettingsBlock from '../components/SettingsBlock';
 
-export default function UpdateNotifsModal({ isVisible, onClose }) {
+export default function Notifications({ navigation }) {
   const [wantRoomNotifs, setWantRoomNotifs] = useState(false);
   const [wantMessageNotifs, setWantMessageNotifs] = useState(false);
 
   return (
-    <BabbleModal
-      isVisible={isVisible}
-      onClose={onClose}
-      style={styles.container}>
-      <View style={styles.head}>
-        <TouchableOpacity style={styles.action} onPress={() => onClose()}>
-          <Text>Annuler</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Notifications</Text>
-        <View style={styles.action} />
-      </View>
+    <Background style={styles.container} noScroll>
+      <SubScreenHeader navigation={navigation} title="Notifications" />
       <View style={styles.settingsBlock}>
         <SettingsBlock
           onPress={() => setWantMessageNotifs(!wantMessageNotifs)}
@@ -38,8 +29,7 @@ export default function UpdateNotifsModal({ isVisible, onClose }) {
             />
           }
         />
-      </View>
-      <View style={styles.settingsBlock}>
+
         <SettingsBlock
           onPress={() => setWantRoomNotifs(!wantRoomNotifs)}
           style={styles.settingBlock}
@@ -54,7 +44,7 @@ export default function UpdateNotifsModal({ isVisible, onClose }) {
           icon="mail"
         />
       </View>
-    </BabbleModal>
+    </Background>
   );
 }
 
@@ -62,20 +52,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-  },
-  head: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingVertical: 4,
-  },
-  action: {
-    width: '20%',
-  },
-  title: {
-    ...Fonts.title,
-    textAlign: 'center',
   },
   settingsBlock: {
     marginTop: 16,

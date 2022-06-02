@@ -1,101 +1,39 @@
-import { getAuth, signOut } from 'firebase/auth';
-import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import Icon from '@expo/vector-icons/Entypo';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Background from '@/components/Background';
-import colors from '@/constants/Colors';
-import useRepository from '@/database/Model';
+import UserImage from '@/components/UserImage';
+import Colors from '@/constants/Colors';
+import Fonts from '@/constants/Fonts';
 
 import SettingsBlock from './components/SettingsBlock';
-import UpdateNotifsModal from './components/UpdateNotifsModal';
-import UpdateRoleModal from './components/UpdateRoleModal';
 import useSettings from './data';
-const auth = getAuth();
 
-function Settings() {
-  const settings = useSettings();
-  const { uid } = useSelector(state => state.user);
-  const { rooms } = useSelector(state => state.rooms);
-  const [roleModalVisible, setRoleModalVisible] = useState(false);
-  const [notifsModalVisible, setNotifsModalVisible] = useState(false);
-  const { rooms: roomsRepo, userRepository } = useRepository();
-
-  const onRoleSubmit = async userType => {
-    Alert.alert(
-      'Changement de rôle',
-      'Êtes-vous sûr de vouloir changer de rôle ? Vos conversations actuelles seront fermées et perdues.',
-      [
-        {
-          text: 'Oui, je veux changer de rôle',
-          style: 'default',
-          onPress: async () => await onRoleUpdate(userType),
-        },
-        {
-          text: 'Non, annuler',
-          style: 'cancel',
-          onPress: () => null,
-        },
-      ],
-    );
-  };
-  const onSignOut = () => {
-    Alert.alert(
-      'Se déconnecter ?',
-      'Êtes-vous sûr de vouloir vous déconnecter ?',
-      [
-        {
-          text: 'Oui, me déconnecter',
-          style: 'destructive',
-          onPress: async () => signOut(auth),
-        },
-        {
-          text: 'Non, annuler',
-          style: 'default',
-          onPress: () => null,
-        },
-      ],
-    );
-  };
-
-  const onAccountDeleteOut = () => {
-    Alert.alert(
-      'Supprimer le compte ?',
-      'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et entraine la suppression de toutes vos données.',
-      [
-        {
-          text: 'Oui, supprimer',
-          style: 'destructive',
-          onPress: async () => signOut(auth),
-        },
-        {
-          text: 'Non, annuler',
-          style: 'default',
-          onPress: () => null,
-        },
-      ],
-    );
-  };
-
-  const onRoleUpdate = async userType => {
-    setRoleModalVisible(false);
-    await roomsRepo.deleteAllRooms(rooms, uid);
-    await userRepository.updateData(uid, {
-      type: userType,
-      available: false,
-    });
-  };
+function Settings({ navigation }) {
+  const { settingsList, onSignOut, onAccountDeleteOut } = useSettings();
+  const { profilePicture, mail, name } = useSelector(state => state.user);
 
   const handlerFunction = {
-    setRoleModalVisible,
-    setNotifsModalVisible,
+    setRoleModalVisible: () => navigation.navigate('Role'),
+    setNotifsModalVisible: () => navigation.navigate('Notifications'),
     signOut: () => onSignOut(),
     accountDelete: () => onAccountDeleteOut(),
   };
 
   return (
-    <Background style={styles.container}>
-      {settings.map((group, id) => (
+    <Background style={styles.container} noScroll>
+      <TouchableOpacity
+        style={[styles.settingsBlock, styles.accountBlock]}
+        onPress={() => navigation.navigate('Compte')}>
+        <UserImage image={profilePicture} imageStyle={styles.image} size={64} />
+        <View style={styles.profileContent}>
+          <Text style={styles.name}>{name}</Text>
+          <Text>{mail}</Text>
+        </View>
+        <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
+      </TouchableOpacity>
+      {settingsList.map((group, id) => (
         <View style={styles.settingsBlock} key={id}>
           {group.map(({ text, icon, handle: { fn, prm } }) => (
             <SettingsBlock
@@ -107,15 +45,6 @@ function Settings() {
           ))}
         </View>
       ))}
-      <UpdateRoleModal
-        isVisible={roleModalVisible}
-        onClose={() => setRoleModalVisible(false)}
-        onSubmit={onRoleSubmit}
-      />
-      <UpdateNotifsModal
-        isVisible={notifsModalVisible}
-        onClose={() => setNotifsModalVisible(false)}
-      />
     </Background>
   );
 }
@@ -123,20 +52,35 @@ function Settings() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 0,
+    justifyContent: 'flex-start',
   },
   settingTitle: {
     marginBottom: 8,
     fontSize: 16,
     padding: 8,
     paddingBottom: 0,
-    color: colors.orange[1000],
+    color: Colors.orange[1000],
   },
   settingsBlock: {
     marginTop: 16,
-    flex: 1,
     width: '100%',
-    backgroundColor: colors.orange[200],
+    backgroundColor: Colors.orange[200],
     borderRadius: 8,
+  },
+  accountBlock: {
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileContent: {
+    marginLeft: 12,
+    flexGrow: 1,
+  },
+  name: {
+    ...Fonts.title,
+    fontWeight: 'normal',
+    marginBottom: 4,
+    color: Colors.orange[1000],
   },
   settingContainer: {
     marginBottom: 20,

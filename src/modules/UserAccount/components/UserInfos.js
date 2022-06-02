@@ -62,18 +62,15 @@ export default function UserInfos({ style }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
   },
   settingsBlock: {
     marginTop: 16,
-    flex: 1,
     width: '100%',
     backgroundColor: Colors.orange[200],
     borderRadius: 8,
   },
   settingItem: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

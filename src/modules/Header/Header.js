@@ -20,26 +20,28 @@ export default function Header({ headerProps }) {
     if (navigation.canGoBack())
       return {
         action: () => navigation.goBack(),
-        icon: 'chevron-left',
+        component: (
+          <Icon size={24} color={Colors.orange[1000]} name="chevron-left" />
+        ),
       };
     return {
       action: () => navigation.navigate('Settings'),
-      icon: 'cog',
+      component: settings(),
     };
   };
 
-  const rightButton = () => {
-    if (route.name !== 'Home') return null;
+  const settings = () => {
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Account')}
-        style={styles.profile}>
+      <View style={[styles.rightBlock, styles.settings]}>
         <UserImage
           style={styles.image}
           imageStyle={styles.imageRadius}
           image={profilePicture}
         />
-      </TouchableOpacity>
+        <View style={styles.icon}>
+          <Icon size={20} color={Colors.orange[1000]} name="cog" />
+        </View>
+      </View>
     );
   };
 
@@ -49,14 +51,9 @@ export default function Header({ headerProps }) {
         <TouchableOpacity
           style={styles.leftButton}
           onPress={leftButtonContent().action}>
-          <Icon
-            size={24}
-            color={Colors.orange[1000]}
-            name={leftButtonContent().icon}
-          />
+          {leftButtonContent().component}
         </TouchableOpacity>
         <Text style={styles.title}>{options.headerTitle}</Text>
-        <View style={styles.rightBlock}>{rightButton()}</View>
       </View>
     </View>
   );
@@ -87,12 +84,18 @@ const styles = StyleSheet.create({
   },
   title: {
     ...Fonts.title,
+    position: 'absolute',
+    width: 300,
+    textAlign: 'center',
+    left: '50%',
+    transform: [{ translateX: -150 }],
+    zIndex: -1,
   },
   rightBlock: {
     height: 54,
     width: 54,
   },
-  profile: {
+  settings: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.orange[200],
@@ -105,6 +108,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   imageRadius: {
+    borderRadius: 32,
+  },
+  icon: {
+    position: 'absolute',
+    bottom: -8,
+    right: -8,
+    padding: 2,
+    backgroundColor: Colors.orange[100],
     borderRadius: 32,
   },
 });

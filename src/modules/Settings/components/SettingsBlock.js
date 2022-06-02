@@ -1,38 +1,9 @@
 import Icon from '@expo/vector-icons/Entypo';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { View } from '@/components/Themed';
 import Colors from '@/constants/Colors';
 
 export default function SettingsBlock({ style, text, icon, onPress, right }) {
-  const styles = StyleSheet.create({
-    settingItem: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingLeft: 16,
-    },
-    icon: {
-      marginRight: 16,
-    },
-    text: {
-      fontSize: 18,
-      color: Colors.orange[900],
-    },
-    content: {
-      paddingVertical: 12,
-      paddingRight: 16,
-      flexDirection: 'row',
-      alignItems: 'center',
-      flexGrow: 1,
-      justifyContent: 'space-between',
-      borderBottomWidth: 1,
-      borderBottomColor: Colors.orange[100],
-      backgroundColor: 'transparent',
-    },
-  });
-
   return (
     <TouchableOpacity
       style={[styles.settingItem, style]}
@@ -54,3 +25,30 @@ export default function SettingsBlock({ style, text, icon, onPress, right }) {
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  settingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 16,
+  },
+  icon: {
+    marginRight: 16,
+  },
+  text: {
+    fontSize: 18,
+    color: Colors.orange[900],
+  },
+  content: {
+    paddingVertical: 12,
+    paddingRight: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.orange[100],
+    backgroundColor: 'transparent',
+  },
+});
