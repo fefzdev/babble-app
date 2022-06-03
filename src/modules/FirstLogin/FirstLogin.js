@@ -27,10 +27,10 @@ export default function FirstLogin() {
         source={require('@/assets/images/home-first-connection.png')}
       />
       <View style={styles.content}>
-        <Text style={[styles.title, Fonts.callout]}>Welcome to Babbles!</Text>
+        <Text style={[styles.title, Fonts.callout]}>Bienvenue sur Babbles</Text>
         <Text style={styles.description}>
-          Here you’ll find all your conversation with others. Start a chat a
-          interact with people in a safe place.
+          Vous trouverez ici toutes vos conversations avec d'autres personnes.
+          Commencez un chat et interagir avec les gens dans un endroit sûr.
         </Text>
       </View>
       <BabbleButton style={styles.button} onPress={() => setModalVisible(true)}>

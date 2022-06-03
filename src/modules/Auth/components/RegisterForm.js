@@ -27,12 +27,12 @@ export default function RegisterForm() {
       passwordConfirm === null ||
       mail === null
     ) {
-      dispatch(setErrorMessage('Please fill all fields'));
+      dispatch(setErrorMessage('Remplir tous les champs'));
       onInputError();
       return;
     }
     if (password !== passwordConfirm) {
-      dispatch(setErrorMessage('Passwords do not match'));
+      dispatch(setErrorMessage('Les mots de passe ne correspondent pas'));
       onInputError();
       return;
     }
@@ -89,7 +89,7 @@ export default function RegisterForm() {
         style={styles.input}
         label="Email"
         value={mail}
-        placeholder="your.email@mail.com"
+        placeholder="votre.email@mail.com"
         onChangeText={text => onInput('mail', text)}
         autoComplete="email"
         keyboardType="email-address"
@@ -98,15 +98,15 @@ export default function RegisterForm() {
       />
       <BabbleInput
         style={styles.input}
-        label="Username"
+        label="Nom d'utilisateur"
         value={username}
-        placeholder="beubeuOfThe33"
+        placeholder="beubeuDu33"
         onChangeText={text => onInput('username', text)}
         error={checkError('username')}
       />
       <BabbleInput
         style={styles.input}
-        label="Password"
+        label="Mot de passe"
         value={password}
         placeholder="**********"
         onChangeText={text => onInput('password', text)}
@@ -116,7 +116,7 @@ export default function RegisterForm() {
       />
       <BabbleInput
         style={styles.input}
-        label="Confirm password"
+        label="Confirmer le mot de passe"
         value={passwordConfirm}
         placeholder="**********"
         onChangeText={text => onInput('passwordConfirm', text)}
@@ -133,7 +133,7 @@ export default function RegisterForm() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 42,
-    marginBottom: 24,
+    marginBottom: 80,
   },
   input: {
     marginTop: 16,

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import BabbleLoader from '@/components/BabbleLoader';
 import Background from '@/components/Background';
 
-import { Heading, LoginForm, OtherLogs, RegisterForm } from './components';
+import { Heading, LoginForm, RegisterForm } from './components';
 
 function Auth({}) {
   const [isOnSignIn, setIsOnSignIn] = useState(true);
@@ -40,7 +40,6 @@ function Auth({}) {
             onSwitch={() => setIsOnSignIn(!isOnSignIn)}
           />
           {FormComponent()}
-          <OtherLogs />
         </Background>
       );
   };

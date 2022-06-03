@@ -1,50 +1,63 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 
-function Heading({ onSwitch, isLogin }) {
-  const containerStyle = {
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    marginTop: 24,
-  };
-
-  const textStyle = {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginTop: 24,
-    fontSize: 16,
-    color: Colors.black[600],
-  };
-
-  const highlightStyle = {
-    color: Colors.orange[1000],
-    fontWeight: 'bold',
-    marginLeft: 4,
-  };
-
+export default function Heading({ onSwitch, isLogin }) {
   const switchText = () => {
     if (isLogin) {
-      return { firstPart: "Don't have an account?", secondPart: 'Sign up' };
+      return {
+        firstPart: 'Pas encore de compte ?',
+        secondPart: "S'enregistrer",
+      };
     }
-    return { firstPart: 'Already have an account?', secondPart: 'Log in' };
+    return { firstPart: 'Déjà un compte ?', secondPart: 'Se connecter' };
   };
 
   return (
-    <View style={containerStyle}>
-      <Text style={Fonts.bigTitle}>
-        Welcome to <Text style={highlightStyle}>Babbles</Text>
+    <View style={styles.containerStyle}>
+      <Text style={[Fonts.bigTitle, styles.heading]}>
+        Bienvenue sur <Text style={styles.highlightStyle}>Babbles</Text>
       </Text>
-      <Text style={textStyle}>
-        {switchText().firstPart}
-        <TouchableOpacity onPress={onSwitch}>
-          <Text style={highlightStyle}>{switchText().secondPart}</Text>
+      <View style={styles.switchContainer}>
+        <Text style={styles.firstPart}>{switchText().firstPart}</Text>
+        <TouchableOpacity onPress={onSwitch} style={styles.test}>
+          <Text style={[styles.highlightStyle, styles.switch]}>
+            {switchText().secondPart}
+          </Text>
         </TouchableOpacity>
-      </Text>
+      </View>
     </View>
   );
 }
 
-export default Heading;
+const styles = StyleSheet.create({
+  containerStyle: {
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    marginTop: 24,
+  },
+
+  heading: {
+    textAlign: 'center',
+  },
+
+  highlightStyle: {
+    color: Colors.orange[1000],
+    fontWeight: 'bold',
+    marginLeft: 4,
+  },
+
+  switchContainer: {
+    flexDirection: 'row',
+    marginTop: 24,
+  },
+
+  firstPart: {
+    fontSize: 16,
+  },
+
+  switch: {
+    fontSize: 16,
+  },
+});
