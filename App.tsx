@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
+import BabbleLoader from '@/components/BabbleLoader';
+
 import BabbleErrorPopin from './src/components/BabbleErrorPopin';
 import BabbleInfoPopin from './src/components/BabbleInfoPopin';
 import useCachedResources from './src/hooks/useCachedResources';
@@ -16,7 +18,7 @@ export default function App() {
   const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
-    return null;
+    return <BabbleLoader />;
   } else {
     return (
       <Provider store={store}>
