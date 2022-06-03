@@ -10,17 +10,20 @@ export function useAuthentication() {
   const { userRepository } = useRepository();
 
   React.useEffect(() => {
-    const unsubscribeFromAuthStatuChanged = onAuthStateChanged(auth, user => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        setUser(user);
-        userRepository.syncStore(user.uid);
-      } else {
-        // User is signed out
-        setUser(undefined);
-      }
-    });
+    const unsubscribeFromAuthStatuChanged = onAuthStateChanged(
+      auth,
+      async user => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          await userRepository.syncStore(user.uid);
+          setUser(user);
+        } else {
+          // User is signed out
+          setUser(undefined);
+        }
+      },
+    );
 
     return unsubscribeFromAuthStatuChanged;
   }, []);
