@@ -133,7 +133,7 @@ export default function RegisterForm() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 42,
-    marginBottom: 24,
+    marginBottom: 80,
   },
   input: {
     marginTop: 16,
