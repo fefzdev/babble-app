@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 
-export default function BabbleButton({
+export default function BabbleInfoBox({
   style,
   icon = 'info',
   color = 'orange',

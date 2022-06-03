@@ -1,3 +1,4 @@
+import Icon from '@expo/vector-icons/Entypo';
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -7,7 +8,7 @@ import Colors from '@/constants/Colors';
 import useRepository from '@/database/Model';
 import { updateRoom } from '@/store/Rooms';
 
-export default function WaitingListItem({ room, onPress, onRemove }) {
+export default function WaitingListItem({ room, onRemove }) {
   const { rooms } = useRepository();
   const dispatch = useDispatch();
 
@@ -29,11 +30,9 @@ export default function WaitingListItem({ room, onPress, onRemove }) {
   const rightAction = () => {
     if (room.isActive)
       return (
-        <TouchableOpacity onPress={() => onPress()}>
-          <View style={style.remove}>
-            <Text style={style.removeText}>Discuter</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={style.icon}>
+          <Icon name="check" color={Colors.orange[1000]} size={16} />
+        </View>
       );
     return (
       <TouchableOpacity onPress={() => onRemove()}>
@@ -91,6 +90,11 @@ const style = StyleSheet.create({
     padding: 8,
     backgroundColor: Colors.orange[200],
     borderRadius: 8,
+  },
+  icon: {
+    padding: 4,
+    backgroundColor: Colors.orange[200],
+    borderRadius: 16,
   },
   removeText: {
     color: Colors.orange[1000],
