@@ -18,7 +18,7 @@ function LoginForm() {
 
   const onLogin = async () => {
     if (mail === null || password === null) {
-      dispatch(setErrorMessage(['Please fill in all fields']));
+      dispatch(setErrorMessage(['Remplir tous les champs']));
       onInputError();
       return;
     }
@@ -78,7 +78,7 @@ function LoginForm() {
         style={styles.input}
         label="Email"
         value={mail}
-        placeholder="your.email@mail.com"
+        placeholder="votre.email@mail.com"
         onChangeText={text => onInput('mail', text)}
         autoComplete="email"
         keyboardType="email-address"
@@ -87,7 +87,7 @@ function LoginForm() {
       />
       <BabbleInput
         style={styles.input}
-        label="Password"
+        label="Mot de passe"
         value={password}
         placeholder="**********"
         onChangeText={text => onInput('password', text)}

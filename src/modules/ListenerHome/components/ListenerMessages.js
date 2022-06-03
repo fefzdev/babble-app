@@ -19,7 +19,7 @@ export default function ListenerMessages({ room, onPress }) {
   const lastMessage = () => {
     if (!room.lastMessage)
       return {
-        content: 'La room à été créée',
+        content: 'Veux parler',
         createdAt: room.timestamp,
       };
     return {
