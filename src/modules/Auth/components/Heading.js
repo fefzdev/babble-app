@@ -27,15 +27,18 @@ function Heading({ onSwitch, isLogin }) {
 
   const switchText = () => {
     if (isLogin) {
-      return { firstPart: "Don't have an account?", secondPart: 'Sign up' };
+      return {
+        firstPart: 'Pas encore de compte ?',
+        secondPart: "S'enregistrer",
+      };
     }
-    return { firstPart: 'Already have an account?', secondPart: 'Log in' };
+    return { firstPart: 'Déjà un compte ?', secondPart: 'Se connecter' };
   };
 
   return (
     <View style={containerStyle}>
       <Text style={Fonts.bigTitle}>
-        Welcome to <Text style={highlightStyle}>Babbles</Text>
+        Bienvenue sur <Text style={highlightStyle}>Babbles</Text>
       </Text>
       <Text style={textStyle}>
         {switchText().firstPart}

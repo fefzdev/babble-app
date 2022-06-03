@@ -13,24 +13,32 @@ import BabbleInfoBox from '@/components/BabbleInfoBox';
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
 
-export default function AcceptedChatPopup({ isVisible, onClose, rooms }) {
-  const card = ({ item: { otherUserData } }) => {
-    return (
-      <View style={styles.card}>
-        <UserImage image={otherUserData.profilePicture} size={80} />
-        <Text style={styles.name}>{otherUserData.name}</Text>
-        <Text style={styles.alert}>Votre invitation à été acceptée !</Text>
-        <View style={styles.actions}>
-          <TouchableOpacity style={[styles.button, styles.cancel]}>
-            <Icon name="cross" size={24} color={Colors.orange[1000]} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Icon name="check" size={24} color={Colors.orange[50]} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+export default function AcceptedChatPopup({
+  navigation,
+  isVisible,
+  onClose,
+  rooms,
+}) {
+  const openRoom = room => {
+    onClose(false);
+    navigation.navigate('Room', { room });
   };
+
+  const card = ({ item }) => (
+    <View style={styles.card}>
+      <UserImage image={item.otherUserData.profilePicture} size={80} />
+      <Text style={styles.name}>{item.otherUserData.name}</Text>
+      <Text style={styles.alert}>Votre invitation à été acceptée !</Text>
+      <View style={styles.actions}>
+        <TouchableOpacity style={[styles.button, styles.cancel]}>
+          <Icon name="cross" size={24} color={Colors.orange[1000]} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => openRoom(item)}>
+          <Icon name="check" size={24} color={Colors.orange[50]} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   return (
     <Modal style={styles.modal} isVisible={isVisible} onBackdropPress={onClose}>
