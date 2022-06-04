@@ -1,9 +1,8 @@
-import Icon from '@expo/vector-icons/Entypo';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import SettingsList from '@/components/SettingsList';
 import Colors from '@/constants/Colors';
 
 import Email from './Email';
@@ -14,40 +13,22 @@ export default function UserInfos({ style }) {
   const { name } = useSelector(state => state.user);
   const [isNamePopupDisplayed, setNamePopupDisplayed] = useState(false);
   const [isPasswordPopupDisplayed, setPasswordPopupDisplayed] = useState(false);
-
+  const settingsList = [
+    {
+      icon: 'user',
+      text: name,
+      action: () => setNamePopupDisplayed(true),
+    },
+    {
+      icon: 'key',
+      text: '••••••••••••••',
+      action: () => setPasswordPopupDisplayed(true),
+    },
+  ];
   return (
     <View style={[styles.container, style]}>
       <Email />
-      <View style={[styles.settingsBlock]}>
-        <TouchableOpacity
-          style={styles.settingItem}
-          onPress={() => setNamePopupDisplayed(true)}>
-          <Icon
-            style={styles.icon}
-            name="user"
-            size={24}
-            color={Colors.orange[1000]}
-          />
-          <View style={styles.content}>
-            <Text style={styles.text}>{name}</Text>
-            <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.settingItem}
-          onPress={() => setPasswordPopupDisplayed(true)}>
-          <Icon
-            style={styles.icon}
-            name="key"
-            size={24}
-            color={Colors.orange[1000]}
-          />
-          <View style={[styles.content, styles.contentNoBorder]}>
-            <Text style={styles.text}>••••••••••••••</Text>
-            <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
-          </View>
-        </TouchableOpacity>
-      </View>
+      <SettingsList list={settingsList} />
       <NameEditModal
         isDisplayed={isNamePopupDisplayed}
         onClose={() => setNamePopupDisplayed(false)}
@@ -64,7 +45,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
-  settingsBlock: {
+  SettingItem: {
     marginTop: 16,
     width: '100%',
     backgroundColor: Colors.orange[200],

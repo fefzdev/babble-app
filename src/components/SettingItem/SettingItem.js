@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 
-export default function SettingsBlock({ style, text, icon, onPress, right }) {
+export default function SettingItem({ style, text, icon, onPress, right }) {
   return (
     <TouchableOpacity
       style={[styles.settingItem, style]}
@@ -19,7 +19,7 @@ export default function SettingsBlock({ style, text, icon, onPress, right }) {
         {right ? (
           right
         ) : (
-          <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
+          <Icon name="chevron-right" size={24} color={Colors.orange[500]} />
         )}
       </View>
     </TouchableOpacity>
@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   text: {
-    fontSize: 18,
-    color: Colors.orange[900],
+    fontSize: 16,
   },
   content: {
     paddingVertical: 12,

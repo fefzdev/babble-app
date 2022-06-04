@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     height: 124,
     backgroundColor: Colors.orange[50],
     paddingTop: 44,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
   },
   inner: {
     flex: 1,

@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     backgroundColor: 'transparent',
     marginBottom: 16,
+    marginTop: 44,
   },
   action: {
     width: 40,
