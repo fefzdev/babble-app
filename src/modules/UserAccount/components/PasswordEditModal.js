@@ -156,7 +156,6 @@ export default function PasswordEditModal({ isDisplayed, onClose }) {
 
 const styles = StyleSheet.create({
   modal: {
-    flex: 1,
     alignItems: 'center',
   },
   container: {
