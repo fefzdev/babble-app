@@ -6,7 +6,7 @@ import SubScreenHeader from '@/components/SubScreenHeader';
 import { View } from '@/components/Themed';
 import Colors from '@/constants/Colors';
 
-import SettingsBlock from '../components/SettingsBlock';
+import SettingItem from '../components/SettingItem';
 
 export default function Notifications({ navigation }) {
   const [wantRoomNotifs, setWantRoomNotifs] = useState(false);
@@ -15,8 +15,8 @@ export default function Notifications({ navigation }) {
   return (
     <Background style={styles.container} noScroll>
       <SubScreenHeader navigation={navigation} title="Notifications" />
-      <View style={styles.settingsBlock}>
-        <SettingsBlock
+      <View style={styles.SettingItem}>
+        <SettingItem
           onPress={() => setWantMessageNotifs(!wantMessageNotifs)}
           style={styles.settingBlock}
           text="Nouveaux messages"
@@ -30,7 +30,7 @@ export default function Notifications({ navigation }) {
           }
         />
 
-        <SettingsBlock
+        <SettingItem
           onPress={() => setWantRoomNotifs(!wantRoomNotifs)}
           style={styles.settingBlock}
           text="Nouvelles demandes"
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-  settingsBlock: {
+  SettingItem: {
     marginTop: 16,
     width: '100%',
     backgroundColor: Colors.orange[200],

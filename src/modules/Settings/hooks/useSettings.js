@@ -3,50 +3,7 @@ import { Alert } from 'react-native';
 
 const auth = getAuth();
 
-export default function useSettings() {
-  const settingsList = [
-    [
-      {
-        icon: 'modern-mic',
-        text: 'Changer de rôle',
-        handle: {
-          fn: 'setRoleModalVisible',
-          prm: [true],
-        },
-      },
-
-      {
-        subtitle: 'Notifications',
-        icon: 'bell',
-        text: 'Notifications',
-        handle: {
-          fn: 'setNotifsModalVisible',
-          prm: [true],
-        },
-      },
-    ],
-    [
-      {
-        icon: 'log-out',
-        text: 'Deconnexion',
-        handle: {
-          fn: 'signOut',
-          prm: [],
-        },
-      },
-    ],
-    [
-      {
-        icon: 'warning',
-        text: 'Supprimer mon compte',
-        handle: {
-          fn: 'accountDelete',
-          prm: [],
-        },
-      },
-    ],
-  ];
-
+export default function useSettings(navigation) {
   const onSignOut = () => {
     Alert.alert(
       'Se déconnecter ?',
@@ -84,6 +41,36 @@ export default function useSettings() {
       ],
     );
   };
+  const settingsList = [
+    [
+      {
+        icon: 'modern-mic',
+        text: 'Changer de rôle',
+        action: () => navigation.navigate('Role'),
+      },
+
+      {
+        subtitle: 'Notifications',
+        icon: 'bell',
+        text: 'Notifications',
+        action: () => navigation.navigate('Notifications'),
+      },
+    ],
+    [
+      {
+        icon: 'log-out',
+        text: 'Deconnexion',
+        action: () => onSignOut(),
+      },
+    ],
+    [
+      {
+        icon: 'warning',
+        text: 'Supprimer mon compte',
+        action: () => onAccountDeleteOut(),
+      },
+    ],
+  ];
 
   return {
     onSignOut,
