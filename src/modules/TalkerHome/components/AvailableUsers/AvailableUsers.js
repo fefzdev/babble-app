@@ -6,19 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import UserImage from '@/components/UserImage';
 import Fonts from '@/constants/Fonts';
 import useRepository from '@/database/Model';
-import { addToWaitlist } from '@/store/Rooms';
 
 export default function AvailableUsers() {
   const { userRepository, rooms } = useRepository();
   const [allUsers, setAllUsers] = useState([]);
   const talkerUID = useSelector(state => state.user.uid);
-  const waitlist = useSelector(state => state.rooms.waitlist);
-  const dispatch = useDispatch();
+  const createdRooms = useSelector(state => state.rooms.rooms);
 
   useEffect(() => {
     userRepository.listen(data => {
@@ -32,7 +30,6 @@ export default function AvailableUsers() {
   }, []);
 
   const addToWaitingList = listenerUid => {
-    dispatch(addToWaitlist(listenerUid));
     rooms.createRoom(
       talkerUID,
       listenerUid,
@@ -49,15 +46,17 @@ export default function AvailableUsers() {
   };
 
   const buildUsersAvailable = () => {
-    const availableUsers = allUsers.filter(user => user.available);
+    const availableUsers = allUsers
+      .filter(user => user.available)
+      .filter(
+        user => !createdRooms.find(room => room.otherUserData.uid === user.uid),
+      );
     if (availableUsers.length)
       return availableUsers.map(user => (
         <TouchableOpacity
-          onPress={() => addToWaitingList(user.uid)}
-          key={user.uid}>
-          <View
-            opacity={waitlist.includes(user.uid) ? 0.5 : 1}
-            style={style.item}>
+          key={user.uid}
+          onPress={() => addToWaitingList(user.uid)}>
+          <View style={style.item}>
             <UserImage
               style={style.image}
               imageStyle={style.imageRadius}
@@ -69,7 +68,11 @@ export default function AvailableUsers() {
           </View>
         </TouchableOpacity>
       ));
-    return <Text style={style.item}>Pas d'utilisateurs disponibles</Text>;
+    return (
+      <Text style={[style.item, style.noMoreUsers]}>
+        Pas d'utilisateurs disponibles
+      </Text>
+    );
   };
   return (
     <View style={style.view}>
@@ -93,7 +96,6 @@ const style = StyleSheet.create({
     marginTop: 8,
   },
   itemContainer: {
-    height: 80,
     marginLeft: -16,
     marginTop: 16,
   },
@@ -102,6 +104,9 @@ const style = StyleSheet.create({
     flex: 1,
     width: 64,
     alignItems: 'center',
+  },
+  noMoreUsers: {
+    width: '100%',
   },
   image: {
     width: 48,

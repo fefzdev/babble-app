@@ -62,7 +62,7 @@ export default function Header({ headerProps }) {
 const styles = StyleSheet.create({
   container: {
     height: 124,
-    backgroundColor: Colors.orange[100],
+    backgroundColor: Colors.orange[50],
     paddingTop: 44,
     paddingHorizontal: 16,
   },
