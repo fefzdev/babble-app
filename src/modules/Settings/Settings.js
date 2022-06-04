@@ -9,12 +9,12 @@ import UserSettingItem from './components/UserSettingItem';
 import useSettings from './hooks/useSettings';
 
 function Settings({ navigation }) {
-  const { settingsList } = useSettings(navigation);
+  const { getSettings } = useSettings(navigation);
 
   return (
     <Background style={styles.container} noScroll>
       <UserSettingItem onPress={() => navigation.navigate('Compte')} />
-      {settingsList.map((group, id) => (
+      {getSettings().map((group, id) => (
         <SettingsList list={group} key={id} />
       ))}
     </Background>

@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 function BabbleModal({
@@ -8,7 +8,7 @@ function BabbleModal({
   style,
   canBeSwiped = true,
 }) {
-  const styles = {
+  const styles = StyleSheet.create({
     modal: {
       margin: 0,
     },
@@ -20,7 +20,7 @@ function BabbleModal({
       borderRadius: 32,
       height: '100%',
     },
-  };
+  });
 
   return (
     <Modal

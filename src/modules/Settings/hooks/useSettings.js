@@ -1,9 +1,12 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { Alert } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const auth = getAuth();
 
 export default function useSettings(navigation) {
+  const { type } = useSelector(state => state.user);
+
   const onSignOut = () => {
     Alert.alert(
       'Se déconnecter ?',
@@ -41,21 +44,7 @@ export default function useSettings(navigation) {
       ],
     );
   };
-  const settingsList = [
-    [
-      {
-        icon: 'modern-mic',
-        text: 'Changer de rôle',
-        action: () => navigation.navigate('Role'),
-      },
-
-      {
-        subtitle: 'Notifications',
-        icon: 'bell',
-        text: 'Notifications',
-        action: () => navigation.navigate('Notifications'),
-      },
-    ],
+  const defaultSettingsList = [
     [
       {
         icon: 'log-out',
@@ -72,9 +61,29 @@ export default function useSettings(navigation) {
     ],
   ];
 
+  const getSettings = () => {
+    const settings = defaultSettingsList;
+    if (type)
+      settings.unshift([
+        {
+          icon: 'modern-mic',
+          text: 'Changer de rôle',
+          action: () => navigation.navigate('Role'),
+        },
+
+        {
+          subtitle: 'Notifications',
+          icon: 'bell',
+          text: 'Notifications',
+          action: () => navigation.navigate('Notifications'),
+        },
+      ]);
+    return settings;
+  };
+
   return {
     onSignOut,
     onAccountDeleteOut,
-    settingsList,
+    getSettings,
   };
 }

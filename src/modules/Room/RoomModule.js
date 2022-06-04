@@ -17,7 +17,7 @@ export default function RoomModule({ room, messages }) {
       : null;
 
   return (
-    <Background noScroll={true} style={styles.background}>
+    <Background noScroll style={styles.background}>
       <ScrollView
         contentContainerStyle={styles.list}
         ref={scrollViewRef}

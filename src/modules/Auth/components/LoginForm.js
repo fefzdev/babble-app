@@ -7,6 +7,7 @@ import BabbleButton from '@/components/BabbleButton';
 import BabbleInput from '@/components/BabbleInput';
 import useRepository from '@/database/Model';
 import { setErrorMessage } from '@/store/App';
+
 const auth = getAuth();
 
 function LoginForm() {

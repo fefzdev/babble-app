@@ -34,7 +34,7 @@ export default function FirstLogin() {
         </Text>
       </View>
       <BabbleButton style={styles.button} onPress={() => setModalVisible(true)}>
-        Start your first chat!
+        Commencez à discuter !
       </BabbleButton>
       <RoleModal
         isVisible={modalVisible}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 
@@ -14,43 +14,48 @@ export default function BabbleInput({
 }) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const inputStyle = {
-    borderWidth: 2,
-    borderColor: Colors.orange[500],
-    padding: 16,
-    borderRadius: 8,
-  };
+  const styles = StyleSheet.create({
+    input: {
+      borderWidth: 2,
+      borderColor: Colors.orange[500],
+      padding: 16,
+      borderRadius: 8,
+    },
 
-  const inputStyleFocused = {
-    borderColor: Colors.orange[1000],
-  };
+    inputFocused: {
+      borderColor: Colors.orange[1000],
+    },
 
-  const inputStyleError = {
-    borderColor: Colors.red[1000],
-    color: Colors.red[500],
-  };
+    inputError: {
+      borderColor: Colors.red[1000],
+      color: Colors.red[500],
+    },
 
-  const labelStyle = {
-    marginBottom: 8,
-  };
-  const labelStyleError = {
-    color: Colors.red[500],
-  };
+    label: {
+      marginBottom: 8,
+    },
+    labelError: {
+      color: Colors.red[500],
+    },
+    container: {
+      flex: 1,
+    },
+  });
 
   const handleStyle = () => {
     if (isFocused) {
-      return [inputStyle, inputStyleFocused];
+      return [styles.input, styles.inputFocused];
     }
     if (error) {
-      return [inputStyle, inputStyleError];
+      return [styles.input, styles.inputError];
     }
-    return inputStyle;
+    return styles.input;
   };
   const handleLabelStyle = () => {
     if (error) {
-      return [labelStyle, labelStyleError];
+      return [styles.label, styles.labelError];
     }
-    return labelStyle;
+    return styles.label;
   };
 
   return (

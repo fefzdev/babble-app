@@ -1,40 +1,132 @@
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import Carousel from 'react-native-snap-carousel';
+
 import BabbleButton from '@/components/BabbleButton';
-import BabbleModal from '@/components/BabbleModal';
+import BabbleInfoBox from '@/components/BabbleInfoBox';
+import Colors from '@/constants/Colors';
 import { UserRoles } from '@/types/UserRoles.enums';
 
-function RoleModal({ isVisible, onClose, onSubmit }) {
-  const styles = {
-    container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-      paddingHorizontal: 8,
+export default function AcceptedChatPopup({ isVisible, onClose, onSubmit }) {
+  const roles = [
+    {
+      title: 'Talker',
+      value: UserRoles.TALKER,
+      description: (
+        <Text style={styles.text}>
+          En choisissant le rôle de Talker, vous êtes ici pour écouter et
+          discuter avec des
+          <Text style={styles.role}> Talkers</Text> dans le besoin d'une oreille
+          attentive.
+        </Text>
+      ),
+      image: require('@/assets/images/talker-image.png'),
     },
-    button: {
-      marginTop: 32,
-      flexGrow: 1,
-      marginHorizontal: 8,
+    {
+      title: 'Listener',
+      value: UserRoles.LISTENER,
+      description: (
+        <Text style={styles.text}>
+          Des
+          <Text style={styles.role}> Listeners</Text> seront là pour vous
+          écouter et vous conseiller quelque soit votre problème.
+        </Text>
+      ),
+      image: require('@/assets/images/listener-image.png'),
     },
-  };
+  ];
+
+  const card = ({ item }) => (
+    <View style={styles.card}>
+      <Image source={item.image} style={styles.image} />
+      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.alert}>{item.description}</Text>
+      <BabbleButton onPress={() => onSubmit(item.value)} style={styles.action}>
+        Je souhaite être {item.title}
+      </BabbleButton>
+    </View>
+  );
 
   return (
-    <BabbleModal
-      isVisible={isVisible}
-      onClose={onClose}
-      style={styles.container}>
-      <BabbleButton
-        style={styles.button}
-        onPress={() => onSubmit(UserRoles.TALKER)}>
-        I need to talk
-      </BabbleButton>
-      <BabbleButton
-        style={styles.button}
-        onPress={() => onSubmit(UserRoles.LISTENER)}>
-        I want to listen
-      </BabbleButton>
-    </BabbleModal>
+    <Modal style={styles.modal} isVisible={isVisible} onBackdropPress={onClose}>
+      <View style={[styles.container]}>
+        <Carousel
+          data={roles}
+          renderItem={card}
+          sliderWidth={Dimensions.get('window').width}
+          itemWidth={Dimensions.get('window').width - 40}
+          layout={'default'}
+        />
+        <BabbleInfoBox
+          style={styles.info}
+          content="Vous pourrez modifier votre choix plus tard."
+        />
+      </View>
+      <TouchableOpacity style={styles.close} onPress={onClose}>
+        <Text style={styles.closeText}>Je ne sais pas encore</Text>
+      </TouchableOpacity>
+    </Modal>
   );
 }
 
-export default RoleModal;
+const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+  },
+  container: {
+    borderRadius: 32,
+  },
+  card: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingHorizontal: 24,
+    paddingTop: 40,
+    paddingBottom: 24,
+  },
+  image: {
+    alignSelf: 'center',
+    width: 250,
+    height: 250,
+  },
+  title: {
+    marginTop: 8,
+    fontSize: 24,
+    textAlign: 'center',
+  },
+  alert: {
+    marginTop: 8,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  action: {
+    width: '100%',
+    marginTop: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  button: {
+    padding: 16,
+    borderRadius: 32,
+    backgroundColor: Colors.orange[1000],
+  },
+  info: {
+    marginTop: 16,
+    marginHorizontal: 20,
+  },
+  close: {
+    marginTop: 32,
+  },
+  closeText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: 'white',
+  },
+});
