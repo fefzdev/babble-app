@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 import Background from '@/components/Background';
+import SettingsList from '@/components/SettingsList';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
 
-import SettingsList from './components/SettingsList';
 import UserSettingItem from './components/UserSettingItem';
 import useSettings from './hooks/useSettings';
 

@@ -6,7 +6,6 @@ function Background({ children, style, noScroll }) {
   const containerStyle = {
     backgroundColor: Colors.orange[50],
     flex: 1,
-    paddingTop: 44,
     paddingHorizontal: 20,
   };
 

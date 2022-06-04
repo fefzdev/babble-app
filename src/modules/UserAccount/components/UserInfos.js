@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import SettingsList from '@/components/SettingsList';
 import Colors from '@/constants/Colors';
-import SettingsList from '@/modules/Settings/components/SettingsList';
 
 import Email from './Email';
 import NameEditModal from './NameEditModal';
@@ -20,7 +20,6 @@ export default function UserInfos({ style }) {
       action: () => setNamePopupDisplayed(true),
     },
     {
-      subtitle: 'Notifications',
       icon: 'key',
       text: '••••••••••••••',
       action: () => setPasswordPopupDisplayed(true),

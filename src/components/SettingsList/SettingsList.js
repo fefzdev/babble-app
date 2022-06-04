@@ -1,12 +1,18 @@
 import { StyleSheet, View } from 'react-native';
 
-import SettingItem from './SettingItem';
+import SettingItem from '@/components/SettingItem';
 
 export default function SettingsList({ style, list }) {
   return (
     <View style={[styles.container, style]}>
-      {list.map(({ text, icon, action }) => (
-        <SettingItem text={text} icon={icon} key={text} onPress={action} />
+      {list.map(({ text, icon, action, right }) => (
+        <SettingItem
+          key={text}
+          text={text}
+          icon={icon}
+          right={right}
+          onPress={action}
+        />
       ))}
     </View>
   );

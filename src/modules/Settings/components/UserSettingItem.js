@@ -16,7 +16,7 @@ export default function UserSettingItem({ onPress }) {
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.email}>{mail}</Text>
       </View>
-      <Icon name="chevron-right" size={24} color={Colors.orange[1000]} />
+      <Icon name="chevron-right" size={24} color={Colors.orange[500]} />
     </TouchableOpacity>
   );
 }
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   email: {
-    color: Colors.black[400],
+    color: Colors.orange[700],
   },
 });
