@@ -8,20 +8,22 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Carousel from 'react-native-snap-carousel';
+import { useSelector } from 'react-redux';
 
 import BabbleInfoBox from '@/components/BabbleInfoBox';
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
+import useRepository from '@/database/Model';
 
-export default function AcceptedChatPopup({
-  navigation,
-  isVisible,
-  onClose,
-  rooms,
-}) {
-  const openRoom = room => {
+export default function AcceptedChatPopup({ isVisible, onClose, rooms }) {
+  const { uid } = useSelector(state => state.user);
+  const { rooms: stateRooms } = useSelector(state => state.rooms);
+  const { rooms: roomsRepo } = useRepository();
+
+  const openRoom = roomUid => {
+    roomsRepo.setActive(roomUid);
+    roomsRepo.deleteNonActiveRooms(stateRooms, uid);
     onClose(false);
-    navigation.navigate('Room', { room });
   };
 
   const card = ({ item }) => (
@@ -33,7 +35,9 @@ export default function AcceptedChatPopup({
         <TouchableOpacity style={[styles.button, styles.cancel]}>
           <Icon name="cross" size={24} color={Colors.orange[1000]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => openRoom(item)}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => openRoom(item.roomUid)}>
           <Icon name="check" size={24} color={Colors.orange[50]} />
         </TouchableOpacity>
       </View>

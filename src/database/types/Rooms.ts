@@ -1,6 +1,8 @@
+import { MessagesInterface } from './Messages';
+
 export interface RoomInterface {
   isActive: boolean;
-  lastMessage: string;
+  isAccepted: boolean;
+  lastMessage: MessagesInterface;
   timestamp: number;
-  members: any;
 }

@@ -17,8 +17,8 @@ export default function TalkerHome({ navigation }) {
   const { rooms } = useSelector(state => state.rooms);
   const [isAcceptedChatPopupDisplayed, setIsPopupDisplayed] = useState(true);
 
-  const activeRooms = useMemo(
-    () => rooms.filter(room => room.isActive),
+  const acceptedRooms = useMemo(
+    () => rooms.filter(room => room.isAccepted),
     [rooms],
   );
 
@@ -54,13 +54,13 @@ export default function TalkerHome({ navigation }) {
       <WaitingList
         navigation={navigation}
         onSeeAccepted={() => setIsPopupDisplayed(true)}
-        isChatActivable={activeRooms.length > 0}
+        isChatActivable={acceptedRooms.length > 0}
       />
       <AcceptedChatPopup
         navigation={navigation}
-        isVisible={activeRooms.length > 0 && isAcceptedChatPopupDisplayed}
+        isVisible={acceptedRooms.length > 0 && isAcceptedChatPopupDisplayed}
         onClose={() => setIsPopupDisplayed(false)}
-        rooms={activeRooms}
+        rooms={acceptedRooms}
       />
     </Background>
   );

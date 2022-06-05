@@ -61,7 +61,7 @@ function ListenerHome({ navigation }) {
           key={room.roomUid}
           room={room}
           onPress={() => {
-            roomsRepo.setActive(room.roomUid);
+            roomsRepo.accept(room.roomUid);
             navigation.navigate('Room', {
               room,
             });

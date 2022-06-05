@@ -23,12 +23,12 @@ export default function WaitingListItem({ room, onRemove }) {
   }, []);
 
   const info = () => {
-    if (room.isActive) return <Text>Demande acceptée !</Text>;
+    if (room.isAccepted) return <Text>Demande acceptée !</Text>;
     return <Text>Demande envoyée...</Text>;
   };
 
   const rightAction = () => {
-    if (room.isActive)
+    if (room.isAccepted)
       return (
         <View style={style.icon}>
           <Icon name="check" color={Colors.orange[1000]} size={16} />

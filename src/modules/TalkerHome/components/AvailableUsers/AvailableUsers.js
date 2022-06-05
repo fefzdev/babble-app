@@ -30,19 +30,12 @@ export default function AvailableUsers() {
   }, []);
 
   const addToWaitingList = listenerUid => {
-    rooms.createRoom(
-      talkerUID,
-      listenerUid,
-      {
-        isActive: false,
-        lastMessage: '',
-        timestamp: new Date().getTime(),
-      },
-      {
-        [talkerUID]: true,
-        [listenerUid]: true,
-      },
-    );
+    rooms.createRoom(talkerUID, listenerUid, {
+      isActive: false,
+      isAccepted: false,
+      lastMessage: '',
+      timestamp: new Date().getTime(),
+    });
   };
 
   const buildUsersAvailable = () => {
