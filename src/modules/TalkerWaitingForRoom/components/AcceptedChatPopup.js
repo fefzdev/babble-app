@@ -1,4 +1,5 @@
 import Icon from '@expo/vector-icons/Entypo';
+import { useEffect } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -20,11 +21,18 @@ export default function AcceptedChatPopup({ isVisible, onClose, rooms }) {
   const { rooms: stateRooms } = useSelector(state => state.rooms);
   const { rooms: roomsRepo } = useRepository();
 
-  const openRoom = roomUid => {
-    roomsRepo.setActive(roomUid);
-    roomsRepo.deleteNonActiveRooms(stateRooms, uid);
+  const openRoom = async roomUid => {
+    await roomsRepo.setActive(roomUid);
     onClose(false);
   };
+
+  const onOneActiveRoom = async () => {
+    await roomsRepo.deleteNonActiveRooms(stateRooms, uid);
+  };
+
+  useEffect(() => {
+    if (stateRooms.find(r => r.isActive)) onOneActiveRoom();
+  }, [stateRooms]);
 
   const card = ({ item }) => (
     <View style={styles.card}>

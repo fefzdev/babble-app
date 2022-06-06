@@ -7,6 +7,8 @@ export const appStore = createSlice({
     errorMessage: null,
     infoMessage: null,
     isLoading: false,
+    isTalkerActiveRoom: false,
+    isRoomOptionsPopupDisplayed: false,
   },
 
   reducers: {
@@ -25,6 +27,12 @@ export const appStore = createSlice({
     setIsLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
+    setIsTalkerActiveRoom: (state, { payload }) => {
+      state.isTalkerActiveRoom = payload;
+    },
+    setIsRoomOptionPopupDisplayed: (state, { payload }) => {
+      state.isRoomOptionsPopupDisplayed = payload;
+    },
   },
 });
 
@@ -34,6 +42,8 @@ export const {
   setIsLoading,
   setInfoMessage,
   removeInfoMessage,
+  setIsTalkerActiveRoom,
+  setIsRoomOptionPopupDisplayed,
 } = appStore.actions;
 
 export default appStore.reducer;

@@ -1,17 +1,24 @@
 import Icon from '@expo/vector-icons/Entypo';
+import { StackHeaderProps } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import UserImage from '@/components/UserImage';
 import Colors from '@/constants/Colors';
 import Fonts from '@/constants/Fonts';
+import { setIsRoomOptionPopupDisplayed } from '@/store/App';
 
-export default function Header({ headerProps }) {
+export default function Header({
+  headerProps,
+}: {
+  headerProps: StackHeaderProps;
+}) {
+  const dispatch = useDispatch();
   const { profilePicture } = useSelector(state => state.user);
+  const { isTalkerActiveRoom } = useSelector(state => state.app);
 
   const { route, navigation, options } = headerProps;
-
   useEffect(() => {
     navigation.setOptions({ headerTitle: route.name });
   }, []);
@@ -45,15 +52,31 @@ export default function Header({ headerProps }) {
     );
   };
 
+  const roomOptions = () => {
+    if (route.name === 'Room' || isTalkerActiveRoom)
+      return (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => dispatch(setIsRoomOptionPopupDisplayed(true))}>
+          <Icon
+            size={24}
+            color={Colors.orange[1000]}
+            name="dots-three-vertical"
+          />
+        </TouchableOpacity>
+      );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
         <TouchableOpacity
-          style={styles.leftButton}
+          style={styles.button}
           onPress={leftButtonContent().action}>
           {leftButtonContent().component}
         </TouchableOpacity>
         <Text style={styles.title}>{options.headerTitle}</Text>
+        {roomOptions()}
       </View>
     </View>
   );
@@ -73,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
   },
-  leftButton: {
+  button: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.orange[200],

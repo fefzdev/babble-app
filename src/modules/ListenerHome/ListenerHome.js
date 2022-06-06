@@ -50,7 +50,7 @@ function ListenerHome({ navigation }) {
     userRepository.listen(fetchRooms, uid);
 
     return () => {
-      userRepository.unlisten();
+      userRepository.unlisten(uid);
     };
   }, []);
 

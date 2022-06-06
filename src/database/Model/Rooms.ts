@@ -107,12 +107,15 @@ export default class Rooms extends Model {
     const formattedRooms: RoomStoreInterface[] = rooms.filter(
       room => !room.isActive,
     );
+    console.log(formattedRooms);
+
     if (!formattedRooms.length)
       throw new Error("L'utilisateur n'a pas d'autres conversation");
 
     await Promise.all(
-      formattedRooms.map(async (room: RoomStoreInterface) =>
-        this.deleteRoom(room, userUid),
+      formattedRooms.map(
+        async (room: RoomStoreInterface) =>
+          await this.deleteRoom(room, userUid),
       ),
     );
   };

@@ -62,8 +62,9 @@ export default class Model {
     });
   };
 
-  unlisten = () => {
-    const ref = db.connectTo(this.table);
+  unlisten = childPath => {
+    const pathRef = childPath ? `${this.table}/${childPath}` : this.table;
+    const ref = db.connectTo(pathRef);
     off(ref);
   };
 

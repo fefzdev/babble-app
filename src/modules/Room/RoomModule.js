@@ -1,13 +1,29 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '@/components/Background';
+import useRepository from '@/database/Model';
+import { setIsRoomOptionPopupDisplayed } from '@/store/App';
 
 import InitialMessage from './components/InitialMessage';
 import Message from './components/Message';
 import RoomInput from './components/RoomInput';
+import RoomOptionsPopup from './components/RoomOptionsPopup';
 
 export default function RoomModule({ room, messages }) {
+  const dispatch = useDispatch();
+  const { uid } = useSelector(state => state.user);
+  const { isRoomOptionsPopupDisplayed } = useSelector(state => state.app);
+  const { rooms } = useRepository();
+
+  useEffect(() => {
+    dispatch(setIsRoomOptionPopupDisplayed(false));
+    return () => {
+      dispatch(setIsRoomOptionPopupDisplayed(false));
+    };
+  }, []);
+
   const scrollViewRef = useRef();
   const buildMessages = () =>
     messages
@@ -15,6 +31,11 @@ export default function RoomModule({ room, messages }) {
           <Message key={index} message={message} />
         ))
       : null;
+
+  const deleteRoom = () => {
+    rooms.deleteRoom(room, uid);
+    dispatch(setIsRoomOptionPopupDisplayed(false));
+  };
 
   return (
     <Background noScroll style={styles.background}>
@@ -30,6 +51,11 @@ export default function RoomModule({ room, messages }) {
         </View>
       </ScrollView>
       <RoomInput style={styles.input} roomUid={room.uid} />
+      <RoomOptionsPopup
+        isVisible={isRoomOptionsPopupDisplayed}
+        onClose={() => dispatch(setIsRoomOptionPopupDisplayed(false))}
+        onDelete={() => deleteRoom()}
+      />
     </Background>
   );
 }
