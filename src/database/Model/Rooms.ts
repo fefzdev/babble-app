@@ -12,7 +12,6 @@ import { RoomInterface } from '@/database/types/Rooms';
 import { RoomStoreInterface } from '@/types/RoomStore.interface';
 
 import Model from './Model';
-import RoomMembers from './RoomMembers';
 
 export default class Rooms extends Model {
   constructor() {
@@ -41,7 +40,6 @@ export default class Rooms extends Model {
     talkerUid: string,
     listenerUid: string,
     room: RoomInterface,
-    members: RoomMembers,
   ): Promise<void> => {
     const userRoomsArray = await get(db.connectTo(`users/${talkerUid}/rooms`));
 
@@ -55,20 +53,29 @@ export default class Rooms extends Model {
             equalTo(userRoomUid),
           );
 
-          const response = await get(roomMembersrRef);
+          const roomMembers = await get(roomMembersrRef);
 
-          if (response.val()) {
-            const doRoomAlreadyExists = Object.keys(response.val()[userRoomUid])
+          if (roomMembers.val()) {
+            const doRoomAlreadyExists = Object.keys(
+              roomMembers.val()[userRoomUid],
+            )
               .map(userUid => userUid === listenerUid)
               .some(e => e);
 
-            if (doRoomAlreadyExists) throw new Error('La room existe déjà');
+            if (doRoomAlreadyExists)
+              throw new Error('La conversation existe déjà');
           }
         }),
       );
     }
 
     const roomUid = push(db.connectTo(this.table), room).key;
+    // Firebase's like array
+    const members = {
+      [talkerUid]: true,
+      [listenerUid]: true,
+    };
+
     const updates: any = {};
     updates[`members/${roomUid}`] = members;
     updates[`messages/${roomUid}`] = true;
@@ -86,10 +93,40 @@ export default class Rooms extends Model {
   setActive = async (roomUid: string) => {
     const room = await this.find(roomUid);
 
-    if (!room) throw new Error('Room not found');
+    if (!room) throw new Error('Conversation introuvable');
 
     await db.update(`${this.table}/${roomUid}`, {
       isActive: true,
+    });
+  };
+
+  deleteNonActiveRooms = async (
+    rooms: RoomStoreInterface[],
+    userUid: string,
+  ) => {
+    const formattedRooms: RoomStoreInterface[] = rooms.filter(
+      room => !room.isActive,
+    );
+    console.log(formattedRooms);
+
+    if (!formattedRooms.length)
+      throw new Error("L'utilisateur n'a pas d'autres conversation");
+
+    await Promise.all(
+      formattedRooms.map(
+        async (room: RoomStoreInterface) =>
+          await this.deleteRoom(room, userUid),
+      ),
+    );
+  };
+
+  accept = async (roomUid: string) => {
+    const room = await this.find(roomUid);
+
+    if (!room) throw new Error('Room not found');
+
+    await db.update(`${this.table}/${roomUid}`, {
+      isAccepted: true,
     });
   };
 

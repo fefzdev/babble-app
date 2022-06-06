@@ -1,26 +1,17 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Background from '@/components/Background';
-import Role from '@/components/RoleBlock';
 import useRepository from '@/database/Model';
 import { setRooms } from '@/store/Rooms';
 
-import AcceptedChatPopup from './components/AcceptedChatPopup';
-import AvailableUsers from './components/AvailableUsers';
-import WaitingList from './components/WaitingList';
+import TalkerActiveRoom from '../TalkerActiveRoom/TalkerActiveRoom';
+import TalkerWaitingForRoom from '../TalkerWaitingForRoom';
 
 export default function TalkerHome({ navigation }) {
   const { userRepository, members, rooms: roomsRepo } = useRepository();
   const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
   const { rooms } = useSelector(state => state.rooms);
-  const [isAcceptedChatPopupDisplayed, setIsPopupDisplayed] = useState(true);
-
-  const activeRooms = useMemo(
-    () => rooms.filter(room => room.isActive),
-    [rooms],
-  );
 
   const fetchRooms = async userData => {
     if (!userData?.rooms) return dispatch(setRooms([]));
@@ -47,21 +38,12 @@ export default function TalkerHome({ navigation }) {
     };
   }, []);
 
-  return (
-    <Background>
-      <Role />
-      <AvailableUsers />
-      <WaitingList
+  if (rooms.find(room => room.isActive))
+    return (
+      <TalkerActiveRoom
+        room={rooms.find(room => room.isActive)}
         navigation={navigation}
-        onSeeAccepted={() => setIsPopupDisplayed(true)}
-        isChatActivable={activeRooms.length > 0}
       />
-      <AcceptedChatPopup
-        navigation={navigation}
-        isVisible={activeRooms.length > 0 && isAcceptedChatPopupDisplayed}
-        onClose={() => setIsPopupDisplayed(false)}
-        rooms={activeRooms}
-      />
-    </Background>
-  );
+    );
+  return <TalkerWaitingForRoom navigation={navigation} />;
 }
