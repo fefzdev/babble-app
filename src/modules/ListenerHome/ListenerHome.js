@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,20 +55,37 @@ function ListenerHome({ navigation }) {
   }, []);
 
   const buildTalkersWantsToTalk = () => {
-    return filteredRooms.map(room => {
+    if (roomsStore.length === 0)
       return (
-        <ListenerMessages
-          key={room.roomUid}
-          room={room}
-          onPress={() => {
-            roomsRepo.accept(room.roomUid);
-            navigation.navigate('Room', {
-              room,
-            });
-          }}
-        />
+        <View style={styles.noTalkers}>
+          <Image
+            style={styles.image}
+            resizeMode="contain"
+            source={require('./assets/listener-waiting.png')}
+          />
+          <Text style={styles.text}>
+            Vous n'avez pas encore de conversations
+          </Text>
+        </View>
       );
-    });
+    return filteredRooms.map(room => (
+      <ListenerMessages
+        key={room.roomUid}
+        room={room}
+        onPress={() => {
+          navigation.navigate('Room', {
+            room,
+          });
+        }}
+        onAccept={() => {
+          roomsRepo.accept(room.roomUid);
+          navigation.navigate('Room', {
+            room,
+          });
+        }}
+        onRemove={() => roomsRepo.deleteRoom(room, uid)}
+      />
+    ));
   };
   buildTalkersWantsToTalk();
 
@@ -84,9 +101,7 @@ function ListenerHome({ navigation }) {
         placeholder="Rechercher une conversation"
         placeholderTextColor={colors.orange[600]}
       />
-      <ScrollView style={styles.messageBlock}>
-        {buildTalkersWantsToTalk()}
-      </ScrollView>
+      <View style={styles.messageBlock}>{buildTalkersWantsToTalk()}</View>
     </Background>
   );
 }
@@ -116,8 +131,21 @@ const styles = StyleSheet.create({
   },
 
   messageBlock: {
-    height: '30%',
     marginTop: 16,
+  },
+
+  noTalkers: {
+    alignItems: 'center',
+  },
+
+  text: {
+    maxWidth: 250,
+    textAlign: 'center',
+    ...font.callout,
+  },
+
+  image: {
+    height: 250,
   },
 });
 
