@@ -1,13 +1,20 @@
+import Icon from '@expo/vector-icons/Entypo';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import UserImage from '@/components/UserImage';
+import Colors from '@/constants/Colors';
 import useRepository from '@/database/Model';
 import { updateRoom } from '@/store/Rooms';
 
-export default function ListenerMessages({ room, onPress }) {
+export default function ListenerMessages({
+  room,
+  onPress,
+  onAccept,
+  onRemove,
+}) {
   const { rooms } = useRepository();
   const { uid } = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -37,8 +44,38 @@ export default function ListenerMessages({ room, onPress }) {
     return rooms.unlisten();
   }, []);
 
+  const rightAction = () => {
+    if (!room.isAccepted)
+      return (
+        <View style={styles.actions}>
+          <TouchableOpacity onPress={() => onRemove()}>
+            <View style={[styles.action, styles.remove]}>
+              <Icon
+                name="cross"
+                size={20}
+                color={Colors.orange[1000]}
+                style={styles.removeText}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => onAccept()}>
+            <View style={[styles.action, styles.accept]}>
+              <Icon
+                name="check"
+                size={20}
+                color={Colors.orange[200]}
+                style={styles.acceptText}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+      );
+  };
+
   return (
-    <TouchableOpacity style={styles.messageBloc} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.messageBloc}
+      onPress={room.isAccepted ? onPress : null}>
       <UserImage
         style={styles.thumb}
         image={room.otherUserData.profilePicture}
@@ -49,10 +86,13 @@ export default function ListenerMessages({ room, onPress }) {
           <Text style={styles.message}>{lastMessage().content}</Text>
         </View>
         <View>
-          <Text style={styles.time}>
-            {format(new Date(lastMessage().createdAt), 'HH:mm')}
-          </Text>
+          {room.isAccepted ? (
+            <Text style={styles.time}>
+              {format(new Date(lastMessage().createdAt), 'HH:mm')}
+            </Text>
+          ) : null}
         </View>
+        {rightAction()}
       </View>
     </TouchableOpacity>
   );
@@ -86,5 +126,20 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 12,
+  },
+
+  actions: {
+    flexDirection: 'row',
+  },
+
+  action: {
+    padding: 8,
+    backgroundColor: Colors.orange[200],
+    borderRadius: 32,
+  },
+
+  accept: {
+    backgroundColor: Colors.orange[1000],
+    marginLeft: 16,
   },
 });

@@ -40,7 +40,9 @@ export default function AcceptedChatPopup({ isVisible, onClose, rooms }) {
       <Text style={styles.name}>{item.otherUserData.name}</Text>
       <Text style={styles.alert}>Votre invitation à été acceptée !</Text>
       <View style={styles.actions}>
-        <TouchableOpacity style={[styles.button, styles.cancel]}>
+        <TouchableOpacity
+          style={[styles.button, styles.cancel]}
+          onPress={() => roomsRepo.deleteRoom(item, uid)}>
           <Icon name="cross" size={24} color={Colors.orange[1000]} />
         </TouchableOpacity>
         <TouchableOpacity
