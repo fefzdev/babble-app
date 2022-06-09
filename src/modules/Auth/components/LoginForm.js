@@ -11,8 +11,8 @@ import { setErrorMessage } from '@/store/App';
 const auth = getAuth();
 
 function LoginForm() {
-  const [password, setPassword] = useState('199100');
-  const [mail, setMail] = useState('test2@test.fr');
+  const [password, setPassword] = useState();
+  const [mail, setMail] = useState();
   const dispatch = useDispatch();
   const [errorArray, setErrorArray] = useState([]);
   const { userRepository } = useRepository();
@@ -97,7 +97,7 @@ function LoginForm() {
         error={checkError('password')}
       />
       <BabbleButton style={styles.button} onPress={() => onLogin()}>
-        Login
+        Se connecter
       </BabbleButton>
     </View>
   );

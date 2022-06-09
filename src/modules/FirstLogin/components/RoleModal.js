@@ -21,10 +21,9 @@ export default function AcceptedChatPopup({ isVisible, onClose, onSubmit }) {
       value: UserRoles.TALKER,
       description: (
         <Text style={styles.text}>
-          En choisissant le rôle de Talker, vous êtes ici pour écouter et
-          discuter avec des
-          <Text style={styles.role}> Talkers</Text> dans le besoin d'une oreille
-          attentive.
+          En choisissant le rôle de <Text style={styles.role}>Talker</Text>, des
+          Listeners seront là pour vous écouter et vous conseiller quelque soit
+          votre problème.
         </Text>
       ),
       image: require('@/assets/images/talker-image.png'),
@@ -34,9 +33,9 @@ export default function AcceptedChatPopup({ isVisible, onClose, onSubmit }) {
       value: UserRoles.LISTENER,
       description: (
         <Text style={styles.text}>
-          Des
-          <Text style={styles.role}> Listeners</Text> seront là pour vous
-          écouter et vous conseiller quelque soit votre problème.
+          En choisissant le rôle de <Text style={styles.role}>Listener</Text>,
+          vous êtes ici pour écouter et discuter avec des Talkers dans le besoin
+          d'une oreille attentive.
         </Text>
       ),
       image: require('@/assets/images/listener-image.png'),
@@ -128,5 +127,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     color: 'white',
+  },
+  role: {
+    fontWeight: 'bold',
+    color: Colors.orange[1000],
   },
 });

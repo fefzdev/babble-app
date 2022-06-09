@@ -17,7 +17,7 @@ export default function Heading({ onSwitch, isLogin }) {
   return (
     <View style={styles.containerStyle}>
       <Text style={[Fonts.bigTitle, styles.heading]}>
-        Bienvenue sur <Text style={styles.highlightStyle}>Babbles</Text>
+        Bienvenue sur <Text style={styles.highlightStyle}>Babble</Text>
       </Text>
       <View style={styles.switchContainer}>
         <Text style={styles.firstPart}>{switchText().firstPart}</Text>

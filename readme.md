@@ -1,4 +1,4 @@
-# Babbles
+# Babble
 
 <h2>Contributors</h2>
 <a href="https://github.com/benoitlamonica">

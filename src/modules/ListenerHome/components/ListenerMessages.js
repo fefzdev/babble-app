@@ -26,7 +26,7 @@ export default function ListenerMessages({
   const lastMessage = () => {
     if (!room.lastMessage)
       return {
-        content: 'Veux parler',
+        content: 'Un Talker veux parler',
         createdAt: room.timestamp,
       };
     return {
@@ -81,10 +81,7 @@ export default function ListenerMessages({
         image={room.otherUserData.profilePicture}
       />
       <View style={styles.content}>
-        <View style={styles.textBloc}>
-          <Text style={styles.user}>{room.otherUserData.name}</Text>
-          <Text style={styles.message}>{lastMessage().content}</Text>
-        </View>
+        <Text style={styles.message}>{lastMessage().content}</Text>
         <View>
           {room.isAccepted ? (
             <Text style={styles.time}>
@@ -111,17 +108,12 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 16,
   },
-  messageBloc: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
   content: {
     flexDirection: 'row',
     marginLeft: 8,
     flexGrow: 1,
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 4,
   },
   time: {

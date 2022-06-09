@@ -124,7 +124,7 @@ export default function RegisterForm() {
         error={checkError('passwordConfirm')}
       />
       <BabbleButton style={styles.button} onPress={() => onRegister()}>
-        Sign up
+        S'enregistrer
       </BabbleButton>
     </View>
   );

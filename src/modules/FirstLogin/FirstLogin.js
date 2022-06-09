@@ -27,7 +27,7 @@ export default function FirstLogin() {
         source={require('@/assets/images/home-first-connection.png')}
       />
       <View style={styles.content}>
-        <Text style={[styles.title, Fonts.callout]}>Bienvenue sur Babbles</Text>
+        <Text style={[styles.title, Fonts.callout]}>Bienvenue sur Babble</Text>
         <Text style={styles.description}>
           Vous trouverez ici toutes vos conversations avec d'autres personnes.
           Commencez un chat et interagir avec les gens dans un endroit sûr.
