@@ -68,6 +68,7 @@ export default function BabbleInput({
         value={value}
         onChangeText={text => onChangeText(text)}
         placeholder={placeholder}
+        placeholderTextColor={Colors.black[200]}
         {...attr}
       />
     </View>

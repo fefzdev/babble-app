@@ -91,7 +91,7 @@ export default function RegisterForm() {
         value={mail}
         placeholder="votre.email@mail.com"
         onChangeText={text => onInput('mail', text)}
-        autoComplete="email"
+        autoCorrect={false}
         keyboardType="email-address"
         autoCapitalize="none"
         error={checkError('mail')}
@@ -99,8 +99,10 @@ export default function RegisterForm() {
       <BabbleInput
         style={styles.input}
         label="Nom d'utilisateur"
+        autoCorrect={false}
         value={username}
         placeholder="beubeuDu33"
+        textContentType="username"
         onChangeText={text => onInput('username', text)}
         error={checkError('username')}
       />
@@ -108,7 +110,7 @@ export default function RegisterForm() {
         style={styles.input}
         label="Mot de passe"
         value={password}
-        placeholder="**********"
+        placeholder="••••••••••••"
         onChangeText={text => onInput('password', text)}
         autoComplete="password"
         secureTextEntry
@@ -118,8 +120,9 @@ export default function RegisterForm() {
         style={styles.input}
         label="Confirmer le mot de passe"
         value={passwordConfirm}
-        placeholder="**********"
+        placeholder="••••••••••••"
         onChangeText={text => onInput('passwordConfirm', text)}
+        autoComplete="password"
         secureTextEntry
         error={checkError('passwordConfirm')}
       />

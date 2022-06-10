@@ -81,6 +81,7 @@ function LoginForm() {
         value={mail}
         placeholder="votre.email@mail.com"
         onChangeText={text => onInput('mail', text)}
+        autoCorrect={false}
         autoComplete="email"
         keyboardType="email-address"
         autoCapitalize="none"
@@ -90,7 +91,7 @@ function LoginForm() {
         style={styles.input}
         label="Mot de passe"
         value={password}
-        placeholder="**********"
+        placeholder="••••••••••••"
         onChangeText={text => onInput('password', text)}
         autoComplete="password"
         secureTextEntry
