@@ -116,6 +116,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 4,
   },
+  messageBloc: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
   time: {
     fontSize: 12,
   },
